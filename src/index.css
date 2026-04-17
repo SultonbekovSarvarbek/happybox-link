@@ -255,6 +255,22 @@ html, body, #root {
 .promo-title { font-size: 14px; font-weight: 500; color: var(--black); margin-bottom: 2px; }
 .promo-desc  { font-size: 12px; color: var(--sub-gray); font-weight: 300; line-height: 1.4; }
 
+/* ─── APP STORE BANNER ─────────────────────────────── */
+.appstore-banner {
+  display: flex; align-items: center; gap: 14px;
+  background: #000; border-radius: var(--r);
+  padding: 14px 16px; margin-bottom: 22px;
+  text-decoration: none; color: white;
+  transition: opacity var(--t);
+  box-shadow: 0 4px 16px rgba(0,0,0,.18);
+}
+.appstore-banner:active { opacity: .75; }
+.appstore-apple  { width: 28px; height: 28px; flex-shrink: 0; }
+.appstore-text   { flex: 1; }
+.appstore-sub    { font-size: 11px; opacity: .65; font-weight: 300; letter-spacing: .2px; }
+.appstore-title  { font-size: 17px; font-weight: 600; letter-spacing: .2px; margin-top: 1px; }
+.appstore-chevron { width: 18px; height: 18px; opacity: .45; flex-shrink: 0; }
+
 /* ─── TYPE CARDS ───────────────────────────────────── */
 .type-cards { padding: 0 20px; display: flex; flex-direction: column; gap: 13px; }
 .type-card {
