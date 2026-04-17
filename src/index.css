@@ -257,19 +257,18 @@ html, body, #root {
 
 /* ─── APP STORE BANNER ─────────────────────────────── */
 .appstore-banner {
-  display: flex; align-items: center; gap: 14px;
-  background: #000; border-radius: var(--r);
-  padding: 14px 16px; margin-bottom: 22px;
-  text-decoration: none; color: white;
-  transition: opacity var(--t);
-  box-shadow: 0 4px 16px rgba(0,0,0,.18);
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid var(--border-soft); border-radius: 20px;
+  padding: 7px 14px 7px 10px; margin-bottom: 22px;
+  text-decoration: none; color: var(--dark-gray);
+  transition: opacity var(--t); background: var(--surface);
 }
-.appstore-banner:active { opacity: .75; }
-.appstore-apple  { width: 28px; height: 28px; flex-shrink: 0; }
-.appstore-text   { flex: 1; }
-.appstore-sub    { font-size: 11px; opacity: .65; font-weight: 300; letter-spacing: .2px; }
-.appstore-title  { font-size: 17px; font-weight: 600; letter-spacing: .2px; margin-top: 1px; }
-.appstore-chevron { width: 18px; height: 18px; opacity: .45; flex-shrink: 0; }
+.appstore-banner:active { opacity: .6; }
+.appstore-apple  { width: 16px; height: 16px; flex-shrink: 0; color: var(--black); }
+.appstore-text   { display: flex; align-items: baseline; gap: 4px; }
+.appstore-sub    { font-size: 12px; color: var(--sub-gray); font-weight: 300; }
+.appstore-title  { font-size: 12px; font-weight: 600; color: var(--black); }
+.appstore-chevron { width: 12px; height: 12px; flex-shrink: 0; }
 
 /* ─── TYPE CARDS ───────────────────────────────────── */
 .type-cards { padding: 0 20px; display: flex; flex-direction: column; gap: 13px; }
