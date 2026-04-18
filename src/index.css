@@ -269,7 +269,7 @@ html, body, #root {
 /* ─── APP STORE BANNER ─────────────────────────────── */
 .appstore-banner {
   display: flex; align-items: center; gap: 7px;
-  border: 1px solid var(--border-soft); border-radius: 20px;
+  border: 1px solid var(--border-soft); border-radius: var(--r);
   padding: 7px 14px 7px 10px; margin-bottom: 22px;
   text-decoration: none; color: var(--dark-gray);
   transition: opacity var(--t); background: var(--surface);
