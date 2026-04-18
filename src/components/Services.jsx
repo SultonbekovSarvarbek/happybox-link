@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { Clock, Plus, Check, ChevronLeft } from 'lucide-react'
 import { SERVICES, fmt } from '../data/services'
+import AppStoreBtn from './AppStoreBtn'
 
 const CHIPS = [50000, 100000, 200000, 500000]
 
@@ -50,6 +51,7 @@ export default function Services({ giftType, cart, onToggle, depositAmount, onDe
           <ChevronLeft size={20} strokeWidth={2} />
         </button>
         <span className="nav-title">{isCert ? 'Выберите услуги' : 'Сумма депозита'}</span>
+        <AppStoreBtn />
       </div>
       <div className="progress-wrap">
         <div className="progress-track">

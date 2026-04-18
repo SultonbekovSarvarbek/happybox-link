@@ -24,8 +24,8 @@ export default function App() {
   const [giftType,      setGiftType]      = useState('cert')
   const [cart,          setCart]          = useState([])
   const [depositAmount, setDepositAmount] = useState(0)
-  const [recipient,     setRecipient]     = useState({ name: '', phone: '' })
-  const [sender,        setSender]        = useState('')
+  const [recipient,     setRecipient]     = useState({ name: '', phone: '+998' })
+  const [sender,        setSender]        = useState({ name: '', phone: '+998' })
   const [payMethod,     setPayMethod]     = useState('payme')
   const [processing,    setProcessing]    = useState(false)
 
@@ -65,8 +65,8 @@ export default function App() {
     setStep(0)
     setCart([])
     setDepositAmount(0)
-    setRecipient({ name: '', phone: '' })
-    setSender('')
+    setRecipient({ name: '', phone: '+998' })
+    setSender({ name: '', phone: '+998' })
     window.scrollTo(0, 0)
   }
 

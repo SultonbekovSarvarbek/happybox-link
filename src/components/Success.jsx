@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Check, Share2 } from 'lucide-react'
 import { fmt } from '../data/services'
+import AppStoreBtn from './AppStoreBtn'
 
 const COLORS = ['#4998EC', '#FFD700', '#FF6B9D', '#2ECC71', '#FF8C42', '#A855F7', '#5BE0FF']
 
@@ -117,7 +118,7 @@ export default function Success({ cart, giftType, depositAmount, recipient, send
             <div>
               <div className="gc-label">Для</div>
               <div className="gc-name">{recipient.name || '—'}</div>
-              <div className="gc-from">от {sender || 'Вас'}</div>
+              <div className="gc-from">от {sender.name || 'Вас'}</div>
             </div>
             <div>
               <div className="gc-label">Действует до</div>
@@ -134,6 +135,8 @@ export default function Success({ cart, giftType, depositAmount, recipient, send
           <Share2 size={17} strokeWidth={1.75} />
           Поделиться сертификатом
         </button>
+        <AppStoreBtn />
+        <div className="success-divider" />
         <button className="btn btn-outline" onClick={onHome}>
           На главную
         </button>

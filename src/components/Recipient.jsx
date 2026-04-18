@@ -1,4 +1,5 @@
 import { User, ChevronLeft } from 'lucide-react'
+import AppStoreBtn from './AppStoreBtn'
 
 export default function Recipient({ recipient, sender, giftType, onRecipientChange, onSenderChange, onContinue, onBack }) {
   const isCert     = giftType === 'cert'
@@ -8,14 +9,21 @@ export default function Recipient({ recipient, sender, giftType, onRecipientChan
 
   const isValid =
     recipient.name.trim().length >= 2 &&
-    recipient.phone.replace(/\D/g, '').length >= 11
+    recipient.phone.replace(/\D/g, '').length >= 11 &&
+    sender.name.trim().length >= 2
 
-  const handlePhone = (val) => {
+  const handleRecipientPhone = (val) => {
     let digits = val.replace(/\D/g, '')
     if (digits.startsWith('998')) digits = digits.slice(3)
     digits = digits.slice(0, 9)
-    const formatted = digits ? `+998${digits}` : ''
-    onRecipientChange({ ...recipient, phone: formatted })
+    onRecipientChange({ ...recipient, phone: `+998${digits}` })
+  }
+
+  const handleSenderPhone = (val) => {
+    let digits = val.replace(/\D/g, '')
+    if (digits.startsWith('998')) digits = digits.slice(3)
+    digits = digits.slice(0, 9)
+    onSenderChange({ ...sender, phone: `+998${digits}` })
   }
 
   return (
@@ -25,6 +33,7 @@ export default function Recipient({ recipient, sender, giftType, onRecipientChan
           <ChevronLeft size={20} strokeWidth={2} />
         </button>
         <span className="nav-title">Получатель</span>
+        <AppStoreBtn />
       </div>
       <div className="progress-wrap">
         <div className="progress-track">
@@ -59,7 +68,7 @@ export default function Recipient({ recipient, sender, giftType, onRecipientChan
             className="form-input"
             placeholder="+998 90 123 45 67"
             value={recipient.phone}
-            onChange={e => handlePhone(e.target.value)}
+            onChange={e => handleRecipientPhone(e.target.value)}
           />
           <div className="form-hint">Сертификат отправим через WhatsApp или SMS</div>
         </div>
@@ -80,8 +89,18 @@ export default function Recipient({ recipient, sender, giftType, onRecipientChan
             type="text"
             className="form-input"
             placeholder="Ваше имя"
-            value={sender}
-            onChange={e => onSenderChange(e.target.value)}
+            value={sender.name}
+            onChange={e => onSenderChange({ ...sender, name: e.target.value })}
+          />
+        </div>
+        <div className="form-group">
+          <label className="form-label">Ваш номер телефона</label>
+          <input
+            type="tel"
+            className="form-input"
+            placeholder="+998 90 123 45 67"
+            value={sender.phone}
+            onChange={e => handleSenderPhone(e.target.value)}
           />
         </div>
       </div>

@@ -1,5 +1,6 @@
 import { ChevronLeft } from 'lucide-react'
 import { fmt } from '../data/services'
+import AppStoreBtn from './AppStoreBtn'
 
 const METHODS = [
   { id: 'payme',  label: 'Payme',  desc: 'Мгновенная оплата', logo: '/payme.png', badge: 'Популярно' },
@@ -21,6 +22,7 @@ export default function Payment({ cart, giftType, depositAmount, payMethod, onPi
           <ChevronLeft size={20} strokeWidth={2} />
         </button>
         <span className="nav-title">Оплата</span>
+        <AppStoreBtn />
       </div>
       <div className="progress-wrap">
         <div className="progress-track">

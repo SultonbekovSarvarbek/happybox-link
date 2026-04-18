@@ -1,5 +1,6 @@
 import { X, CalendarDays, ChevronLeft } from 'lucide-react'
 import { fmt } from '../data/services'
+import AppStoreBtn from './AppStoreBtn'
 
 export default function Cart({ cart, onRemove, onContinue, onBack }) {
   const total = cart.reduce((a, s) => a + s.price, 0)
@@ -11,6 +12,7 @@ export default function Cart({ cart, onRemove, onContinue, onBack }) {
           <ChevronLeft size={20} strokeWidth={2} />
         </button>
         <span className="nav-title">Корзина</span>
+        <AppStoreBtn />
       </div>
       <div className="progress-wrap">
         <div className="progress-track">

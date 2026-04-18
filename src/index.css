@@ -69,8 +69,19 @@ html, body, #root {
 .nav-back:active { opacity: .55; }
 .nav-title {
   font-size: 16px; font-weight: 500; color: var(--black);
-  letter-spacing: .1px;
+  letter-spacing: .1px; flex: 1;
 }
+.nav-app-btn {
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 10px; border-radius: 10px;
+  background: var(--surface); border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-card); cursor: pointer;
+  text-decoration: none; color: var(--black);
+  font-size: 11px; font-weight: 600; flex-shrink: 0;
+  transition: opacity var(--t);
+}
+.nav-app-btn:active { opacity: .55; }
+.nav-app-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
 
 /* ─── PROGRESS ─────────────────────────────────────── */
 .progress-wrap { padding: 0 20px 20px; }
@@ -505,7 +516,7 @@ html, body, #root {
 
 /* Gift Card */
 .gift-card {
-  margin: 6px 20px 26px;
+  margin: 6px 20px 32px;
   border-radius: 24px; overflow: hidden;
   position: relative; color: white;
   box-shadow: var(--shadow-gift);
@@ -575,7 +586,13 @@ html, body, #root {
   font-size: 18px; font-weight: 600; text-align: right;
 }
 
-.success-actions { padding: 0 20px; display: flex; flex-direction: column; gap: 11px; }
+.success-actions { padding: 4px 20px 52px; display: flex; flex-direction: column; gap: 14px; }
+.success-divider { height: 1px; background: var(--border-soft); margin: 2px 0; }
+.success-actions .nav-app-btn {
+  width: 100%; justify-content: center; padding: 14px;
+  border-radius: 14px; font-size: 15px; font-weight: 500;
+  border-color: var(--border-soft);
+}
 
 /* ─── PAYMENT OVERLAY ──────────────────────────────── */
 .pay-overlay {
