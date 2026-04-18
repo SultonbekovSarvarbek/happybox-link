@@ -44,7 +44,7 @@ function runConfetti(canvas) {
   tick()
 }
 
-export default function Success({ cart, giftType, depositAmount, recipient, sender, onHome }) {
+export default function Success({ partner, cart, giftType, depositAmount, recipient, sender, onHome }) {
   const canvasRef = useRef(null)
   const isCert    = giftType === 'cert'
   const total     = isCert ? cart.reduce((a, s) => a + s.price, 0) : depositAmount
@@ -60,7 +60,7 @@ export default function Success({ cart, giftType, depositAmount, recipient, send
     if (navigator.share) {
       navigator.share({
         title: 'HappyBox — Подарочный сертификат',
-        text : 'Тебе подарили сертификат в Glam Studio! 🎁',
+        text : `Тебе подарили сертификат в ${partner?.name ?? 'HappyBox'}! 🎁`,
         url  : window.location.href,
       })
     } else {
@@ -91,7 +91,7 @@ export default function Success({ cart, giftType, depositAmount, recipient, send
         <div className="gc-inner">
           <div className="gc-header">
             <span className="gc-brand">HAPPYBOX</span>
-            <span className="gc-partner-name">Glam Studio</span>
+            <span className="gc-partner-name">{partner?.name ?? 'HappyBox'}</span>
           </div>
 
           <div className="gc-amount-section">

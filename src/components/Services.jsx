@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Clock, Plus, Check, ChevronLeft } from 'lucide-react'
-import { SERVICES, fmt } from '../data/services'
+import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 
 const CHIPS = [50000, 100000, 200000, 500000]
@@ -10,12 +10,16 @@ function ServiceCard({ svc, inCart, onToggle }) {
     <div className={`service-card${inCart ? ' in-cart' : ''}`}>
       <div className="svc-info">
         <div className="svc-name">{svc.name}</div>
-        <div className="svc-desc">{svc.desc}</div>
+        {(svc.desc ?? svc.description) && (
+          <div className="svc-desc">{svc.desc ?? svc.description}</div>
+        )}
         <div className="svc-meta">
-          <span className="svc-dur">
-            <Clock size={12} strokeWidth={1.75} />
-            {svc.dur}
-          </span>
+          {svc.dur && (
+            <span className="svc-dur">
+              <Clock size={12} strokeWidth={1.75} />
+              {svc.dur}
+            </span>
+          )}
           <span className="svc-price">{fmt(svc.price)}</span>
         </div>
       </div>
@@ -29,7 +33,7 @@ function ServiceCard({ svc, inCart, onToggle }) {
   )
 }
 
-export default function Services({ giftType, cart, onToggle, depositAmount, onDepositChange, onContinue, onBack }) {
+export default function Services({ giftType, services = [], cart, onToggle, depositAmount, onDepositChange, onContinue, onBack }) {
   const [activeChip, setActiveChip] = useState(null)
   const isCert    = giftType === 'cert'
   const cartTotal = cart.reduce((a, s) => a + s.price, 0)
@@ -65,7 +69,7 @@ export default function Services({ giftType, cart, onToggle, depositAmount, onDe
 
       {isCert ? (
         <div className="services-list">
-          {SERVICES.map(svc => (
+          {services.map(svc => (
             <ServiceCard
               key={svc.id}
               svc={svc}

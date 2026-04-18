@@ -6,6 +6,7 @@ import Cart       from './components/Cart'
 import Recipient  from './components/Recipient'
 import Payment    from './components/Payment'
 import Success    from './components/Success'
+import { getSlug, fetchPartner, fetchServices } from './api'
 
 function PayProcessing() {
   return (
@@ -19,6 +20,24 @@ function PayProcessing() {
   )
 }
 
+function LoadingScreen() {
+  return (
+    <div className="screen" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', minHeight: '100dvh' }}>
+      <div className="spinner" />
+    </div>
+  )
+}
+
+function ErrorScreen({ message }) {
+  return (
+    <div className="screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100dvh', gap: 12, padding: '0 24px', textAlign: 'center' }}>
+      <div style={{ fontSize: 48 }}>😕</div>
+      <h2 style={{ fontSize: 20, fontWeight: 600 }}>Партнёр не найден</h2>
+      <p style={{ fontSize: 14, color: 'var(--sub-gray)' }}>{message}</p>
+    </div>
+  )
+}
+
 export default function App() {
   const [step,          setStep]          = useState(0)
   const [giftType,      setGiftType]      = useState('cert')
@@ -28,6 +47,11 @@ export default function App() {
   const [sender,        setSender]        = useState({ name: '', phone: '+998' })
   const [payMethod,     setPayMethod]     = useState('payme')
   const [processing,    setProcessing]    = useState(false)
+
+  const [partner,       setPartner]       = useState(null)
+  const [services,      setServices]      = useState([])
+  const [loading,       setLoading]       = useState(true)
+  const [error,         setError]         = useState(null)
 
   const go = (n) => { setStep(n); window.scrollTo(0, 0) }
 
@@ -44,6 +68,19 @@ export default function App() {
       vv.removeEventListener('resize', update)
       vv.removeEventListener('scroll', update)
     }
+  }, [])
+
+  useEffect(() => {
+    const slug = getSlug()
+    if (!slug) { setLoading(false); return }
+
+    Promise.all([fetchPartner(slug), fetchServices(slug)])
+      .then(([p, s]) => {
+        setPartner(p)
+        setServices(s.map((svc, i) => ({ ...svc, id: svc.id ?? i })))
+      })
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false))
   }, [])
 
   const toggleCart = (svc) =>
@@ -70,8 +107,14 @@ export default function App() {
     window.scrollTo(0, 0)
   }
 
+  if (loading) return <LoadingScreen />
+  if (error)   return <ErrorScreen message={error} />
+
   const screens = [
-    <Landing    onContinue={() => go(1)} />,
+    <Landing
+      partner={partner}
+      onContinue={() => go(1)}
+    />,
 
     <ChooseType
       onBack={() => go(0)}
@@ -80,6 +123,7 @@ export default function App() {
 
     <Services
       giftType={giftType}
+      services={services}
       cart={cart}
       onToggle={toggleCart}
       depositAmount={depositAmount}
@@ -116,6 +160,7 @@ export default function App() {
     />,
 
     <Success
+      partner={partner}
       cart={cart}
       giftType={giftType}
       depositAmount={depositAmount}

@@ -166,6 +166,10 @@ html, body, #root {
     radial-gradient(ellipse 65% 55% at 82% 82%, rgba(18, 72, 172, 0.45) 0%, transparent 60%),
     linear-gradient(155deg, #5aaaf0 0%, #3d8de0 42%, #1b63cc 100%);
 }
+.cover-photo {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center;
+}
 .cover-noise {
   position: absolute; inset: 0; opacity: .04;
   background-image:
