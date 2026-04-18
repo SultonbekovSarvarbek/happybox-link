@@ -7,6 +7,7 @@ import Recipient  from './components/Recipient'
 import Payment    from './components/Payment'
 import Success    from './components/Success'
 import { getSlug, fetchPartner, fetchServices } from './api'
+import AppStoreBtn from './components/AppStoreBtn'
 
 function PayProcessing() {
   return (
@@ -30,10 +31,16 @@ function LoadingScreen() {
 
 function ErrorScreen({ message }) {
   return (
-    <div className="screen" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '100dvh', gap: 12, padding: '0 24px', textAlign: 'center' }}>
-      <div style={{ fontSize: 48 }}>😕</div>
-      <h2 style={{ fontSize: 20, fontWeight: 600 }}>Партнёр не найден</h2>
-      <p style={{ fontSize: 14, color: 'var(--sub-gray)' }}>{message}</p>
+    <div className="screen error-screen">
+      <div className="error-body">
+        <div className="error-icon">😕</div>
+        <h2 className="error-title">Партнёр не найден</h2>
+        <p className="error-desc">{message}</p>
+      </div>
+      <div className="error-footer">
+        <p className="error-hint">Вы можете найти других партнёров в приложении HappyBox</p>
+        <AppStoreBtn variant="banner" />
+      </div>
     </div>
   )
 }
@@ -72,7 +79,7 @@ export default function App() {
 
   useEffect(() => {
     const slug = getSlug()
-    if (!slug) { setLoading(false); return }
+    if (!slug) { setError('Страница партнёра не найдена. Проверьте ссылку или QR-код.'); setLoading(false); return }
 
     Promise.all([fetchPartner(slug), fetchServices(slug)])
       .then(([p, s]) => {

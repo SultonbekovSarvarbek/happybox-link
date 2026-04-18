@@ -609,6 +609,24 @@ html, body, #root {
   animation: popIn .3s ease;
   box-shadow: 0 20px 60px rgba(0,0,0,.2);
 }
+.error-screen {
+  display: flex; flex-direction: column;
+  min-height: 100dvh; justify-content: space-between;
+}
+.error-body {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 48px 28px 24px; text-align: center; gap: 12px;
+}
+.error-icon  { font-size: 56px; line-height: 1; }
+.error-title { font-size: 22px; font-weight: 600; color: var(--black); }
+.error-desc  { font-size: 14px; color: var(--sub-gray); line-height: 1.5; max-width: 280px; }
+.error-footer {
+  padding: 0 20px 48px; display: flex; flex-direction: column; gap: 12px;
+}
+.error-hint { font-size: 13px; color: var(--sub-gray); text-align: center; }
+.error-footer .appstore-banner { margin-bottom: 0; }
+
 .spinner {
   width: 44px; height: 44px;
   border: 3px solid var(--border); border-top-color: var(--primary);
