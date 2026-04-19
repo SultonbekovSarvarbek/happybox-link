@@ -18,19 +18,9 @@ export default function Landing({ partner, onContinue }) {
     <div className="screen">
       <div className="cover">
         <div className="cover-noise" />
-        {p.photo
-          ? <img src={p.photo} alt={p.name} className="cover-photo" />
-          : (
-            <>
-              <div className="cover-orb cover-orb-1" />
-              <div className="cover-orb cover-orb-2" />
-              <div className="cover-orb cover-orb-3" />
-            </>
-          )
-        }
-        <div className="cover-center">
-          <span className="cover-tag">Beauty &amp; Spa · Ташкент</span>
-        </div>
+        <div className="cover-orb cover-orb-1" />
+        <div className="cover-orb cover-orb-2" />
+        <div className="cover-orb cover-orb-3" />
         <div className="cover-fade" />
       </div>
 
