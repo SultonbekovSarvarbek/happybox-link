@@ -6,7 +6,7 @@ import Cart       from './components/Cart'
 import Recipient  from './components/Recipient'
 import Payment    from './components/Payment'
 import Success    from './components/Success'
-import { getSlug, fetchPartner, fetchServices } from './api'
+import { getSlug, fetchPartner, fetchServices, fetchCertificates } from './api'
 import AppStoreBtn from './components/AppStoreBtn'
 
 function PayProcessing() {
@@ -57,6 +57,7 @@ export default function App() {
 
   const [partner,       setPartner]       = useState(null)
   const [services,      setServices]      = useState([])
+  const [certificates,  setCertificates]  = useState([])
   const [loading,       setLoading]       = useState(true)
   const [error,         setError]         = useState(null)
 
@@ -81,10 +82,11 @@ export default function App() {
     const slug = getSlug()
     if (!slug) { setError('Страница партнёра не найдена. Проверьте ссылку или QR-код.'); setLoading(false); return }
 
-    Promise.all([fetchPartner(slug), fetchServices(slug)])
-      .then(([p, s]) => {
+    Promise.all([fetchPartner(slug), fetchServices(slug), fetchCertificates(slug)])
+      .then(([p, s, c]) => {
         setPartner(p)
         setServices(s.map((svc, i) => ({ ...svc, id: svc.id ?? i })))
+        setCertificates(c.map((cert, i) => ({ ...cert, id: cert.id ?? i })))
       })
       .catch(e => setError(e.message))
       .finally(() => setLoading(false))
@@ -130,12 +132,12 @@ export default function App() {
 
     <Services
       giftType={giftType}
-      services={services}
+      services={giftType === 'cert' ? certificates : services}
       cart={cart}
       onToggle={toggleCart}
       depositAmount={depositAmount}
       onDepositChange={setDepositAmount}
-      onContinue={() => go(giftType === 'cert' ? 3 : 4)}
+      onContinue={() => go(giftType === 'deposit' ? 4 : 3)}
       onBack={() => go(1)}
     />,
 

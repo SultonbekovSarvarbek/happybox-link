@@ -1,4 +1,4 @@
-import { Gift, CreditCard, ChevronRight, ChevronLeft } from 'lucide-react'
+import { Gift, Scissors, CreditCard, ChevronRight, ChevronLeft } from 'lucide-react'
 
 function TypeCard({ icon, title, desc, onClick }) {
   return (
@@ -29,9 +29,15 @@ export default function ChooseType({ onBack, onSelect }) {
       <div className="type-cards">
         <TypeCard
           icon={<Gift size={22} color="var(--primary)" strokeWidth={1.75} />}
-          title="Подарочный сертификат"
-          desc="Выберите конкретные услуги, которые хотите подарить"
+          title="Готовый сертификат"
+          desc="Выберите готовый сертификат от партнёра"
           onClick={() => onSelect('cert')}
+        />
+        <TypeCard
+          icon={<Scissors size={22} color="var(--primary)" strokeWidth={1.75} />}
+          title="Собрать из услуг"
+          desc="Выберите конкретные услуги, которые хотите подарить"
+          onClick={() => onSelect('services')}
         />
         <TypeCard
           icon={<CreditCard size={22} color="var(--primary)" strokeWidth={1.75} />}

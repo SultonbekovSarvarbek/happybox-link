@@ -35,7 +35,7 @@ function ServiceCard({ svc, inCart, onToggle }) {
 
 export default function Services({ giftType, services = [], cart, onToggle, depositAmount, onDepositChange, onContinue, onBack }) {
   const [activeChip, setActiveChip] = useState(null)
-  const isCert    = giftType === 'cert'
+  const isCert    = giftType === 'cert' || giftType === 'services'
   const cartTotal = cart.reduce((a, s) => a + s.price, 0)
 
   const pickChip = (amt) => {
@@ -54,7 +54,9 @@ export default function Services({ giftType, services = [], cart, onToggle, depo
         <button className="nav-back" onClick={onBack}>
           <ChevronLeft size={20} strokeWidth={2} />
         </button>
-        <span className="nav-title">{isCert ? 'Выберите услуги' : 'Сумма депозита'}</span>
+        <span className="nav-title">
+          {giftType === 'cert' ? 'Выберите сертификат' : giftType === 'services' ? 'Выберите услуги' : 'Сумма депозита'}
+        </span>
         <AppStoreBtn />
       </div>
       <div className="progress-wrap">

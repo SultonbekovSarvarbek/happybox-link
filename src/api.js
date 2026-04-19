@@ -17,3 +17,9 @@ export async function fetchServices(slug) {
   if (!res.ok) throw new Error('Услуги не найдены')
   return res.json()
 }
+
+export async function fetchCertificates(slug) {
+  const res = await fetch(`${BASE}/partners/${slug}/certificates`)
+  if (!res.ok) throw new Error('Сертификаты не найдены')
+  return res.json()
+}
