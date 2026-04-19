@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Clock, Plus, Check, ChevronLeft } from 'lucide-react'
+import { Clock, CalendarDays, Plus, Check, ChevronLeft } from 'lucide-react'
 import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 
@@ -18,6 +18,12 @@ function ServiceCard({ svc, inCart, onToggle }) {
             <span className="svc-dur">
               <Clock size={12} strokeWidth={1.75} />
               {svc.dur}
+            </span>
+          )}
+          {svc.validDays && (
+            <span className="svc-dur">
+              <CalendarDays size={12} strokeWidth={1.75} />
+              {svc.validDays} дней
             </span>
           )}
           <span className="svc-price">{fmt(svc.price)}</span>
