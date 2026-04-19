@@ -125,7 +125,11 @@ export default function Services({ giftType, services = [], cart, onToggle, depo
         ? cart.length > 0 && (
           <div className="sticky">
             <div className="sticky-row">
-              <span className="sticky-label">Корзина: {cart.length} усл.</span>
+              <span className="sticky-label">
+                {giftType === 'cert'
+                  ? `Выбрано: ${cart.length} серт.`
+                  : `Корзина: ${cart.length} усл.`}
+              </span>
               <span className="sticky-total">{fmt(cartTotal)}</span>
             </div>
             <button className="btn btn-primary" onClick={onContinue}>
