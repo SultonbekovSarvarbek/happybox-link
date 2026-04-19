@@ -3,7 +3,7 @@ import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 
 export default function Cart({ cart, onRemove, onContinue, onBack }) {
-  const total = cart.reduce((a, s) => a + s.price, 0)
+  const total = cart.reduce((a, s) => a + Number(s.price), 0)
 
   return (
     <div className="screen">

@@ -36,7 +36,7 @@ function ServiceCard({ svc, inCart, onToggle }) {
 export default function Services({ giftType, services = [], cart, onToggle, depositAmount, onDepositChange, onContinue, onBack }) {
   const [activeChip, setActiveChip] = useState(null)
   const isCert    = giftType === 'cert' || giftType === 'services'
-  const cartTotal = cart.reduce((a, s) => a + s.price, 0)
+  const cartTotal = cart.reduce((a, s) => a + Number(s.price), 0)
 
   const pickChip = (amt) => {
     setActiveChip(amt)
