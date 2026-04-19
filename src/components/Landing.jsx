@@ -21,6 +21,7 @@ export default function Landing({ partner, onContinue }) {
         <div className="cover-orb cover-orb-1" />
         <div className="cover-orb cover-orb-2" />
         <div className="cover-orb cover-orb-3" />
+        <div className="cover-orb cover-orb-4" />
         <div className="cover-fade" />
       </div>
 
