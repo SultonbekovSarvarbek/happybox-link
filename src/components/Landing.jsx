@@ -1,4 +1,4 @@
-import { Star, MapPin, Gift, Sparkles } from 'lucide-react'
+import { Star, MapPin, Gift } from 'lucide-react'
 import AppStoreBtn from './AppStoreBtn'
 
 const FALLBACK = {
@@ -27,7 +27,9 @@ export default function Landing({ partner, onContinue }) {
 
       <div className="partner-wrap">
         <div className="partner-logo">
-          <Sparkles size={28} color="var(--primary)" strokeWidth={1.5} />
+          <span style={{ color: '#fff', fontWeight: 600, fontSize: 18 }}>
+            {p.name?.[0]?.toUpperCase() ?? 'H'}
+          </span>
         </div>
         <h1 className="partner-name">{p.name}</h1>
         {p.description && (
