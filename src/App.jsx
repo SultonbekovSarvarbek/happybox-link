@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { SearchX } from 'lucide-react'
 import Landing    from './components/Landing'
 import ChooseType from './components/ChooseType'
 import Services   from './components/Services'
@@ -33,9 +34,11 @@ function ErrorScreen({ message }) {
   return (
     <div className="screen error-screen">
       <div className="error-body">
-        <div className="error-icon">😕</div>
+        <div className="error-icon">
+          <SearchX size={52} color="var(--sub-gray)" strokeWidth={1.25} />
+        </div>
         <h2 className="error-title">Партнёр не найден</h2>
-        <p className="error-desc">{message}</p>
+        <p className="error-desc">Проверьте ссылку или QR-код и попробуйте снова</p>
       </div>
       <div className="error-footer">
         <p className="error-hint">Вы можете найти других партнёров в приложении HappyBox</p>
