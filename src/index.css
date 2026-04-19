@@ -162,11 +162,10 @@ html, body, #root {
 .cover {
   width: 100%; height: 240px; position: relative; overflow: hidden;
   background:
-    radial-gradient(ellipse 70% 70% at 10% 20%,  rgba(100, 200, 255, 0.45) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 60% at 90% 10%,  rgba(50,  120, 255, 0.40) 0%, transparent 55%),
-    radial-gradient(ellipse 80% 50% at 55% 95%,  rgba(0,   80,  200, 0.50) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 50% at 80% 60%,  rgba(120, 220, 255, 0.25) 0%, transparent 50%),
-    linear-gradient(140deg, #020e2e 0%, #0a2260 40%, #0d4a9e 100%);
+    radial-gradient(ellipse 70% 70% at 10% 20%,  rgba(80, 140, 200, 0.30) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 60% at 90% 10%,  rgba(40,  80, 160, 0.28) 0%, transparent 55%),
+    radial-gradient(ellipse 80% 50% at 55% 95%,  rgba(20,  50, 120, 0.35) 0%, transparent 60%),
+    linear-gradient(140deg, #07111f 0%, #0c1e3d 45%, #102952 100%);
 }
 .cover-photo {
   position: absolute; inset: 0; width: 100%; height: 100%;
@@ -177,10 +176,10 @@ html, body, #root {
   position: absolute; border-radius: 50%;
   filter: blur(38px); opacity: 0.75;
 }
-.cover-orb-1 { width: 200px; height: 200px; top: -60px; right: -40px;   background: radial-gradient(circle, #60c8ff, #1a6edd); }
-.cover-orb-2 { width: 150px; height: 150px; bottom: -40px; left: -20px; background: radial-gradient(circle, #0a3aaa, #050e40); }
-.cover-orb-3 { width: 100px; height: 100px; top: 20px; left: 30px;      background: radial-gradient(circle, #a0d8ff, #3080e0); }
-.cover-orb-4 { width: 80px;  height: 80px;  top: 80px; right: 60px;     background: radial-gradient(circle, #e0f4ff, #60aaff); filter: blur(28px); opacity: 0.6; position: absolute; border-radius: 50%; }
+.cover-orb-1 { width: 200px; height: 200px; top: -60px; right: -40px;   background: radial-gradient(circle, #1a4a80, #0a1e3a); }
+.cover-orb-2 { width: 150px; height: 150px; bottom: -40px; left: -20px; background: radial-gradient(circle, #0d2d5e, #060f28); }
+.cover-orb-3 { width: 100px; height: 100px; top: 20px; left: 30px;      background: radial-gradient(circle, #204070, #0a1830); }
+.cover-orb-4 { width: 80px;  height: 80px;  top: 80px; right: 60px;     background: radial-gradient(circle, #1e3a6a, #0c1e40); filter: blur(28px); opacity: 0.5; position: absolute; border-radius: 50%; }
 .cover-center {
   position: absolute; top: 50%; left: 50%;
   transform: translate(-50%, -54%); text-align: center;
