@@ -3,7 +3,8 @@ import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 
 export default function Cart({ cart, onRemove, onContinue, onBack }) {
-  const total = cart.reduce((a, s) => a + Number(s.price), 0)
+  const total     = cart.reduce((a, s) => a + Number(s.price), 0)
+  const validDays = cart[0]?.validDays ?? 90
 
   return (
     <div className="screen">
@@ -35,6 +36,9 @@ export default function Cart({ cart, onRemove, onContinue, onBack }) {
             <div key={s.id} className="cart-item">
               <div className="ci-info">
                 <div className="ci-name">{s.name}</div>
+                {(s.description ?? s.desc) && (
+                  <div className="ci-desc">{s.description ?? s.desc}</div>
+                )}
                 <div className="ci-price">{fmt(s.price)}</div>
               </div>
               <button className="ci-remove" onClick={() => onRemove(s.id)}>
@@ -48,7 +52,7 @@ export default function Cart({ cart, onRemove, onContinue, onBack }) {
       <div className="validity-badge">
         <CalendarDays size={16} color="var(--primary)" strokeWidth={1.75} />
         <div className="validity-text">
-          Срок действия: <span className="validity-hl">90 дней</span> с момента покупки
+          Срок действия: <span className="validity-hl">{validDays} дней</span> с момента покупки
         </div>
       </div>
 
