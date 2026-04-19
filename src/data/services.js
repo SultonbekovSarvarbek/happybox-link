@@ -9,4 +9,4 @@ export const SERVICES = [
   { id: 8, name: 'Спа-уход для лица',  desc: 'Глубокое очищение и питание',          dur: '60 мин',  price: 180000, emoji: '🧖' },
 ]
 
-export const fmt = (n) => n.toLocaleString('ru-RU') + ' сум'
+export const fmt = (n) => String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' сум'

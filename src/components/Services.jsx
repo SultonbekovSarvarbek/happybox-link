@@ -71,7 +71,13 @@ export default function Services({ giftType, services = [], cart, onToggle, depo
 
       {isCert ? (
         <div className="services-list">
-          {services.map(svc => (
+          {services.length === 0 ? (
+            <div className="empty-state">
+              <div className="empty-icon">📭</div>
+              <p className="empty-title">Нет доступных позиций</p>
+              <p className="empty-sub">Партнёр пока не добавил услуги</p>
+            </div>
+          ) : services.map(svc => (
             <ServiceCard
               key={svc.id}
               svc={svc}
