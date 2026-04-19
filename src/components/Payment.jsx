@@ -9,7 +9,7 @@ const METHODS = [
 ]
 
 export default function Payment({ cart, giftType, depositAmount, payMethod, onPickMethod, onPay, onBack }) {
-  const isCert   = giftType === 'cert'
+  const isCert   = giftType === 'cert' || giftType === 'services'
   const total    = isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount
   const stepNum  = isCert ? '4' : '3'
   const stepOf   = isCert ? '5' : '4'

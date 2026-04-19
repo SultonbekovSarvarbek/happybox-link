@@ -2,7 +2,7 @@ import { User, ChevronLeft } from 'lucide-react'
 import AppStoreBtn from './AppStoreBtn'
 
 export default function Recipient({ recipient, sender, giftType, onRecipientChange, onSenderChange, onContinue, onBack }) {
-  const isCert     = giftType === 'cert'
+  const isCert     = giftType === 'cert' || giftType === 'services'
   const totalSteps = isCert ? '5' : '4'
   const stepNum    = isCert ? '3' : '2'
   const progress   = isCert ? '60%' : '50%'

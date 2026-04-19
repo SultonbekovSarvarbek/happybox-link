@@ -46,11 +46,12 @@ function runConfetti(canvas) {
 
 export default function Success({ partner, cart, giftType, depositAmount, recipient, sender, onHome }) {
   const canvasRef = useRef(null)
-  const isCert    = giftType === 'cert'
+  const isCert    = giftType === 'cert' || giftType === 'services'
   const total     = isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount
 
+  const validDays = cart[0]?.validDays ?? 90
   const expiry = new Date()
-  expiry.setDate(expiry.getDate() + 90)
+  expiry.setDate(expiry.getDate() + validDays)
 
   useEffect(() => {
     if (canvasRef.current) runConfetti(canvasRef.current)

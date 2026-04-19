@@ -82,13 +82,15 @@ export default function App() {
     const slug = getSlug()
     if (!slug) { setError('Страница партнёра не найдена. Проверьте ссылку или QR-код.'); setLoading(false); return }
 
-    Promise.all([fetchPartner(slug), fetchServices(slug), fetchCertificates(slug)])
+    Promise.allSettled([fetchPartner(slug), fetchServices(slug), fetchCertificates(slug)])
       .then(([p, s, c]) => {
-        setPartner(p)
-        setServices(s.map((svc, i) => ({ ...svc, id: svc.id ?? i })))
-        setCertificates(c.map((cert, i) => ({ ...cert, id: cert.id ?? i })))
+        if (p.status === 'rejected') { setError('Партнёр не найден'); return }
+        setPartner(p.value)
+        if (s.status === 'fulfilled')
+          setServices(s.value.map((svc, i) => ({ ...svc, id: svc.id ?? i })))
+        if (c.status === 'fulfilled')
+          setCertificates(c.value.map((cert, i) => ({ ...cert, id: cert.id ?? i })))
       })
-      .catch(e => setError(e.message))
       .finally(() => setLoading(false))
   }, [])
 
