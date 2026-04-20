@@ -40,7 +40,8 @@ function ServiceCard({ svc, inCart, onToggle }) {
 }
 
 export default function Services({ giftType, services = [], cart, onToggle, depositAmount, onDepositChange, onContinue, onBack }) {
-  const [activeChip, setActiveChip] = useState(null)
+  const [activeChip,    setActiveChip]    = useState(null)
+  const [displayAmount, setDisplayAmount] = useState('')
   const isCert    = giftType === 'cert' || giftType === 'services'
   const cartTotal = cart.reduce((a, s) => a + Number(s.price), 0)
 
@@ -49,9 +50,12 @@ export default function Services({ giftType, services = [], cart, onToggle, depo
     onDepositChange(amt)
   }
 
-  const pickCustom = (val) => {
+  const pickCustom = (raw) => {
+    const digits = raw.replace(/\D/g, '')
+    const num    = parseInt(digits) || 0
     setActiveChip(null)
-    onDepositChange(parseInt(val) || 0)
+    setDisplayAmount(digits ? Number(digits).toLocaleString('ru-RU') : '')
+    onDepositChange(num)
   }
 
   return (
@@ -112,9 +116,11 @@ export default function Services({ giftType, services = [], cart, onToggle, depo
           <div className="form-group">
             <label className="form-label">Или введите сумму</label>
             <input
-              type="number"
+              type="text"
+              inputMode="numeric"
               className="form-input"
               placeholder="Введите сумму (сум)"
+              value={displayAmount}
               onChange={e => pickCustom(e.target.value)}
             />
           </div>
