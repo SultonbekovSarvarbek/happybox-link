@@ -2,7 +2,7 @@ const BASE = '/api'
 
 export function getId() {
   const parts = window.location.pathname.split('/').filter(Boolean)
-  const idx = parts.indexOf('partner')
+  const idx = parts.indexOf('p')
   return idx !== -1 ? parts[idx + 1] : parts[0] ?? null
 }
 
