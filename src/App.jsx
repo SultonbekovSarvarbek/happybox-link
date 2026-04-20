@@ -7,7 +7,7 @@ import Cart       from './components/Cart'
 import Recipient  from './components/Recipient'
 import Payment    from './components/Payment'
 import Success    from './components/Success'
-import { getSlug, fetchPartner, fetchServices, fetchCertificates } from './api'
+import { getId, fetchPartner, fetchServices, fetchCertificates } from './api'
 import AppStoreBtn from './components/AppStoreBtn'
 
 function PayProcessing() {
@@ -82,10 +82,10 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    const slug = getSlug()
-    if (!slug) { setError('Страница партнёра не найдена. Проверьте ссылку или QR-код.'); setLoading(false); return }
+    const id = getId()
+    if (!id) { setError('Страница партнёра не найдена. Проверьте ссылку или QR-код.'); setLoading(false); return }
 
-    Promise.allSettled([fetchPartner(slug), fetchServices(slug), fetchCertificates(slug)])
+    Promise.allSettled([fetchPartner(id), fetchServices(id), fetchCertificates(id)])
       .then(([p, s, c]) => {
         if (p.status === 'rejected') { setError('Партнёр не найден'); return }
         setPartner(p.value)
