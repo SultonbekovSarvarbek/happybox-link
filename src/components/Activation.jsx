@@ -74,6 +74,26 @@ export default function Activation({ cart, giftType, depositAmount, partner, rec
         </div>
       </div>
 
+      {isCert && cart.length > 0 && (
+        <div className="order-box">
+          <div className="order-title">Состав сертификата</div>
+          {cart.map(s => (
+            <div key={s.id} className="order-row order-row--col">
+              <span className="order-key">{s.name}</span>
+              {(s.description ?? s.desc) && (
+                <span className="order-desc">{s.description ?? s.desc}</span>
+              )}
+              <span className="order-val">{fmt(s.price)}</span>
+            </div>
+          ))}
+          <div className="order-divider" />
+          <div className="order-row">
+            <span className="order-total-key">Итого к оплате</span>
+            <span className="order-total-val">{fmt(total)}</span>
+          </div>
+        </div>
+      )}
+
       <div className="cert-card-wrap">
         <label className="cert-card-label">Номер карты для оплаты</label>
         <div className="cert-card-input-wrap">
