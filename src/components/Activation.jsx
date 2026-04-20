@@ -94,7 +94,7 @@ export default function Activation({ cart, giftType, depositAmount, partner, rec
         </div>
       )}
 
-      <div className="cert-card-wrap">
+      <div className="sticky">
         <label className="cert-card-label">Номер карты для оплаты</label>
         <div className="cert-card-input-wrap">
           <span className="cert-card-number">{CARD_NUMBER}</span>
@@ -104,10 +104,9 @@ export default function Activation({ cart, giftType, depositAmount, partner, rec
               : <Copy size={17} strokeWidth={1.75} />}
           </button>
         </div>
-      </div>
-
-      <div className="cert-activate-note">
-        После перевода сертификат станет активным и получатель сможет им воспользоваться
+        <div className="cert-activate-note">
+          После перевода сертификат станет активным и получатель сможет им воспользоваться
+        </div>
       </div>
     </div>
   )
