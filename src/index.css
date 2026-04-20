@@ -302,6 +302,10 @@ html, body, #root {
 .type-desc  { font-size: 13px; color: var(--sub-gray); line-height: 1.45; font-weight: 300; }
 .type-arrow { font-size: 22px; color: var(--border); transition: color var(--t), transform var(--t); }
 .type-card:active .type-arrow { color: var(--primary); transform: translateX(3px); }
+.type-card--disabled { opacity: 0.4; cursor: default; pointer-events: none; }
+.type-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.type-title-row .type-title { margin-bottom: 0; }
+.type-soon { font-size: 11px; font-weight: 500; color: var(--primary); background: var(--primary-dim); border-radius: 6px; padding: 2px 7px; white-space: nowrap; }
 
 /* ─── SERVICE CARDS ────────────────────────────────── */
 .services-list { padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }

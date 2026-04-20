@@ -1,11 +1,14 @@
 import { Gift, Scissors, CreditCard, ChevronRight, ChevronLeft } from 'lucide-react'
 
-function TypeCard({ icon, title, desc, onClick }) {
+function TypeCard({ icon, title, desc, onClick, disabled, soon }) {
   return (
-    <div className="type-card" onClick={onClick}>
+    <div className={`type-card${disabled ? ' type-card--disabled' : ''}`} onClick={disabled ? undefined : onClick}>
       <div className="type-icon">{icon}</div>
       <div className="type-content">
-        <div className="type-title">{title}</div>
+        <div className="type-title-row">
+          <div className="type-title">{title}</div>
+          {soon && <span className="type-soon">Скоро</span>}
+        </div>
         <div className="type-desc">{desc}</div>
       </div>
       <ChevronRight size={20} color="var(--border)" strokeWidth={1.75} />
@@ -44,6 +47,8 @@ export default function ChooseType({ onBack, onSelect }) {
           title="Пополнить депозит"
           desc="Переведите любую сумму на счёт близкого в этом салоне"
           onClick={() => onSelect('deposit')}
+          disabled
+          soon
         />
       </div>
     </div>
