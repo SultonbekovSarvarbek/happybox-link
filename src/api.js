@@ -7,19 +7,19 @@ export function getId() {
 }
 
 export async function fetchPartner(id) {
-  const res = await fetch(`${BASE}/p/${id}`)
+  const res = await fetch(`${BASE}/partners/p/${id}`)
   if (!res.ok) throw new Error('Партнёр не найден')
   return res.json()
 }
 
 export async function fetchServices(id) {
-  const res = await fetch(`${BASE}/p/${id}/services`)
+  const res = await fetch(`${BASE}/partners/p/${id}/services`)
   if (!res.ok) throw new Error('Услуги не найдены')
   return res.json()
 }
 
 export async function fetchCertificates(id) {
-  const res = await fetch(`${BASE}/p/${id}/certificates`)
+  const res = await fetch(`${BASE}/partners/p/${id}/certificates`)
   if (!res.ok) throw new Error('Сертификаты не найдены')
   return res.json()
 }
