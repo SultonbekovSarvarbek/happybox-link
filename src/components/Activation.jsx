@@ -1,15 +1,18 @@
 import { useState } from 'react'
-import { ChevronLeft, Copy, Check, BadgeCheck } from 'lucide-react'
+import { ChevronLeft, Copy, Check } from 'lucide-react'
 import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 
 const CARD_NUMBER = '8600 0000 0000 0000'
 
-export default function Activation({ cart, giftType, depositAmount, onBack }) {
+export default function Activation({ cart, giftType, depositAmount, partner, recipient, sender, onBack }) {
   const [copied, setCopied] = useState(false)
 
-  const isCert = giftType === 'cert' || giftType === 'services'
-  const total  = isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount
+  const isCert    = giftType === 'cert' || giftType === 'services'
+  const total     = isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount
+  const validDays = cart[0]?.validDays ?? 90
+  const expiry    = new Date()
+  expiry.setDate(expiry.getDate() + validDays)
 
   const handleCopy = () => {
     navigator.clipboard.writeText(CARD_NUMBER.replace(/\s/g, ''))
@@ -27,14 +30,48 @@ export default function Activation({ cart, giftType, depositAmount, onBack }) {
         <AppStoreBtn />
       </div>
 
-      <div className="cert-created-hero">
-        <div className="cert-created-icon">
-          <BadgeCheck size={48} color="var(--primary)" strokeWidth={1.5} />
-        </div>
-        <h2 className="cert-created-title">Сертификат создан!</h2>
-        <p className="cert-created-sub">
+      <div className="success-hero" style={{ paddingBottom: 8 }}>
+        <h2 className="success-title">Сертификат создан!</h2>
+        <p className="success-desc">
           Для активации переведите <strong>{fmt(total)}</strong> на карту ниже
         </p>
+      </div>
+
+      <div className="gift-card">
+        <div className="gc-orb gc-orb-1" />
+        <div className="gc-orb gc-orb-2" />
+        <div className="gc-inner">
+          <div className="gc-header">
+            <span className="gc-brand">HAPPYBOX</span>
+            <span className="gc-partner-name">{partner?.name ?? 'HappyBox'}</span>
+          </div>
+          <div className="gc-amount-section">
+            <div className="gc-for">{isCert ? 'Подарочный сертификат' : 'Депозит'}</div>
+            <div className="gc-amount">{fmt(total)}</div>
+          </div>
+          {isCert && cart.length > 0 && (
+            <div className="gc-services-row">
+              {cart.slice(0, 2).map(s => (
+                <span key={s.id} className="gc-chip">{s.name}</span>
+              ))}
+              {cart.length > 2 && (
+                <span className="gc-chip gc-chip-more">+{cart.length - 2}</span>
+              )}
+            </div>
+          )}
+          <div className="gc-divider" />
+          <div className="gc-footer">
+            <div>
+              <div className="gc-label">Для</div>
+              <div className="gc-name">{recipient?.name || '—'}</div>
+              <div className="gc-from">от {sender?.name || 'Вас'}</div>
+            </div>
+            <div>
+              <div className="gc-label">Действует до</div>
+              <div className="gc-expiry-date">{expiry.toLocaleDateString('ru-RU')}</div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div className="cert-card-wrap">

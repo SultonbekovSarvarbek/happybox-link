@@ -168,6 +168,9 @@ export default function App() {
       cart={cart}
       giftType={giftType}
       depositAmount={depositAmount}
+      partner={partner}
+      recipient={recipient}
+      sender={sender}
       onBack={() => go(4)}
     />,
 
