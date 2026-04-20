@@ -140,7 +140,7 @@ html, body, #root {
   position: fixed; bottom: var(--kb-offset, 0px);
   left: 50%; transform: translateX(-50%);
   width: 100%; max-width: 430px;
-  padding: 14px 20px 24px;
+  padding: 14px 20px calc(24px + env(safe-area-inset-bottom, 0px));
   background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(20px) saturate(1.4);
   -webkit-backdrop-filter: blur(20px) saturate(1.4);
