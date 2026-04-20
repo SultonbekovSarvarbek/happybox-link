@@ -21,7 +21,7 @@ export default function Activation({ cart, giftType, depositAmount, partner, rec
   }
 
   return (
-    <div className="screen">
+    <div className="screen" style={{ paddingBottom: 200 }}>
       <div className="nav">
         <button className="nav-back" onClick={onBack}>
           <ChevronLeft size={20} strokeWidth={2} />
