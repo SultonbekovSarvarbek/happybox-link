@@ -1,12 +1,47 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ChevronLeft, Copy, Check } from 'lucide-react'
 import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 
 const CARD_NUMBER = '8600 0000 0000 0000'
+const COLORS = ['#4998EC', '#FFD700', '#FF6B9D', '#2ECC71', '#FF8C42', '#A855F7', '#5BE0FF']
+
+function runConfetti(canvas) {
+  const ctx = canvas.getContext('2d')
+  canvas.width  = window.innerWidth
+  canvas.height = window.innerHeight
+  const pieces = Array.from({ length: 110 }, () => ({
+    x: Math.random() * canvas.width, y: -12 - Math.random() * 100,
+    w: 6 + Math.random() * 9, h: 3 + Math.random() * 4,
+    vx: (Math.random() - .5) * 2.2, vy: 3.2 + Math.random() * 3.8,
+    r: Math.random() * 360, rv: (Math.random() - .5) * 8,
+    c: COLORS[Math.floor(Math.random() * COLORS.length)], op: 1,
+  }))
+  let frame = 0
+  const tick = () => {
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    pieces.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.r += p.rv
+      if (p.y > canvas.height * .6) p.op -= .022
+      if (p.op <= 0) return
+      ctx.save(); ctx.globalAlpha = p.op
+      ctx.translate(p.x, p.y); ctx.rotate(p.r * Math.PI / 180)
+      ctx.fillStyle = p.c; ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h)
+      ctx.restore()
+    })
+    if (++frame < 240) requestAnimationFrame(tick)
+    else ctx.clearRect(0, 0, canvas.width, canvas.height)
+  }
+  tick()
+}
 
 export default function Activation({ cart, giftType, depositAmount, partner, recipient, sender, onBack }) {
   const [copied, setCopied] = useState(false)
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    if (canvasRef.current) runConfetti(canvasRef.current)
+  }, [])
 
   const isCert    = giftType === 'cert' || giftType === 'services'
   const total     = isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount
@@ -22,6 +57,7 @@ export default function Activation({ cart, giftType, depositAmount, partner, rec
 
   return (
     <div className="screen" style={{ paddingBottom: 200 }}>
+      <canvas ref={canvasRef} className="confetti-canvas" />
       <div className="nav">
         <button className="nav-back" onClick={onBack}>
           <ChevronLeft size={20} strokeWidth={2} />
