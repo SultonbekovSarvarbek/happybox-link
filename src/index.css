@@ -307,6 +307,19 @@ html, body, #root {
 .type-title-row .type-title { margin-bottom: 0; }
 .type-soon { font-size: 11px; font-weight: 500; color: var(--primary); background: var(--primary-dim); border-radius: 6px; padding: 2px 7px; white-space: nowrap; }
 
+/* ─── ACTIVATION ───────────────────────────────────── */
+.cert-created-hero { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 36px 24px 24px; gap: 12px; }
+.cert-created-icon { width: 80px; height: 80px; background: var(--primary-dim); border-radius: 24px; display: flex; align-items: center; justify-content: center; }
+.cert-created-title { font-size: 22px; font-weight: 600; color: var(--black); margin: 0; }
+.cert-created-sub { font-size: 15px; color: var(--sub-gray); line-height: 1.5; margin: 0; }
+.cert-card-wrap { padding: 0 20px; margin-bottom: 16px; }
+.cert-card-label { font-size: 13px; color: var(--sub-gray); font-weight: 400; display: block; margin-bottom: 8px; }
+.cert-card-input-wrap { display: flex; align-items: center; background: var(--surface); border: 1px solid var(--border-soft); border-radius: var(--r); padding: 0 12px 0 16px; height: 52px; box-shadow: var(--shadow-card); }
+.cert-card-number { flex: 1; font-size: 17px; font-weight: 500; letter-spacing: 0.04em; color: var(--black); font-family: monospace; }
+.cert-copy-btn { width: 36px; height: 36px; border-radius: 10px; border: none; background: var(--primary-dim); color: var(--primary); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all var(--t); flex-shrink: 0; }
+.cert-copy-btn.copied { background: #e6f7ee; color: #22c55e; }
+.cert-activate-note { margin: 0 20px; padding: 14px 16px; background: var(--primary-dim); border-radius: 12px; font-size: 13px; color: var(--sub-gray); line-height: 1.5; text-align: center; }
+
 /* ─── SERVICE CARDS ────────────────────────────────── */
 .services-list { padding: 0 20px; display: flex; flex-direction: column; gap: 12px; }
 .service-card {

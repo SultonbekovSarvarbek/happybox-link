@@ -6,6 +6,7 @@ import Services   from './components/Services'
 import Cart       from './components/Cart'
 import Recipient  from './components/Recipient'
 import Payment    from './components/Payment'
+import Activation from './components/Activation'
 import Success    from './components/Success'
 import { getId, fetchPartner, fetchServices, fetchCertificates } from './api'
 import AppStoreBtn from './components/AppStoreBtn'
@@ -163,13 +164,10 @@ export default function App() {
       onBack={() => go(giftType === 'cert' ? 3 : 2)}
     />,
 
-    <Payment
+    <Activation
       cart={cart}
       giftType={giftType}
       depositAmount={depositAmount}
-      payMethod={payMethod}
-      onPickMethod={setPayMethod}
-      onPay={handlePay}
       onBack={() => go(4)}
     />,
 
