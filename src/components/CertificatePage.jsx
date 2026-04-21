@@ -67,6 +67,25 @@ export default function CertificatePage({ shortCode }) {
         <AppStoreBtn />
       </div>
 
+      <div className="cert-partner-row">
+        {order.partner.photo && (
+          <img className="cert-partner-logo" src={order.partner.photo} alt={order.partner.name} />
+        )}
+        <div>
+          <div className="cert-partner-name">{order.partner.name}</div>
+          {order.partner.instagram && (
+            <a
+              className="cert-partner-ig"
+              href={`https://instagram.com/${order.partner.instagram}`}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              @{order.partner.instagram}
+            </a>
+          )}
+        </div>
+      </div>
+
       <div className={`cert-page-status ${order.isPaid ? 'cert-page-status--paid' : 'cert-page-status--pending'}`}>
         {order.isPaid
           ? <><CheckCircle2 size={15} strokeWidth={2} /> Активен</>

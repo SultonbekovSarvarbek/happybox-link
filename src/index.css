@@ -659,6 +659,24 @@ html, body, #root {
 .pay-modal-title { font-size: 16px; font-weight: 500; color: var(--black); margin-bottom: 4px; }
 .pay-modal-sub   { font-size: 13px; color: var(--sub-gray); font-weight: 300; }
 
+/* ─── CERTIFICATE PAGE PARTNER ─────────────────────── */
+.cert-partner-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 0 20px 20px;
+}
+.cert-partner-logo {
+  width: 48px; height: 48px; border-radius: 14px;
+  object-fit: cover; flex-shrink: 0;
+  box-shadow: var(--shadow-card);
+}
+.cert-partner-name {
+  font-size: 14px; font-weight: 600; color: var(--black);
+  margin-bottom: 2px;
+}
+.cert-partner-ig {
+  font-size: 12px; color: var(--primary); text-decoration: none; font-weight: 400;
+}
+
 /* ─── CERTIFICATE PAGE STATUS ──────────────────────── */
 .cert-page-status {
   display: inline-flex; align-items: center; gap: 6px;
