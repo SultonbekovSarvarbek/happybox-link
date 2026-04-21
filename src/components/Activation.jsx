@@ -35,7 +35,7 @@ function runConfetti(canvas) {
   tick()
 }
 
-export default function Activation({ cart, giftType, depositAmount, partner, recipient, sender, onBack }) {
+export default function Activation({ cart, giftType, depositAmount, partner, recipient, sender, order, onBack }) {
   const [copied, setCopied] = useState(false)
   const canvasRef = useRef(null)
 
@@ -44,7 +44,7 @@ export default function Activation({ cart, giftType, depositAmount, partner, rec
   }, [])
 
   const isCert    = giftType === 'cert' || giftType === 'services'
-  const total     = isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount
+  const total     = order?.totalAmount ?? (isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount)
   const validDays = cart[0]?.validDays ?? 90
   const expiry    = new Date()
   expiry.setDate(expiry.getDate() + validDays)

@@ -1,7 +1,7 @@
 import { User, ChevronLeft } from 'lucide-react'
 import AppStoreBtn from './AppStoreBtn'
 
-export default function Recipient({ recipient, sender, giftType, onRecipientChange, onSenderChange, onContinue, onBack }) {
+export default function Recipient({ recipient, sender, giftType, submitting, onRecipientChange, onSenderChange, onContinue, onBack }) {
   const isCert     = giftType === 'cert' || giftType === 'services'
   const totalSteps = isCert ? '5' : '4'
   const stepNum    = isCert ? '3' : '2'
@@ -106,8 +106,8 @@ export default function Recipient({ recipient, sender, giftType, onRecipientChan
       </div>
 
       <div className="sticky">
-        <button className="btn btn-primary" disabled={!isValid} onClick={onContinue}>
-          Перейти к оплате →
+        <button className="btn btn-primary" disabled={!isValid || submitting} onClick={onContinue}>
+          {submitting ? 'Создаём заказ...' : 'Перейти к оплате →'}
         </button>
       </div>
     </div>

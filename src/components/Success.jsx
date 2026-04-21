@@ -44,10 +44,11 @@ function runConfetti(canvas) {
   tick()
 }
 
-export default function Success({ partner, cart, giftType, depositAmount, recipient, sender, onHome }) {
+export default function Success({ partner, cart, giftType, depositAmount, recipient, sender, order, onHome }) {
   const canvasRef = useRef(null)
   const isCert    = giftType === 'cert' || giftType === 'services'
-  const total     = isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount
+  const total     = order?.totalAmount ?? (isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount)
+  const certUrl   = order?.certificateUrl ?? window.location.href
 
   const validDays = cart[0]?.validDays ?? 90
   const expiry = new Date()
@@ -61,11 +62,11 @@ export default function Success({ partner, cart, giftType, depositAmount, recipi
     if (navigator.share) {
       navigator.share({
         title: 'HappyBox — Подарочный сертификат',
-        text : `Тебе подарили сертификат в ${partner?.name ?? 'HappyBox'}! 🎁`,
-        url  : window.location.href,
+        text : `Тебе подарили сертификат в ${partner?.name ?? 'HappyBox'}!`,
+        url  : certUrl,
       })
     } else {
-      navigator.clipboard.writeText(window.location.href)
+      navigator.clipboard.writeText(certUrl)
         .then(() => alert('Ссылка скопирована!'))
     }
   }

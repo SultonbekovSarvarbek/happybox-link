@@ -658,3 +658,27 @@ html, body, #root {
 @keyframes spin { to { transform: rotate(360deg); } }
 .pay-modal-title { font-size: 16px; font-weight: 500; color: var(--black); margin-bottom: 4px; }
 .pay-modal-sub   { font-size: 13px; color: var(--sub-gray); font-weight: 300; }
+
+/* ─── CERTIFICATE PAGE STATUS ──────────────────────── */
+.cert-page-status {
+  display: inline-flex; align-items: center; gap: 6px;
+  margin: 0 20px 20px;
+  padding: 8px 14px; border-radius: 20px;
+  font-size: 13px; font-weight: 500;
+}
+.cert-page-status--paid    { background: rgba(52,199,89,.12); color: #1a9c40; }
+.cert-page-status--pending { background: rgba(255,149,0,.12); color: #c47800; }
+
+/* ─── CLEAR CART MODAL ─────────────────────────────── */
+.clear-cart-modal { padding: 28px 24px; }
+.clear-cart-title { font-size: 16px; font-weight: 600; color: var(--black); margin-bottom: 8px; }
+.clear-cart-sub   { font-size: 14px; color: var(--sub-gray); font-weight: 400; line-height: 1.5; margin-bottom: 20px; }
+.clear-cart-actions { display: flex; flex-direction: column; gap: 8px; }
+.clear-cart-btn {
+  width: 100%; padding: 13px; border-radius: 14px;
+  font-size: 15px; font-weight: 500; border: none; cursor: pointer;
+  transition: opacity .15s;
+}
+.clear-cart-btn:active { opacity: .75; }
+.clear-cart-btn--primary   { background: var(--primary); color: white; }
+.clear-cart-btn--secondary { background: var(--surface-2, #f4f4f4); color: var(--black); }

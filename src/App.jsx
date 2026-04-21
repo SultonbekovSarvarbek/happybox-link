@@ -8,8 +8,25 @@ import Recipient  from './components/Recipient'
 import Payment    from './components/Payment'
 import Activation from './components/Activation'
 import Success    from './components/Success'
-import { getId, fetchPartner, fetchServices, fetchCertificates } from './api'
+import { getId, getShortCode, fetchPartner, fetchServices, fetchCertificates, createOrder } from './api'
+import CertificatePage from './components/CertificatePage'
 import AppStoreBtn from './components/AppStoreBtn'
+
+function ClearCartModal({ giftType, onConfirm, onCancel }) {
+  const label = giftType === 'cert' ? 'выбранный сертификат' : 'выбранные услуги'
+  return (
+    <div className="pay-overlay" onClick={onCancel}>
+      <div className="pay-modal clear-cart-modal" onClick={e => e.stopPropagation()}>
+        <p className="clear-cart-title">Вы покидаете страницу</p>
+        <p className="clear-cart-sub">В корзине есть {label}. Очистить корзину и продолжить?</p>
+        <div className="clear-cart-actions">
+          <button className="clear-cart-btn clear-cart-btn--primary" onClick={onConfirm}>Очистить</button>
+          <button className="clear-cart-btn clear-cart-btn--secondary" onClick={onCancel}>Отмена</button>
+        </div>
+      </div>
+    </div>
+  )
+}
 
 function PayProcessing() {
   return (
@@ -49,7 +66,11 @@ function ErrorScreen({ message }) {
   )
 }
 
+const shortCode = getShortCode()
+
 export default function App() {
+  if (shortCode) return <CertificatePage shortCode={shortCode} />
+
   const [step,          setStep]          = useState(0)
   const [giftType,      setGiftType]      = useState('cert')
   const [cart,          setCart]          = useState([])
@@ -58,6 +79,9 @@ export default function App() {
   const [sender,        setSender]        = useState({ name: '', phone: '+998' })
   const [payMethod,     setPayMethod]     = useState('payme')
   const [processing,    setProcessing]    = useState(false)
+  const [pendingType,   setPendingType]   = useState(null)
+  const [order,         setOrder]         = useState(null)
+  const [submitting,    setSubmitting]    = useState(false)
 
   const [partner,       setPartner]       = useState(null)
   const [services,      setServices]      = useState([])
@@ -119,6 +143,7 @@ export default function App() {
     setDepositAmount(0)
     setRecipient({ name: '', phone: '+998' })
     setSender({ name: '', phone: '+998' })
+    setOrder(null)
     window.scrollTo(0, 0)
   }
 
@@ -133,7 +158,14 @@ export default function App() {
 
     <ChooseType
       onBack={() => go(0)}
-      onSelect={(t) => { setGiftType(t); go(2) }}
+      onSelect={(t) => {
+        if (cart.length > 0 && t !== giftType) {
+          setPendingType(t)
+        } else {
+          setGiftType(t)
+          go(2)
+        }
+      }}
     />,
 
     <Services
@@ -158,9 +190,25 @@ export default function App() {
       recipient={recipient}
       sender={sender}
       giftType={giftType}
+      submitting={submitting}
       onRecipientChange={setRecipient}
       onSenderChange={setSender}
-      onContinue={() => go(5)}
+      onContinue={async () => {
+        setSubmitting(true)
+        try {
+          const o = await createOrder(partner.partnerId, {
+            giftType,
+            items: cart.map(s => s.id),
+            recipient,
+            sender,
+          })
+          window.location.href = o.certificateUrl
+        } catch {
+          alert('Не удалось создать заказ. Попробуйте снова.')
+        } finally {
+          setSubmitting(false)
+        }
+      }}
       onBack={() => go(giftType === 'cert' ? 3 : 2)}
     />,
 
@@ -171,6 +219,7 @@ export default function App() {
       partner={partner}
       recipient={recipient}
       sender={sender}
+      order={order}
       onBack={() => go(4)}
     />,
 
@@ -181,6 +230,7 @@ export default function App() {
       depositAmount={depositAmount}
       recipient={recipient}
       sender={sender}
+      order={order}
       onHome={handleHome}
     />,
   ]
@@ -191,6 +241,13 @@ export default function App() {
         {screens[step]}
       </div>
       {processing && <PayProcessing />}
+      {pendingType && (
+        <ClearCartModal
+          giftType={giftType}
+          onConfirm={() => { setCart([]); setGiftType(pendingType); setPendingType(null); go(2) }}
+          onCancel={() => setPendingType(null)}
+        />
+      )}
     </>
   )
 }
