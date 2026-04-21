@@ -134,7 +134,7 @@ export default function CertificatePage({ shortCode }) {
         </button>
         <AppStoreBtn />
         <div className="success-divider" />
-        <a className="btn btn-outline" href="https://happybox.uz" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}>
+        <a className="btn btn-outline" href="https://gift.happybox.uz" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', textDecoration: 'none' }}>
           На главную
         </a>
       </div>
