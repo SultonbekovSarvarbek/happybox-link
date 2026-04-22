@@ -1,8 +1,14 @@
 import { useState, useEffect } from 'react'
-import { Share2, Check, CheckCircle2, Clock } from 'lucide-react'
+import { Share2, Check, CheckCircle2, Clock, Copy } from 'lucide-react'
 import { fmt } from '../data/services'
 import { fetchOrder } from '../api'
 import AppStoreBtn from './AppStoreBtn'
+
+const FALLBACK_CARD_NUMBER = '8600000000000000'
+
+function formatCardNumber(cardNumber) {
+  return cardNumber.replace(/\D/g, '').replace(/(.{4})(?=.)/g, '$1 ')
+}
 
 function LoadingScreen() {
   return (
@@ -22,10 +28,14 @@ function ErrorScreen() {
 }
 
 export default function CertificatePage({ shortCode }) {
-  const [order,   setOrder]   = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error,   setError]   = useState(false)
-  const [copied,  setCopied]  = useState(false)
+  const [order,            setOrder]            = useState(null)
+  const [loading,          setLoading]          = useState(true)
+  const [error,            setError]            = useState(false)
+  const [linkCopied,       setLinkCopied]       = useState(false)
+  const [cardCopied,       setCardCopied]       = useState(false)
+  const [paymentSubmitted, setPaymentSubmitted] = useState(() =>
+    localStorage.getItem(`hb-payment-submitted:${shortCode}`) === '1'
+  )
 
   useEffect(() => {
     fetchOrder(shortCode)
@@ -44,6 +54,10 @@ export default function CertificatePage({ shortCode }) {
   expiry.setDate(expiry.getDate() + validDays)
 
   const certUrl = `https://gift.happybox.uz/c/${shortCode}`
+  const cardNumber = order.partner.cardNumber
+    ?? localStorage.getItem(`hb-card-number:${shortCode}`)
+    ?? FALLBACK_CARD_NUMBER
+  const formattedCardNumber = formatCardNumber(cardNumber)
 
   const handleShare = () => {
     if (navigator.share) {
@@ -54,10 +68,22 @@ export default function CertificatePage({ shortCode }) {
       })
     } else {
       navigator.clipboard.writeText(certUrl).then(() => {
-        setCopied(true)
-        setTimeout(() => setCopied(false), 2000)
+        setLinkCopied(true)
+        setTimeout(() => setLinkCopied(false), 2000)
       })
     }
+  }
+
+  const handleCopyCard = () => {
+    navigator.clipboard.writeText(cardNumber.replace(/\D/g, '')).then(() => {
+      setCardCopied(true)
+      setTimeout(() => setCardCopied(false), 2000)
+    })
+  }
+
+  const handlePaymentSubmitted = () => {
+    localStorage.setItem(`hb-payment-submitted:${shortCode}`, '1')
+    setPaymentSubmitted(true)
   }
 
   return (
@@ -89,7 +115,7 @@ export default function CertificatePage({ shortCode }) {
       <div className={`cert-page-status ${order.isPaid ? 'cert-page-status--paid' : 'cert-page-status--pending'}`}>
         {order.isPaid
           ? <><CheckCircle2 size={15} strokeWidth={2} /> Активен</>
-          : <><Clock size={15} strokeWidth={2} /> Ожидает оплаты</>
+          : <><Clock size={15} strokeWidth={2} /> {paymentSubmitted ? 'Платёж на проверке' : 'Ожидает оплаты'}</>
         }
       </div>
 
@@ -146,10 +172,38 @@ export default function CertificatePage({ shortCode }) {
         </div>
       </div>
 
+      {!order.isPaid && (
+        <div className="manual-payment-box">
+          <div className="manual-payment-head">
+            <span className="manual-payment-title">Оплата переводом</span>
+            <span className="manual-payment-amount">{fmt(order.totalAmount)}</span>
+          </div>
+          <label className="cert-card-label">Номер карты для оплаты</label>
+          <div className="cert-card-input-wrap">
+            <span className="cert-card-number">{formattedCardNumber}</span>
+            <button className={`cert-copy-btn${cardCopied ? ' copied' : ''}`} onClick={handleCopyCard}>
+              {cardCopied
+                ? <Check size={17} strokeWidth={2} />
+                : <Copy size={17} strokeWidth={1.75} />}
+            </button>
+          </div>
+          <p className="manual-payment-note">
+            Переведите точную сумму. После оплаты нажмите кнопку ниже.
+          </p>
+          <button
+            className="btn btn-primary"
+            disabled={paymentSubmitted}
+            onClick={handlePaymentSubmitted}
+          >
+            {paymentSubmitted ? 'Платёж отправлен на проверку' : 'Я оплатил'}
+          </button>
+        </div>
+      )}
+
       <div className="success-actions">
         <button className="btn btn-primary" onClick={handleShare}>
-          {copied ? <Check size={17} strokeWidth={2} /> : <Share2 size={17} strokeWidth={1.75} />}
-          {copied ? 'Ссылка скопирована' : 'Поделиться сертификатом'}
+          {linkCopied ? <Check size={17} strokeWidth={2} /> : <Share2 size={17} strokeWidth={1.75} />}
+          {linkCopied ? 'Ссылка скопирована' : 'Поделиться сертификатом'}
         </button>
         <AppStoreBtn />
         <div className="success-divider" />

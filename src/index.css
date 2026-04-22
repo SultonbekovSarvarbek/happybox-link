@@ -507,6 +507,29 @@ html, body, #root {
   font-size: 18px; font-weight: 600; color: var(--primary);
 }
 
+.manual-payment-box {
+  margin: 18px 20px 0;
+  background: var(--surface); border: 1px solid var(--border-soft);
+  border-radius: var(--r); padding: 18px;
+  box-shadow: var(--shadow-card);
+}
+.manual-payment-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 12px; margin-bottom: 16px;
+}
+.manual-payment-title {
+  font-size: 15px; font-weight: 600; color: var(--black);
+}
+.manual-payment-amount {
+  font-family: var(--font-serif);
+  font-size: 20px; font-weight: 700; color: var(--primary);
+  white-space: nowrap;
+}
+.manual-payment-note {
+  font-size: 13px; color: var(--sub-gray); line-height: 1.45;
+  margin: 13px 0 14px;
+}
+
 /* ─── SUCCESS ──────────────────────────────────────── */
 .confetti-canvas {
   position: fixed; top: 0; left: 0;

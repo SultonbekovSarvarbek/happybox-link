@@ -28,13 +28,13 @@ function ClearCartModal({ giftType, onConfirm, onCancel }) {
   )
 }
 
-function PayProcessing() {
+function ProcessingModal({ title, subtitle }) {
   return (
     <div className="pay-overlay">
       <div className="pay-modal">
         <div className="spinner" />
-        <p className="pay-modal-title">Обрабатываем оплату...</p>
-        <p className="pay-modal-sub">Не закрывайте страницу</p>
+        <p className="pay-modal-title">{title}</p>
+        <p className="pay-modal-sub">{subtitle}</p>
       </div>
     </div>
   )
@@ -67,6 +67,16 @@ function ErrorScreen({ message }) {
 }
 
 const shortCode = getShortCode()
+
+function getShortCodeFromUrl(url) {
+  try {
+    const parts = new URL(url, window.location.origin).pathname.split('/').filter(Boolean)
+    const idx = parts.indexOf('c')
+    return idx !== -1 ? parts[idx + 1] : null
+  } catch {
+    return null
+  }
+}
 
 export default function App() {
   if (shortCode) return <CertificatePage shortCode={shortCode} />
@@ -202,11 +212,14 @@ export default function App() {
             recipient,
             sender,
           })
-          window.location.href = o.certificateUrl
+          const createdShortCode = getShortCodeFromUrl(o.certificateUrl)
+          if (createdShortCode && partner.cardNumber) {
+            localStorage.setItem(`hb-card-number:${createdShortCode}`, partner.cardNumber)
+          }
+          window.location.assign(o.certificateUrl)
         } catch {
-          alert('Не удалось создать заказ. Попробуйте снова.')
-        } finally {
           setSubmitting(false)
+          alert('Не удалось создать заказ. Попробуйте снова.')
         }
       }}
       onBack={() => go(giftType === 'cert' ? 3 : 2)}
@@ -240,7 +253,18 @@ export default function App() {
       <div key={step} className="screen-enter">
         {screens[step]}
       </div>
-      {processing && <PayProcessing />}
+      {processing && (
+        <ProcessingModal
+          title="Обрабатываем оплату..."
+          subtitle="Не закрывайте страницу"
+        />
+      )}
+      {submitting && (
+        <ProcessingModal
+          title="Создаём заказ..."
+          subtitle="Сейчас откроем страницу оплаты"
+        />
+      )}
       {pendingType && (
         <ClearCartModal
           giftType={giftType}
