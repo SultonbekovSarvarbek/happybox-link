@@ -176,7 +176,6 @@ export default function CertificatePage({ shortCode }) {
         <div className="manual-payment-box">
           <div className="manual-payment-head">
             <span className="manual-payment-title">Оплата переводом</span>
-            <span className="manual-payment-amount">{fmt(order.totalAmount)}</span>
           </div>
           <label className="cert-card-label">Номер карты для оплаты</label>
           <div className="cert-card-input-wrap">
