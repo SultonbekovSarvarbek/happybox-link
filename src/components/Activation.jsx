@@ -144,6 +144,13 @@ export default function Activation({ cart, giftType, depositAmount, partner, rec
           После перевода сертификат станет активным и получатель сможет им воспользоваться
         </div>
       </div>
+
+      {copied && (
+        <div className="copy-toast" role="status" aria-live="polite">
+          <Check size={16} strokeWidth={2.5} />
+          Номер карты скопирован
+        </div>
+      )}
     </div>
   )
 }

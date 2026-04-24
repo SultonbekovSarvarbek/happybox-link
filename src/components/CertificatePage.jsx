@@ -60,14 +60,16 @@ export default function CertificatePage({ shortCode }) {
   const formattedCardNumber = formatCardNumber(cardNumber)
 
   const handleShare = () => {
+    const igLine = order.partner.instagram ? `\nInstagram: @${order.partner.instagram}` : ''
+    const shareText = `Тебе подарили сертификат в ${order.partner.name}!${igLine}`
     if (navigator.share) {
       navigator.share({
         title: 'HappyBox — Подарочный сертификат',
-        text: `Тебе подарили сертификат в ${order.partner.name}!`,
+        text: shareText,
         url: certUrl,
       })
     } else {
-      navigator.clipboard.writeText(certUrl).then(() => {
+      navigator.clipboard.writeText(`${shareText}\n${certUrl}`).then(() => {
         setLinkCopied(true)
         setTimeout(() => setLinkCopied(false), 2000)
       })
@@ -210,6 +212,13 @@ export default function CertificatePage({ shortCode }) {
           На главную
         </a>
       </div>
+
+      {cardCopied && (
+        <div className="copy-toast" role="status" aria-live="polite">
+          <Check size={16} strokeWidth={2.5} />
+          Номер карты скопирован
+        </div>
+      )}
     </div>
   )
 }
