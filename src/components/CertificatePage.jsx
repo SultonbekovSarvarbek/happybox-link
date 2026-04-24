@@ -60,16 +60,15 @@ export default function CertificatePage({ shortCode }) {
   const formattedCardNumber = formatCardNumber(cardNumber)
 
   const handleShare = () => {
-    const igLine = order.partner.instagram ? `\nInstagram: @${order.partner.instagram}` : ''
-    const shareText = `Тебе подарили сертификат в ${order.partner.name}!${igLine}`
+    const igLine = order.partner.instagram ? `📸 Instagram: @${order.partner.instagram}\n` : ''
+    const shareText = `Тебе подарили сертификат в ${order.partner.name}!\n\n${igLine}🔗 Ссылка: ${certUrl}`
     if (navigator.share) {
       navigator.share({
         title: 'HappyBox — Подарочный сертификат',
         text: shareText,
-        url: certUrl,
       })
     } else {
-      navigator.clipboard.writeText(`${shareText}\n${certUrl}`).then(() => {
+      navigator.clipboard.writeText(shareText).then(() => {
         setLinkCopied(true)
         setTimeout(() => setLinkCopied(false), 2000)
       })

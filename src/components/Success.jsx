@@ -59,16 +59,15 @@ export default function Success({ partner, cart, giftType, depositAmount, recipi
   }, [])
 
   const handleShare = () => {
-    const igLine = partner?.instagram ? `\nInstagram: @${partner.instagram}` : ''
-    const shareText = `Тебе подарили сертификат в ${partner?.name ?? 'HappyBox'}!${igLine}`
+    const igLine = partner?.instagram ? `📸 Instagram: @${partner.instagram}\n` : ''
+    const shareText = `Тебе подарили сертификат в ${partner?.name ?? 'HappyBox'}!\n\n${igLine}🔗 Ссылка: ${certUrl}`
     if (navigator.share) {
       navigator.share({
         title: 'HappyBox — Подарочный сертификат',
         text : shareText,
-        url  : certUrl,
       })
     } else {
-      navigator.clipboard.writeText(`${shareText}\n${certUrl}`)
+      navigator.clipboard.writeText(shareText)
         .then(() => alert('Ссылка скопирована!'))
     }
   }
