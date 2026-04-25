@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { SearchX } from 'lucide-react'
 import Landing    from './components/Landing'
 import ChooseType from './components/ChooseType'
@@ -11,6 +11,7 @@ import Success    from './components/Success'
 import { getId, getShortCode, fetchPartner, fetchServices, fetchCertificates, createOrder } from './api'
 import CertificatePage from './components/CertificatePage'
 import AppStoreBtn from './components/AppStoreBtn'
+import { analytics } from './lib/analytics'
 
 function ClearCartModal({ giftType, onConfirm, onCancel }) {
   const label = giftType === 'cert' ? 'выбранный сертификат' : 'выбранные услуги'
@@ -99,7 +100,35 @@ export default function App() {
   const [loading,       setLoading]       = useState(true)
   const [error,         setError]         = useState(null)
 
+  const builderActive = useRef(false)
+
   const go = (n) => { setStep(n); window.scrollTo(0, 0) }
+
+  const cartTotal = () => cart.reduce((a, s) => a + Number(s.price), 0)
+
+  const startBuilder = () => {
+    if (builderActive.current) return
+    analytics.trackBuilderStarted()
+    builderActive.current = true
+  }
+
+  const endBuilderCompleted = () => {
+    if (!builderActive.current) return
+    analytics.trackBuilderCompleted({
+      totalPrice    : cartTotal(),
+      servicesCount : cart.length,
+    })
+    builderActive.current = false
+  }
+
+  const endBuilderAbandoned = () => {
+    if (!builderActive.current) return
+    analytics.trackBuilderAbandoned({
+      servicesCount: cart.length,
+      currentTotal : cartTotal(),
+    })
+    builderActive.current = false
+  }
 
   useEffect(() => {
     const vv = window.visualViewport
@@ -117,6 +146,23 @@ export default function App() {
   }, [])
 
   useEffect(() => {
+    if (step === 2 && giftType === 'services') startBuilder()
+  }, [step, giftType])
+
+  useEffect(() => {
+    const onBeforeUnload = () => {
+      if (builderActive.current) {
+        analytics.trackBuilderAbandoned({
+          servicesCount: cart.length,
+          currentTotal : cartTotal(),
+        })
+      }
+    }
+    window.addEventListener('beforeunload', onBeforeUnload)
+    return () => window.removeEventListener('beforeunload', onBeforeUnload)
+  }, [cart])
+
+  useEffect(() => {
     const id = getId()
     if (!id) { setError('Страница партнёра не найдена. Проверьте ссылку или QR-код.'); setLoading(false); return }
 
@@ -132,12 +178,18 @@ export default function App() {
       .finally(() => setLoading(false))
   }, [])
 
-  const toggleCart = (svc) =>
-    setCart(prev =>
-      prev.find(s => s.id === svc.id)
-        ? prev.filter(s => s.id !== svc.id)
-        : [...prev, svc]
-    )
+  const toggleCart = (svc) => {
+    const isInCart = cart.some(s => s.id === svc.id)
+    const next = isInCart
+      ? cart.filter(s => s.id !== svc.id)
+      : [...cart, svc]
+    setCart(next)
+    if (giftType === 'services') {
+      const total = next.reduce((a, s) => a + Number(s.price), 0)
+      if (isInCart) analytics.trackBuilderServiceRemoved(svc, total, next.length)
+      else          analytics.trackBuilderServiceAdded(svc, total, next.length)
+    }
+  }
 
   const removeFromCart = (id) =>
     setCart(prev => prev.filter(s => s.id !== id))
@@ -172,6 +224,7 @@ export default function App() {
         if (cart.length > 0 && t !== giftType) {
           setPendingType(t)
         } else {
+          analytics.trackGiftTypeChosen(t)
           setGiftType(t)
           go(2)
         }
@@ -185,8 +238,14 @@ export default function App() {
       onToggle={toggleCart}
       depositAmount={depositAmount}
       onDepositChange={setDepositAmount}
-      onContinue={() => go(giftType === 'deposit' ? 4 : 3)}
-      onBack={() => go(1)}
+      onContinue={() => {
+        if (giftType === 'services') endBuilderCompleted()
+        go(giftType === 'deposit' ? 4 : 3)
+      }}
+      onBack={() => {
+        if (giftType === 'services') endBuilderAbandoned()
+        go(1)
+      }}
     />,
 
     <Cart
@@ -205,6 +264,8 @@ export default function App() {
       onSenderChange={setSender}
       onContinue={async () => {
         setSubmitting(true)
+        analytics.trackRecipientInfoEntered()
+        analytics.identifyUser({ name: sender.name, phone: sender.phone })
         try {
           const o = await createOrder(partner.partnerId, {
             giftType,
@@ -216,8 +277,20 @@ export default function App() {
           if (createdShortCode && partner.cardNumber) {
             localStorage.setItem(`hb-card-number:${createdShortCode}`, partner.cardNumber)
           }
+          analytics.trackOrderCreated({
+            orderId      : o.id ?? o.orderId ?? createdShortCode,
+            totalAmount  : o.totalAmount ?? cartTotal(),
+            giftType,
+            servicesCount: cart.length,
+            partnerId    : partner.partnerId,
+          })
           window.location.assign(o.certificateUrl)
-        } catch {
+        } catch (err) {
+          analytics.trackPurchaseFailed({
+            errorReason: err?.message ?? 'createOrder failed',
+            step       : 'create_order',
+            giftType,
+          })
           setSubmitting(false)
           alert('Не удалось создать заказ. Попробуйте снова.')
         }
@@ -268,7 +341,14 @@ export default function App() {
       {pendingType && (
         <ClearCartModal
           giftType={giftType}
-          onConfirm={() => { setCart([]); setGiftType(pendingType); setPendingType(null); go(2) }}
+          onConfirm={() => {
+            if (giftType === 'services') endBuilderAbandoned()
+            analytics.trackGiftTypeChosen(pendingType)
+            setCart([])
+            setGiftType(pendingType)
+            setPendingType(null)
+            go(2)
+          }}
           onCancel={() => setPendingType(null)}
         />
       )}

@@ -3,6 +3,27 @@ import { Share2, Check, CheckCircle2, Clock, Copy } from 'lucide-react'
 import { fmt } from '../data/services'
 import { fetchOrder } from '../api'
 import AppStoreBtn from './AppStoreBtn'
+import { analytics } from '../lib/analytics'
+
+function hoursSince(iso) {
+  if (!iso) return undefined
+  const created = new Date(iso).getTime()
+  if (Number.isNaN(created)) return undefined
+  return Math.max(0, Math.round((Date.now() - created) / 3_600_000))
+}
+
+function fireOnce(key, fn) {
+  if (localStorage.getItem(key) === '1') return
+  localStorage.setItem(key, '1')
+  fn()
+}
+
+function giftTypeFromOrder(order) {
+  if (order?.giftType === 'CERT')     return 'cert'
+  if (order?.giftType === 'SERVICES') return 'services'
+  if (order?.giftType === 'DEPOSIT')  return 'deposit'
+  return order?.giftType
+}
 
 const FALLBACK_CARD_NUMBER = '8600000000000000'
 
@@ -43,6 +64,37 @@ export default function CertificatePage({ shortCode }) {
       .catch(() => setError(true))
       .finally(() => setLoading(false))
   }, [shortCode])
+
+  useEffect(() => {
+    if (!order) return
+    const giftType = giftTypeFromOrder(order)
+    const hours    = hoursSince(order.createdAt)
+
+    fireOnce(`hb-analytics-opened:${shortCode}`, () => {
+      analytics.trackCertificateOpenedByRecipient({
+        certificateId           : shortCode,
+        timeSincePurchaseHours  : hours,
+      })
+    })
+
+    if (order.isPaid) {
+      fireOnce(`hb-analytics-purchased:${shortCode}`, () => {
+        analytics.trackPurchaseCompleted({
+          orderId        : order.id ?? shortCode,
+          totalAmount    : order.totalAmount,
+          giftType,
+          partnerId      : order.partner?.id ?? order.partner?.partnerId,
+        })
+      })
+      fireOnce(`hb-analytics-activated:${shortCode}`, () => {
+        analytics.trackCertificateActivated({
+          certificateId           : shortCode,
+          giftType,
+          timeSincePurchaseHours  : hours,
+        })
+      })
+    }
+  }, [order, shortCode])
 
   if (loading) return <LoadingScreen />
   if (error)   return <ErrorScreen />
@@ -85,6 +137,7 @@ export default function CertificatePage({ shortCode }) {
   const handlePaymentSubmitted = () => {
     localStorage.setItem(`hb-payment-submitted:${shortCode}`, '1')
     setPaymentSubmitted(true)
+    analytics.trackPaymentSubmittedByRecipient({ certificateId: shortCode })
   }
 
   return (

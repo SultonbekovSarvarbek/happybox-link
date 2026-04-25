@@ -1,10 +1,16 @@
+import { useEffect } from 'react'
 import { X, CalendarDays, ChevronLeft } from 'lucide-react'
 import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
+import { analytics } from '../lib/analytics'
 
 export default function Cart({ cart, onRemove, onContinue, onBack }) {
   const total     = cart.reduce((a, s) => a + Number(s.price), 0)
   const validDays = cart[0]?.validDays ?? 90
+
+  useEffect(() => {
+    analytics.trackCartViewed(cart)
+  }, [])
 
   return (
     <div className="screen">

@@ -1,5 +1,7 @@
+import { useEffect } from 'react'
 import { Star, MapPin, Gift } from 'lucide-react'
 import AppStoreBtn from './AppStoreBtn'
+import { analytics } from '../lib/analytics'
 
 const FALLBACK = {
   name: 'Glam Studio',
@@ -13,6 +15,10 @@ export default function Landing({ partner, onContinue }) {
   const p = partner ?? FALLBACK
   const tags = p.categories?.map(c => c.label ?? c).filter(Boolean) ?? []
   const location = p.locations?.[0] ?? null
+
+  useEffect(() => {
+    analytics.trackLandingViewed(partner)
+  }, [partner])
 
   return (
     <div className="screen">

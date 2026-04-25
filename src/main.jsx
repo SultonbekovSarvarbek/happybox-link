@@ -1,10 +1,10 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import * as amplitude from '@amplitude/unified'
+import { analytics } from './lib/analytics'
 import App from './App.jsx'
 import './index.css'
 
-amplitude.initAll(import.meta.env.VITE_AMPLITUDE_API_KEY, { analytics: { autocapture: true } })
+analytics.init()
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
