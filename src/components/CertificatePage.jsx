@@ -84,6 +84,9 @@ export default function CertificatePage({ shortCode }) {
           totalAmount    : order.totalAmount,
           giftType,
           partnerId      : order.partner?.id ?? order.partner?.partnerId,
+          paymentMethod  : 'card_transfer',
+          deliveryMethod : 'link',
+          isFirstPurchase: order.isFirstPurchase,
         })
       })
       fireOnce(`hb-analytics-activated:${shortCode}`, () => {

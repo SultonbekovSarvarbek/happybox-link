@@ -58,6 +58,15 @@ export const analytics = {
     }
   },
 
+  reset() {
+    if (!initialized) return
+    try {
+      amplitude.reset()
+    } catch (err) {
+      console.warn('[analytics] reset failed:', err)
+    }
+  },
+
   trackLandingViewed(partner) {
     track('Landing Viewed', {
       partner_id  : partner?.partnerId ?? partner?.id,
@@ -123,13 +132,25 @@ export const analytics = {
     track('Recipient Info Entered')
   },
 
-  trackOrderCreated({ orderId, totalAmount, giftType, servicesCount, partnerId } = {}) {
+  trackOrderCreated({
+    orderId,
+    totalAmount,
+    giftType,
+    servicesCount,
+    partnerId,
+    paymentMethod,
+    deliveryMethod,
+    isFirstPurchase,
+  } = {}) {
     track('Order Created', {
-      order_id        : orderId,
-      total_amount    : totalAmount,
-      certificate_type: certificateType(giftType),
-      services_count  : servicesCount,
-      partner_id      : partnerId,
+      order_id         : orderId,
+      total_amount     : totalAmount,
+      certificate_type : certificateType(giftType),
+      services_count   : servicesCount,
+      partner_id       : partnerId,
+      payment_method   : paymentMethod,
+      delivery_method  : deliveryMethod,
+      is_first_purchase: isFirstPurchase,
     })
   },
 
@@ -141,12 +162,23 @@ export const analytics = {
     })
   },
 
-  trackPurchaseCompleted({ orderId, totalAmount, giftType, partnerId } = {}) {
+  trackPurchaseCompleted({
+    orderId,
+    totalAmount,
+    giftType,
+    partnerId,
+    paymentMethod,
+    deliveryMethod,
+    isFirstPurchase,
+  } = {}) {
     track('Purchase Completed', {
-      order_id        : orderId,
-      total_amount    : totalAmount,
-      certificate_type: certificateType(giftType),
-      partner_id      : partnerId,
+      order_id         : orderId,
+      total_amount     : totalAmount,
+      certificate_type : certificateType(giftType),
+      partner_id       : partnerId,
+      payment_method   : paymentMethod,
+      delivery_method  : deliveryMethod,
+      is_first_purchase: isFirstPurchase,
     })
   },
 

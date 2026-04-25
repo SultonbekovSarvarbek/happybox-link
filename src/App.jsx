@@ -278,11 +278,14 @@ export default function App() {
             localStorage.setItem(`hb-card-number:${createdShortCode}`, partner.cardNumber)
           }
           analytics.trackOrderCreated({
-            orderId      : o.id ?? o.orderId ?? createdShortCode,
-            totalAmount  : o.totalAmount ?? cartTotal(),
+            orderId        : o.id ?? o.orderId ?? createdShortCode,
+            totalAmount    : o.totalAmount ?? cartTotal(),
             giftType,
-            servicesCount: cart.length,
-            partnerId    : partner.partnerId,
+            servicesCount  : cart.length,
+            partnerId      : partner.partnerId,
+            paymentMethod  : 'card_transfer',
+            deliveryMethod : 'link',
+            isFirstPurchase: o.isFirstPurchase,
           })
           window.location.assign(o.certificateUrl)
         } catch (err) {
