@@ -222,11 +222,12 @@ html, body, #root {
   margin-bottom: 6px; line-height: 1.15; letter-spacing: -.3px;
 }
 .partner-ig {
-  display: inline-flex; align-items: center; gap: 5px;
+  display: inline-flex; align-items: center; gap: 6px;
   font-size: 13px; font-weight: 500; color: var(--primary);
   text-decoration: none; margin-bottom: 10px;
 }
 .partner-ig:hover { text-decoration: underline; }
+.partner-ig-icon { width: 16px; height: 16px; display: block; }
 .partner-desc {
   font-size: 14px; font-weight: 300; color: var(--sub-gray);
   line-height: 1.6; margin-bottom: 16px;

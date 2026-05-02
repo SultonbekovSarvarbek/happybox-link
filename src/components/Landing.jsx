@@ -4,16 +4,6 @@ import AppStoreBtn from './AppStoreBtn'
 import { analytics } from '../lib/analytics'
 import { assetUrl } from '../api'
 
-function InstagramIcon({ size = 14 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-    </svg>
-  )
-}
-
 const FALLBACK = {
   name: 'Glam Studio',
   description: 'Премиальная студия красоты в центре Ташкента. Профессиональные мастера, европейская косметика, уютная атмосфера.',
@@ -60,7 +50,7 @@ export default function Landing({ partner, onContinue }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <InstagramIcon size={14} />
+            <img src="/instagram.svg" alt="" className="partner-ig-icon" />
             @{p.instagram}
           </a>
         )}
