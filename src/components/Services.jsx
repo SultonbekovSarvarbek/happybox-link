@@ -3,7 +3,9 @@ import { Clock, CalendarDays, Plus, Check, ChevronLeft } from 'lucide-react'
 import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 
-const CHIPS = [50000, 100000, 200000, 500000]
+const CHIPS = [500000, 1000000, 2000000, 3000000]
+const MIN_DEPOSIT = 500000
+const MAX_DEPOSIT = 3000000
 
 function ServiceCard({ svc, inCart, onToggle }) {
   return (
@@ -151,7 +153,7 @@ export default function Services({ giftType, services = [], cart, onToggle, depo
             </div>
             <button
               className="btn btn-primary"
-              disabled={depositAmount < 10000}
+              disabled={depositAmount < MIN_DEPOSIT || depositAmount > MAX_DEPOSIT}
               onClick={onContinue}
             >
               Продолжить →
