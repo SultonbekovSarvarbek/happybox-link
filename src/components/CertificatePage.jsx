@@ -164,6 +164,7 @@ export default function CertificatePage({ shortCode }) {
               target="_blank"
               rel="noopener noreferrer"
             >
+              <img src="/instagram.svg" alt="" className="partner-ig-icon" />
               @{order.partner.instagram}
             </a>
           )}

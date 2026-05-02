@@ -728,6 +728,7 @@ html, body, #root {
   margin-bottom: 2px;
 }
 .cert-partner-ig {
+  display: inline-flex; align-items: center; gap: 5px;
   font-size: 12px; color: var(--primary); text-decoration: none; font-weight: 400;
 }
 
