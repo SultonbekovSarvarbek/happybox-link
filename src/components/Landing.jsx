@@ -67,7 +67,7 @@ export default function Landing({ partner, onContinue }) {
         <div className="partner-stats">
           <div className="stat">
             <Star size={14} color="#F5A623" fill="#F5A623" strokeWidth={0} />
-            <span><span className="stat-value">4.9</span> (128)</span>
+            <span><span className="stat-value">5.0</span></span>
           </div>
           {location && (
             <div className="stat">
