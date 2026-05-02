@@ -211,12 +211,22 @@ html, body, #root {
   display: flex; align-items: center; justify-content: center;
   margin-bottom: 14px;
   box-shadow: 0 2px 8px rgba(73,152,236,.35);
+  overflow: hidden;
+}
+.partner-logo-img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
 }
 .partner-name {
   font-family: var(--font-serif);
   font-size: 28px; font-weight: 700; color: var(--black);
   margin-bottom: 6px; line-height: 1.15; letter-spacing: -.3px;
 }
+.partner-ig {
+  display: inline-flex; align-items: center; gap: 5px;
+  font-size: 13px; font-weight: 500; color: var(--primary);
+  text-decoration: none; margin-bottom: 10px;
+}
+.partner-ig:hover { text-decoration: underline; }
 .partner-desc {
   font-size: 14px; font-weight: 300; color: var(--sub-gray);
   line-height: 1.6; margin-bottom: 16px;

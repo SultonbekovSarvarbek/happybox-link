@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
-import { Star, MapPin, Gift } from 'lucide-react'
+import { Star, MapPin, Gift, Instagram } from 'lucide-react'
 import AppStoreBtn from './AppStoreBtn'
 import { analytics } from '../lib/analytics'
+import { assetUrl } from '../api'
 
 const FALLBACK = {
   name: 'Glam Studio',
@@ -33,11 +34,26 @@ export default function Landing({ partner, onContinue }) {
 
       <div className="partner-wrap">
         <div className="partner-logo">
-          <span style={{ color: '#fff', fontWeight: 600, fontSize: 18 }}>
-            {p.name?.[0]?.toUpperCase() ?? 'H'}
-          </span>
+          {p.photo ? (
+            <img src={assetUrl(p.photo)} alt={p.name} className="partner-logo-img" />
+          ) : (
+            <span style={{ color: '#fff', fontWeight: 600, fontSize: 18 }}>
+              {p.name?.[0]?.toUpperCase() ?? 'H'}
+            </span>
+          )}
         </div>
         <h1 className="partner-name">{p.name}</h1>
+        {p.instagram && (
+          <a
+            className="partner-ig"
+            href={`https://instagram.com/${p.instagram}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Instagram size={14} strokeWidth={1.75} />
+            @{p.instagram}
+          </a>
+        )}
         {p.description && (
           <p className="partner-desc">{p.description}</p>
         )}
