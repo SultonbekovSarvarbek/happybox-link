@@ -4,7 +4,7 @@ import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 
 const CHIPS = [500000, 1000000, 2000000, 3000000]
-const MIN_DEPOSIT = 500000
+const MIN_DEPOSIT = 250000
 const MAX_DEPOSIT = 3000000
 
 function ServiceCard({ svc, inCart, onToggle }) {
