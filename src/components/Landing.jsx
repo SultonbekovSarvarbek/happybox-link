@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Star, MapPin, Gift, Instagram } from 'lucide-react'
+import { Star, MapPin, Gift } from 'lucide-react'
 import AppStoreBtn from './AppStoreBtn'
 import { analytics } from '../lib/analytics'
 import { assetUrl } from '../api'
@@ -50,7 +50,6 @@ export default function Landing({ partner, onContinue }) {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <Instagram size={14} strokeWidth={1.75} />
             @{p.instagram}
           </a>
         )}
