@@ -47,8 +47,6 @@ export default function ChooseType({ onBack, onSelect }) {
           title="Пополнить депозит"
           desc="Переведите любую сумму на счёт близкого в этом салоне"
           onClick={() => onSelect('deposit')}
-          disabled
-          soon
         />
       </div>
     </div>
