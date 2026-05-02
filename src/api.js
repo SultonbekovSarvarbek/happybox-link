@@ -1,10 +1,11 @@
 const ORIGIN = import.meta.env.PROD ? 'https://happybox.uz' : ''
+const ASSET_ORIGIN = import.meta.env.PROD ? 'https://gift.happybox.uz' : ''
 const BASE = `${ORIGIN}/api`
 
 export function assetUrl(path) {
   if (!path) return null
   if (/^https?:\/\//i.test(path)) return path
-  return `${ORIGIN}${path.startsWith('/') ? path : `/${path}`}`
+  return `${ASSET_ORIGIN}${path.startsWith('/') ? path : `/${path}`}`
 }
 
 export function getId() {
