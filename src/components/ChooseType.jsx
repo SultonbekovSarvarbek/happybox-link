@@ -1,4 +1,5 @@
 import { Gift, Scissors, CreditCard, ChevronRight, ChevronLeft } from 'lucide-react'
+import AppStoreBtn from './AppStoreBtn'
 
 function TypeCard({ icon, title, desc, onClick, disabled, soon }) {
   return (
@@ -24,6 +25,7 @@ export default function ChooseType({ onBack, onSelect }) {
           <ChevronLeft size={20} strokeWidth={2} />
         </button>
         <span className="nav-title">Тип подарка</span>
+        <AppStoreBtn />
       </div>
       <div className="section-head">
         <h2 className="section-title">Что подарим?</h2>
