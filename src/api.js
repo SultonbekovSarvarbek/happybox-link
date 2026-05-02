@@ -37,11 +37,14 @@ export async function fetchOrder(shortCode) {
   return res.json()
 }
 
-export async function createOrder(partnerId, { giftType, items, recipient, sender }) {
+export async function createOrder(partnerId, { giftType, items, amount, recipient, sender }) {
+  const body = giftType === 'deposit'
+    ? { giftType, amount, recipient, sender }
+    : { giftType, items, recipient, sender }
   const res = await fetch(`${BASE}/web/partners/p/${partnerId}/orders`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ giftType, items, recipient, sender }),
+    body: JSON.stringify(body),
   })
   if (!res.ok) throw new Error('Не удалось создать заказ')
   return res.json()

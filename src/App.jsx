@@ -270,6 +270,7 @@ export default function App() {
           const o = await createOrder(partner.partnerId, {
             giftType,
             items: cart.map(s => s.id),
+            amount: giftType === 'deposit' ? depositAmount : undefined,
             recipient,
             sender,
           })
@@ -279,9 +280,9 @@ export default function App() {
           }
           analytics.trackOrderCreated({
             orderId        : o.id ?? o.orderId ?? createdShortCode,
-            totalAmount    : o.totalAmount ?? cartTotal(),
+            totalAmount    : o.totalAmount ?? (giftType === 'deposit' ? depositAmount : cartTotal()),
             giftType,
-            servicesCount  : cart.length,
+            servicesCount  : giftType === 'deposit' ? 0 : cart.length,
             partnerId      : partner.partnerId,
             paymentMethod  : 'card_transfer',
             deliveryMethod : 'link',
