@@ -44,12 +44,14 @@ export default function ChooseType({ onBack, onSelect }) {
           desc="Выберите конкретные услуги, которые хотите подарить"
           onClick={() => onSelect('services')}
         />
-        <TypeCard
-          icon={<CreditCard size={22} color="var(--primary)" strokeWidth={1.75} />}
-          title="Пополнить депозит"
-          desc="Переведите любую сумму на счёт близкого в этом салоне"
-          onClick={() => onSelect('deposit')}
-        />
+        {false && (
+          <TypeCard
+            icon={<CreditCard size={22} color="var(--primary)" strokeWidth={1.75} />}
+            title="Пополнить депозит"
+            desc="Переведите любую сумму на счёт близкого в этом салоне"
+            onClick={() => onSelect('deposit')}
+          />
+        )}
       </div>
     </div>
   )
