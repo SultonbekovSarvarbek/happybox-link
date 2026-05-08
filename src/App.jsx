@@ -92,6 +92,14 @@ export default function App() {
   const [pendingType,   setPendingType]   = useState(null)
   const [order,         setOrder]         = useState(null)
   const [submitting,    setSubmitting]    = useState(false)
+  const [toast,         setToast]         = useState(null)
+  const toastTimer = useRef(null)
+
+  const showToast = (msg) => {
+    setToast(msg)
+    if (toastTimer.current) clearTimeout(toastTimer.current)
+    toastTimer.current = setTimeout(() => setToast(null), 2400)
+  }
 
   const [partner,       setPartner]       = useState(null)
   const [services,      setServices]      = useState([])
@@ -179,6 +187,10 @@ export default function App() {
 
   const toggleCart = (svc) => {
     const isInCart = cart.some(s => s.id === svc.id)
+    if (giftType === 'cert' && !isInCart && cart.length > 0) {
+      showToast('Можно выбрать только один сертификат')
+      return
+    }
     const next = isInCart
       ? cart.filter(s => s.id !== svc.id)
       : [...cart, svc]
@@ -346,6 +358,11 @@ export default function App() {
           }}
           onCancel={() => setPendingType(null)}
         />
+      )}
+      {toast && (
+        <div className="copy-toast" role="status" aria-live="polite">
+          {toast}
+        </div>
       )}
     </>
   )
