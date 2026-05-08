@@ -195,7 +195,7 @@ export default function CertificatePage({ shortCode }) {
             </div>
             <div className="gc-amount">{fmt(order.totalAmount)}</div>
           </div>
-          {items.length > 0 && (
+          {!isBalance && items.length > 0 && (
             <div className="gc-services-row">
               {items.slice(0, 2).map(s => (
                 <span key={s.id} className="gc-chip">{s.name}</span>
