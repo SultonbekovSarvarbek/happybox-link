@@ -148,7 +148,7 @@ export default function CertificatePage({ shortCode }) {
   return (
     <div className="screen">
       <div className="nav">
-        <span className="nav-title">Сертификат</span>
+        <span className="nav-title">{isCert ? 'Подарочный сертификат' : 'Набор услуг'}</span>
         <AppStoreBtn />
       </div>
 
@@ -195,7 +195,7 @@ export default function CertificatePage({ shortCode }) {
             </div>
             <div className="gc-amount">{fmt(order.totalAmount)}</div>
           </div>
-          {!isBalance && items.length > 0 && (
+          {!isCert && items.length > 0 && (
             <div className="gc-services-row">
               {items.slice(0, 2).map(s => (
                 <span key={s.id} className="gc-chip">{s.name}</span>
@@ -250,7 +250,7 @@ export default function CertificatePage({ shortCode }) {
         </div>
       )}
 
-      {!isBalance && (
+      {!isBalance && !(isCert && items.length <= 1) && (
         <div className="order-box">
           <div className="order-title">Состав сертификата</div>
           {items.map(s => (
