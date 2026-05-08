@@ -7,10 +7,16 @@ export default function Recipient({ recipient, sender, giftType, submitting, onR
   const stepNum    = isCert ? '3' : '2'
   const progress   = isCert ? '60%' : '50%'
 
+  const recipientDigits = recipient.phone.replace(/\D/g, '')
+  const senderDigits = sender.phone.replace(/\D/g, '')
+  const samePhone =
+    recipientDigits.length >= 11 && senderDigits === recipientDigits
+
   const isValid =
     recipient.name.trim().length >= 2 &&
-    recipient.phone.replace(/\D/g, '').length >= 11 &&
-    sender.name.trim().length >= 2
+    recipientDigits.length >= 11 &&
+    sender.name.trim().length >= 2 &&
+    !samePhone
 
   const handleRecipientPhone = (val) => {
     let digits = val.replace(/\D/g, '')
@@ -97,11 +103,16 @@ export default function Recipient({ recipient, sender, giftType, submitting, onR
           <label className="form-label">Ваш номер телефона</label>
           <input
             type="tel"
-            className="form-input"
+            className={`form-input${samePhone ? ' form-input--error' : ''}`}
             placeholder="+998 90 123 45 67"
             value={sender.phone}
             onChange={e => handleSenderPhone(e.target.value)}
           />
+          {samePhone && (
+            <div className="form-error">
+              Ваш номер не должен совпадать с номером получателя
+            </div>
+          )}
         </div>
       </div>
 
