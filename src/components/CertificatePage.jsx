@@ -103,9 +103,12 @@ export default function CertificatePage({ shortCode }) {
 
   const isCert    = order.giftType === 'CERT'
   const items     = (isCert ? order.certificates : order.services) ?? []
+  const isBalance = !!order.isBalanceBased
+  const isFullyRedeemed = !!order.isRedeemed
   const validDays = items[0]?.validDays ?? 90
   const expiry  = new Date(order.createdAt)
   expiry.setDate(expiry.getDate() + validDays)
+  const redemptions = Array.isArray(order.redemptions) ? order.redemptions : []
 
   const certUrl = `https://gift.happybox.uz/c/${shortCode}`
   const cardNumber = order.partner.cardNumber
@@ -171,7 +174,9 @@ export default function CertificatePage({ shortCode }) {
 
       <div className={`cert-page-status ${order.isPaid ? 'cert-page-status--paid' : 'cert-page-status--pending'}`}>
         {order.isPaid
-          ? <><CheckCircle2 size={15} strokeWidth={2} /> Активен</>
+          ? isFullyRedeemed
+            ? <><CheckCircle2 size={15} strokeWidth={2} /> Использован</>
+            : <><CheckCircle2 size={15} strokeWidth={2} /> Активен</>
           : <><Clock size={15} strokeWidth={2} /> {paymentSubmitted ? 'Платёж на проверке' : 'Ожидает оплаты'}</>
         }
       </div>
@@ -214,6 +219,31 @@ export default function CertificatePage({ shortCode }) {
           </div>
         </div>
       </div>
+
+      {isBalance && order.isPaid && (
+        <div className="balance-box">
+          <div className="balance-label">Остаток на сертификате</div>
+          <div className="balance-amount">{fmt(order.remainingAmount ?? 0)}</div>
+          {Number(order.remainingAmount) < Number(order.totalAmount) && (
+            <div className="balance-sub">из {fmt(order.totalAmount)}</div>
+          )}
+        </div>
+      )}
+
+      {isBalance && redemptions.length > 0 && (
+        <div className="order-box">
+          <div className="order-title">История списаний</div>
+          {redemptions.map(r => (
+            <div key={r.id} className="order-row order-row--col">
+              <span className="order-key">−{fmt(r.amount)}</span>
+              {r.note && <span className="order-desc">{r.note}</span>}
+              <span className="order-desc">
+                {new Date(r.createdAt).toLocaleString('ru-RU')}
+              </span>
+            </div>
+          ))}
+        </div>
+      )}
 
       <div className="order-box">
         <div className="order-title">Состав сертификата</div>
