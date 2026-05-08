@@ -76,7 +76,6 @@ export default function Recipient({ recipient, sender, giftType, submitting, onR
             value={recipient.phone}
             onChange={e => handleRecipientPhone(e.target.value)}
           />
-          <div className="form-hint">Сертификат отправим через WhatsApp или SMS</div>
         </div>
 
         <div className="promo-banner" style={{ marginBottom: '16px' }}>
