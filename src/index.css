@@ -422,15 +422,16 @@ html, body, #root {
 }
 .balance-amount {
   font-family: var(--font-serif);
-  font-size: 30px;
+  font-size: 42px;
   font-weight: 700;
   color: #15803d;
-  margin-top: 4px;
+  margin-top: 6px;
+  line-height: 1.1;
 }
 .balance-sub {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--sub-gray);
-  margin-top: 2px;
+  margin-top: 4px;
 }
 
 /* ─── FORM ─────────────────────────────────────────── */

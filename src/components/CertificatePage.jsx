@@ -245,21 +245,23 @@ export default function CertificatePage({ shortCode }) {
         </div>
       )}
 
-      <div className="order-box">
-        <div className="order-title">Состав сертификата</div>
-        {items.map(s => (
-          <div key={s.id} className="order-row order-row--col">
-            <span className="order-key">{s.name}</span>
-            {s.description && <span className="order-desc">{s.description}</span>}
-            <span className="order-val">{fmt(s.price)}</span>
+      {!isBalance && (
+        <div className="order-box">
+          <div className="order-title">Состав сертификата</div>
+          {items.map(s => (
+            <div key={s.id} className="order-row order-row--col">
+              <span className="order-key">{s.name}</span>
+              {s.description && <span className="order-desc">{s.description}</span>}
+              <span className="order-val">{fmt(s.price)}</span>
+            </div>
+          ))}
+          <div className="order-divider" />
+          <div className="order-row">
+            <span className="order-total-key">Итого</span>
+            <span className="order-total-val">{fmt(order.totalAmount)}</span>
           </div>
-        ))}
-        <div className="order-divider" />
-        <div className="order-row">
-          <span className="order-total-key">Итого</span>
-          <span className="order-total-val">{fmt(order.totalAmount)}</span>
         </div>
-      </div>
+      )}
 
       {!order.isPaid && (
         <div className="manual-payment-box">
