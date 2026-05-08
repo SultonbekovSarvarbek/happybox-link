@@ -223,7 +223,12 @@ export default function CertificatePage({ shortCode }) {
       {isBalance && order.isPaid && (
         <div className="balance-box">
           <div className="balance-label">Остаток на сертификате</div>
-          <div className="balance-amount">{fmt(order.remainingAmount ?? 0)}</div>
+          <div className="balance-amount">
+            {Number(order.remainingAmount ?? 0)
+              .toString()
+              .replace(/\B(?=(\d{3})+(?!\d))/g, ' ')}
+            <span className="balance-unit"> сум</span>
+          </div>
           {Number(order.remainingAmount) < Number(order.totalAmount) && (
             <div className="balance-sub">из {fmt(order.totalAmount)}</div>
           )}
