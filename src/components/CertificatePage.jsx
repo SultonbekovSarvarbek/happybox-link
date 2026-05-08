@@ -21,7 +21,6 @@ function fireOnce(key, fn) {
 function giftTypeFromOrder(order) {
   if (order?.giftType === 'CERT')     return 'cert'
   if (order?.giftType === 'SERVICES') return 'services'
-  if (order?.giftType === 'DEPOSIT')  return 'deposit'
   return order?.giftType
 }
 
@@ -103,7 +102,6 @@ export default function CertificatePage({ shortCode }) {
   if (error)   return <ErrorScreen />
 
   const isCert    = order.giftType === 'CERT'
-  const isDeposit = order.giftType === 'DEPOSIT'
   const items     = (isCert ? order.certificates : order.services) ?? []
   const validDays = items[0]?.validDays ?? 90
   const expiry  = new Date(order.createdAt)
@@ -188,7 +186,7 @@ export default function CertificatePage({ shortCode }) {
           </div>
           <div className="gc-amount-section">
             <div className="gc-for">
-              {isCert ? 'Подарочный сертификат' : isDeposit ? 'Подарочный депозит' : 'Набор услуг'}
+              {isCert ? 'Подарочный сертификат' : 'Набор услуг'}
             </div>
             <div className="gc-amount">{fmt(order.totalAmount)}</div>
           </div>
@@ -217,23 +215,21 @@ export default function CertificatePage({ shortCode }) {
         </div>
       </div>
 
-      {!isDeposit && (
-        <div className="order-box">
-          <div className="order-title">Состав сертификата</div>
-          {items.map(s => (
-            <div key={s.id} className="order-row order-row--col">
-              <span className="order-key">{s.name}</span>
-              {s.description && <span className="order-desc">{s.description}</span>}
-              <span className="order-val">{fmt(s.price)}</span>
-            </div>
-          ))}
-          <div className="order-divider" />
-          <div className="order-row">
-            <span className="order-total-key">Итого</span>
-            <span className="order-total-val">{fmt(order.totalAmount)}</span>
+      <div className="order-box">
+        <div className="order-title">Состав сертификата</div>
+        {items.map(s => (
+          <div key={s.id} className="order-row order-row--col">
+            <span className="order-key">{s.name}</span>
+            {s.description && <span className="order-desc">{s.description}</span>}
+            <span className="order-val">{fmt(s.price)}</span>
           </div>
+        ))}
+        <div className="order-divider" />
+        <div className="order-row">
+          <span className="order-total-key">Итого</span>
+          <span className="order-total-val">{fmt(order.totalAmount)}</span>
         </div>
-      )}
+      </div>
 
       {!order.isPaid && (
         <div className="manual-payment-box">

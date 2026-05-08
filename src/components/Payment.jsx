@@ -8,12 +8,11 @@ const METHODS = [
   { id: 'uzum',   label: 'Uzum',   desc: 'Банковская карта',  logo: '/uzum.png',  badge: null },
 ]
 
-export default function Payment({ cart, giftType, depositAmount, payMethod, onPickMethod, onPay, onBack }) {
-  const isCert   = giftType === 'cert' || giftType === 'services'
-  const total    = isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount
-  const stepNum  = isCert ? '4' : '3'
-  const stepOf   = isCert ? '5' : '4'
-  const progress = isCert ? '80%' : '75%'
+export default function Payment({ cart, payMethod, onPickMethod, onPay, onBack }) {
+  const total    = cart.reduce((a, s) => a + Number(s.price), 0)
+  const stepNum  = '4'
+  const stepOf   = '5'
+  const progress = '80%'
 
   return (
     <div className="screen">
@@ -59,26 +58,17 @@ export default function Payment({ cart, giftType, depositAmount, payMethod, onPi
 
       <div className="order-box">
         <div className="order-title">Детали заказа</div>
-        {isCert ? (
-          <>
-            {cart.slice(0, 4).map(s => (
-              <div key={s.id} className="order-row">
-                <span className="order-key">{s.name}</span>
-                <span className="order-val">{fmt(s.price)}</span>
-              </div>
-            ))}
-            {cart.length > 4 && (
-              <div className="order-row">
-                <span className="order-key" style={{ color: 'var(--border)' }}>
-                  ...ещё {cart.length - 4} услуги
-                </span>
-              </div>
-            )}
-          </>
-        ) : (
+        {cart.slice(0, 4).map(s => (
+          <div key={s.id} className="order-row">
+            <span className="order-key">{s.name}</span>
+            <span className="order-val">{fmt(s.price)}</span>
+          </div>
+        ))}
+        {cart.length > 4 && (
           <div className="order-row">
-            <span className="order-key">Пополнение депозита</span>
-            <span className="order-val">{fmt(depositAmount)}</span>
+            <span className="order-key" style={{ color: 'var(--border)' }}>
+              ...ещё {cart.length - 4} услуги
+            </span>
           </div>
         )}
         <div className="order-divider" />

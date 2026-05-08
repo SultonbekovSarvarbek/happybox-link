@@ -3,7 +3,6 @@ import * as amplitude from '@amplitude/unified'
 const GIFT_TYPE_MAP = {
   cert    : 'ready',
   services: 'custom',
-  deposit : 'deposit',
 }
 
 let initialized = false

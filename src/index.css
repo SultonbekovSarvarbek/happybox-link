@@ -404,27 +404,6 @@ html, body, #root {
 .add-btn.added { background: var(--green); }
 .add-btn:active { transform: scale(.86); }
 
-/* ─── DEPOSIT ──────────────────────────────────────── */
-.deposit-section { padding: 0 20px; }
-.deposit-grid    { display: grid; grid-template-columns: 1fr 1fr; gap: 11px; margin-bottom: 16px; }
-.amount-chip {
-  padding: 16px 12px;
-  background: var(--surface); border: 1px solid var(--border-soft);
-  border-radius: var(--r); text-align: center;
-  cursor: pointer; transition: all var(--t);
-  box-shadow: var(--shadow-card);
-}
-.amount-chip.selected {
-  border-color: var(--primary);
-  box-shadow: 0 0 0 3px var(--primary-dim), var(--shadow-card);
-}
-.amount-chip:active { transform: scale(.97); }
-.chip-val {
-  font-family: var(--font-serif);
-  font-size: 18px; font-weight: 600; color: var(--black);
-}
-.chip-cur { font-size: 11px; color: var(--sub-gray); margin-top: 2px; font-weight: 300; }
-
 /* ─── FORM ─────────────────────────────────────────── */
 .form-section { padding: 0 20px; }
 .form-group   { margin-bottom: 18px; }

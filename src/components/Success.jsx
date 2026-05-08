@@ -44,10 +44,9 @@ function runConfetti(canvas) {
   tick()
 }
 
-export default function Success({ partner, cart, giftType, depositAmount, recipient, sender, order, onHome }) {
+export default function Success({ partner, cart, recipient, sender, order, onHome }) {
   const canvasRef = useRef(null)
-  const isCert    = giftType === 'cert' || giftType === 'services'
-  const total     = order?.totalAmount ?? (isCert ? cart.reduce((a, s) => a + Number(s.price), 0) : depositAmount)
+  const total     = order?.totalAmount ?? cart.reduce((a, s) => a + Number(s.price), 0)
   const certUrl   = order?.certificateUrl ?? window.location.href
 
   const validDays = cart[0]?.validDays ?? 90
@@ -98,13 +97,11 @@ export default function Success({ partner, cart, giftType, depositAmount, recipi
           </div>
 
           <div className="gc-amount-section">
-            <div className="gc-for">
-              {isCert ? 'Подарочный сертификат' : 'Депозит'}
-            </div>
+            <div className="gc-for">Подарочный сертификат</div>
             <div className="gc-amount">{fmt(total)}</div>
           </div>
 
-          {isCert && cart.length > 0 && (
+          {cart.length > 0 && (
             <div className="gc-services-row">
               {cart.slice(0, 2).map(s => (
                 <span key={s.id} className="gc-chip">{s.name}</span>

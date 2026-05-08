@@ -85,7 +85,6 @@ export default function App() {
   const [step,          setStep]          = useState(0)
   const [giftType,      setGiftType]      = useState('cert')
   const [cart,          setCart]          = useState([])
-  const [depositAmount, setDepositAmount] = useState(0)
   const [recipient,     setRecipient]     = useState({ name: '', phone: '+998' })
   const [sender,        setSender]        = useState({ name: '', phone: '+998' })
   const [payMethod,     setPayMethod]     = useState('payme')
@@ -202,7 +201,6 @@ export default function App() {
   const handleHome = () => {
     setStep(0)
     setCart([])
-    setDepositAmount(0)
     setRecipient({ name: '', phone: '+998' })
     setSender({ name: '', phone: '+998' })
     setOrder(null)
@@ -236,11 +234,9 @@ export default function App() {
       services={giftType === 'cert' ? certificates : services}
       cart={cart}
       onToggle={toggleCart}
-      depositAmount={depositAmount}
-      onDepositChange={setDepositAmount}
       onContinue={() => {
         if (giftType === 'services') endBuilderCompleted()
-        go(giftType === 'deposit' ? 4 : 3)
+        go(3)
       }}
       onBack={() => {
         if (giftType === 'services') endBuilderAbandoned()
@@ -270,7 +266,6 @@ export default function App() {
           const o = await createOrder(partner.partnerId, {
             giftType,
             items: cart.map(s => s.id),
-            amount: giftType === 'deposit' ? depositAmount : undefined,
             recipient,
             sender,
           })
@@ -280,9 +275,9 @@ export default function App() {
           }
           analytics.trackOrderCreated({
             orderId        : o.id ?? o.orderId ?? createdShortCode,
-            totalAmount    : o.totalAmount ?? (giftType === 'deposit' ? depositAmount : cartTotal()),
+            totalAmount    : o.totalAmount ?? cartTotal(),
             giftType,
-            servicesCount  : giftType === 'deposit' ? 0 : cart.length,
+            servicesCount  : cart.length,
             partnerId      : partner.partnerId,
             paymentMethod  : 'card_transfer',
             deliveryMethod : 'link',
@@ -304,8 +299,6 @@ export default function App() {
 
     <Activation
       cart={cart}
-      giftType={giftType}
-      depositAmount={depositAmount}
       partner={partner}
       recipient={recipient}
       sender={sender}
@@ -316,8 +309,6 @@ export default function App() {
     <Success
       partner={partner}
       cart={cart}
-      giftType={giftType}
-      depositAmount={depositAmount}
       recipient={recipient}
       sender={sender}
       order={order}

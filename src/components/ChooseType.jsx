@@ -1,14 +1,13 @@
-import { Gift, Scissors, CreditCard, ChevronRight, ChevronLeft } from 'lucide-react'
+import { Gift, Scissors, ChevronRight, ChevronLeft } from 'lucide-react'
 import AppStoreBtn from './AppStoreBtn'
 
-function TypeCard({ icon, title, desc, onClick, disabled, soon }) {
+function TypeCard({ icon, title, desc, onClick }) {
   return (
-    <div className={`type-card${disabled ? ' type-card--disabled' : ''}`} onClick={disabled ? undefined : onClick}>
+    <div className='type-card' onClick={onClick}>
       <div className="type-icon">{icon}</div>
       <div className="type-content">
         <div className="type-title-row">
           <div className="type-title">{title}</div>
-          {soon && <span className="type-soon">Скоро</span>}
         </div>
         <div className="type-desc">{desc}</div>
       </div>
@@ -44,14 +43,6 @@ export default function ChooseType({ onBack, onSelect }) {
           desc="Выберите конкретные услуги, которые хотите подарить"
           onClick={() => onSelect('services')}
         />
-        {false && (
-          <TypeCard
-            icon={<CreditCard size={22} color="var(--primary)" strokeWidth={1.75} />}
-            title="Пополнить депозит"
-            desc="Переведите любую сумму на счёт близкого в этом салоне"
-            onClick={() => onSelect('deposit')}
-          />
-        )}
       </div>
     </div>
   )
