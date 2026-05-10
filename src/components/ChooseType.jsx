@@ -39,7 +39,7 @@ export default function ChooseType({ onBack, onSelect }) {
         />
         <TypeCard
           icon={<Scissors size={22} color="var(--primary)" strokeWidth={1.75} />}
-          title="Собрать из услуг"
+          title="Собрать сертификат из услуг"
           desc="Выберите конкретные услуги, которые хотите подарить"
           onClick={() => onSelect('services')}
         />
