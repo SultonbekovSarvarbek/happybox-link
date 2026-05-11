@@ -781,3 +781,68 @@ html, body, #root {
 .clear-cart-btn:active { opacity: .75; }
 .clear-cart-btn--primary   { background: var(--primary); color: white; }
 .clear-cart-btn--secondary { background: var(--surface-2, #f4f4f4); color: var(--black); }
+
+/* ─── PARTNERS LIST ────────────────────────────────── */
+.pl-header { padding: 28px 20px 16px; }
+.pl-header-icon {
+  width: 44px; height: 44px;
+  background: var(--primary-dim);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 14px;
+}
+.pl-title {
+  font-family: var(--font-serif);
+  font-size: 26px; font-weight: 700; color: var(--black);
+  margin-bottom: 6px; line-height: 1.15; letter-spacing: -.3px;
+}
+.pl-sub {
+  font-size: 14px; font-weight: 300; color: var(--sub-gray);
+  line-height: 1.5;
+}
+.pl-list {
+  list-style: none; padding: 0 16px; margin: 0;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.pl-card {
+  width: 100%;
+  display: flex; align-items: center; gap: 14px;
+  padding: 14px;
+  background: #fff;
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+  font: inherit; color: inherit;
+}
+.pl-card:hover { border-color: var(--primary); box-shadow: 0 4px 14px rgba(0, 0, 0, .05); }
+.pl-card:active { transform: scale(.99); }
+.pl-logo {
+  flex: 0 0 56px;
+  width: 56px; height: 56px;
+  background: var(--primary);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden;
+}
+.pl-logo-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pl-logo-fallback { color: #fff; font-weight: 600; font-size: 20px; }
+.pl-body { flex: 1; min-width: 0; }
+.pl-name {
+  font-size: 15px; font-weight: 600; color: var(--black);
+  line-height: 1.25; margin-bottom: 4px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.pl-desc {
+  font-size: 12px; color: var(--sub-gray); font-weight: 300;
+  line-height: 1.4;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.pl-meta {
+  margin-top: 6px;
+  font-size: 11px; color: var(--primary); font-weight: 500;
+}
+.pl-chev { flex: 0 0 auto; }
+.pl-footer { padding: 24px 20px 32px; }

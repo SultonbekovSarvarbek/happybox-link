@@ -10,6 +10,7 @@ import Activation from './components/Activation'
 import Success    from './components/Success'
 import { getId, getShortCode, fetchPartner, fetchServices, fetchCertificates, createOrder } from './api'
 import CertificatePage from './components/CertificatePage'
+import PartnersList from './components/PartnersList'
 import AppStoreBtn from './components/AppStoreBtn'
 import { analytics } from './lib/analytics'
 
@@ -68,6 +69,7 @@ function ErrorScreen({ message }) {
 }
 
 const shortCode = getShortCode()
+const partnerId = getId()
 
 function getShortCodeFromUrl(url) {
   try {
@@ -81,6 +83,7 @@ function getShortCodeFromUrl(url) {
 
 export default function App() {
   if (shortCode) return <CertificatePage shortCode={shortCode} />
+  if (!partnerId) return <PartnersList />
 
   const [step,          setStep]          = useState(0)
   const [giftType,      setGiftType]      = useState('cert')

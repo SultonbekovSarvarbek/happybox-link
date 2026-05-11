@@ -26,6 +26,12 @@ export async function fetchPartner(id) {
   return res.json()
 }
 
+export async function fetchPartners() {
+  const res = await fetch(`${BASE}/partners`)
+  if (!res.ok) throw new Error('Не удалось загрузить список партнёров')
+  return res.json()
+}
+
 export async function fetchServices(id) {
   const res = await fetch(`${BASE}/partners/p/${id}/services`)
   if (!res.ok) throw new Error('Услуги не найдены')
