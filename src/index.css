@@ -846,3 +846,11 @@ html, body, #root {
 }
 .pl-chev { flex: 0 0 auto; }
 .pl-footer { padding: 24px 20px 32px; }
+.pl-ig {
+  display: inline-flex; align-items: center; gap: 5px;
+  margin-bottom: 6px;
+  font-size: 12px; font-weight: 500; color: var(--primary);
+  text-decoration: none;
+}
+.pl-ig:hover { text-decoration: underline; }
+.pl-ig-icon { width: 13px; height: 13px; display: block; }

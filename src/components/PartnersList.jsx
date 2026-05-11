@@ -58,7 +58,18 @@ export default function PartnersList() {
       <ul className="pl-list">
         {partners.map((p) => (
           <li key={p.id}>
-            <button type="button" className="pl-card" onClick={() => open(p.slug)}>
+            <div
+              className="pl-card"
+              role="button"
+              tabIndex={0}
+              onClick={() => open(p.slug)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  open(p.slug)
+                }
+              }}
+            >
               <div className="pl-logo">
                 {p.photo ? (
                   <img src={assetUrl(p.photo)} alt={p.name} className="pl-logo-img" />
@@ -68,6 +79,18 @@ export default function PartnersList() {
               </div>
               <div className="pl-body">
                 <div className="pl-name">{p.name}</div>
+                {p.instagram && (
+                  <a
+                    className="pl-ig"
+                    href={`https://instagram.com/${p.instagram.replace(/^@/, '')}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <img src="/instagram.svg" alt="" className="pl-ig-icon" />
+                    @{p.instagram.replace(/^@/, '')}
+                  </a>
+                )}
                 {p.description && <div className="pl-desc">{p.description}</div>}
                 {p.certificatesCount > 0 && (
                   <div className="pl-meta">
@@ -76,7 +99,7 @@ export default function PartnersList() {
                 )}
               </div>
               <ChevronRight size={20} color="var(--sub-gray)" strokeWidth={1.5} className="pl-chev" />
-            </button>
+            </div>
           </li>
         ))}
       </ul>
