@@ -506,6 +506,24 @@ html, body, #root {
 }
 .validity-text { font-size: 13px; color: var(--sub-gray); font-weight: 300; }
 .validity-hl   { font-weight: 600; color: var(--primary); }
+
+.notes-banner {
+  margin: 0 20px 14px;
+  background: #FFF6E0;
+  border-radius: var(--r-sm); padding: 12px 14px;
+  display: flex; gap: 10px; align-items: flex-start;
+}
+.notes-icon { color: #B8860B; flex-shrink: 0; margin-top: 1px; }
+.notes-text {
+  font-size: 13px; color: #6B5413; font-weight: 400;
+  line-height: 1.45; white-space: pre-wrap; word-wrap: break-word;
+}
+.notes-list {
+  list-style: disc; padding-left: 18px; margin: 0;
+  font-size: 13px; color: #6B5413; font-weight: 400;
+  line-height: 1.45; word-wrap: break-word;
+}
+.notes-list li + li { margin-top: 4px; }
 .cart-empty    { text-align: center; padding: 52px 20px; }
 .cart-empty-icon { font-size: 48px; margin-bottom: 14px; opacity: .5; }
 .cart-empty-text { color: var(--sub-gray); font-size: 15px; font-weight: 300; }

@@ -1,12 +1,15 @@
 import { useEffect } from 'react'
-import { X, CalendarDays, ChevronLeft } from 'lucide-react'
+import { X, CalendarDays, ChevronLeft, Info } from 'lucide-react'
 import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 import { analytics } from '../lib/analytics'
 
-export default function Cart({ cart, onRemove, onContinue, onBack }) {
+export default function Cart({ cart, partner, onRemove, onContinue, onBack }) {
   const total     = cart.reduce((a, s) => a + Number(s.price), 0)
   const validDays = cart[0]?.validDays ?? 90
+  const notes     = Array.isArray(partner?.notes)
+    ? partner.notes.map(n => String(n).trim()).filter(Boolean)
+    : []
 
   useEffect(() => {
     analytics.trackCartViewed(cart)
@@ -54,6 +57,15 @@ export default function Cart({ cart, onRemove, onContinue, onBack }) {
           ))
         )}
       </div>
+
+      {notes.length > 0 && (
+        <div className="notes-banner" style={{ marginTop: 14 }}>
+          <Info size={16} strokeWidth={1.75} className="notes-icon" />
+          <ul className="notes-list">
+            {notes.map((n, i) => <li key={i}>{n}</li>)}
+          </ul>
+        </div>
+      )}
 
       <div className="validity-badge">
         <CalendarDays size={16} color="var(--primary)" strokeWidth={1.75} />

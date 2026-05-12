@@ -246,6 +246,7 @@ export default function App() {
 
     <Services
       giftType={giftType}
+      partner={partner}
       services={giftType === 'cert' ? certificates : services}
       cart={cart}
       onToggle={toggleCart}
@@ -261,6 +262,7 @@ export default function App() {
 
     <Cart
       cart={cart}
+      partner={partner}
       onRemove={removeFromCart}
       onContinue={() => go(4)}
       onBack={() => go(2)}

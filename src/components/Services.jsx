@@ -1,4 +1,4 @@
-import { Clock, CalendarDays, Plus, Check, ChevronLeft } from 'lucide-react'
+import { Clock, CalendarDays, Plus, Check, ChevronLeft, Info } from 'lucide-react'
 import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 
@@ -36,8 +36,11 @@ function ServiceCard({ svc, inCart, onToggle }) {
   )
 }
 
-export default function Services({ giftType, services = [], cart, onToggle, onContinue, onBack }) {
+export default function Services({ giftType, partner, services = [], cart, onToggle, onContinue, onBack }) {
   const cartTotal = cart.reduce((a, s) => a + Number(s.price), 0)
+  const notes = Array.isArray(partner?.notes)
+    ? partner.notes.map(n => String(n).trim()).filter(Boolean)
+    : []
 
   return (
     <div className="screen">
@@ -59,6 +62,15 @@ export default function Services({ giftType, services = [], cart, onToggle, onCo
           <span className="progress-label">Услуги</span>
         </div>
       </div>
+
+      {notes.length > 0 && (
+        <div className="notes-banner" style={{ marginTop: 16 }}>
+          <Info size={16} strokeWidth={1.75} className="notes-icon" />
+          <ul className="notes-list">
+            {notes.map((n, i) => <li key={i}>{n}</li>)}
+          </ul>
+        </div>
+      )}
 
       <div className="services-list">
         {services.length === 0 ? (

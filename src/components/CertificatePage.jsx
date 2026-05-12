@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Share2, Check, CheckCircle2, Clock, Copy } from 'lucide-react'
+import { Share2, Check, CheckCircle2, Clock, Copy, Info } from 'lucide-react'
 import { fmt } from '../data/services'
 import { fetchOrder } from '../api'
 import AppStoreBtn from './AppStoreBtn'
@@ -267,6 +267,19 @@ export default function CertificatePage({ shortCode }) {
           </div>
         </div>
       )}
+
+      {Array.isArray(order.partner.notes) && order.partner.notes.length > 0 && (
+        <div className="notes-banner" style={{ margin: '0 20px 16px' }}>
+          <Info size={16} strokeWidth={1.75} className="notes-icon" />
+          <ul className="notes-list">
+            {order.partner.notes
+              .map(n => String(n).trim())
+              .filter(Boolean)
+              .map((n, i) => <li key={i}>{n}</li>)}
+          </ul>
+        </div>
+      )}
+
 
       {!order.isPaid && (
         <div className="manual-payment-box">
