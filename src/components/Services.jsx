@@ -63,7 +63,7 @@ export default function Services({ giftType, partner, services = [], cart, onTog
         </div>
       </div>
 
-      {notes.length > 0 && (
+      {giftType === 'services' && notes.length > 0 && (
         <div className="notes-banner" style={{ marginTop: 16 }}>
           <Info size={16} strokeWidth={1.75} className="notes-icon" />
           <ul className="notes-list">

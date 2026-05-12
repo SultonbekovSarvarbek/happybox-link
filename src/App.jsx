@@ -263,6 +263,7 @@ export default function App() {
     <Cart
       cart={cart}
       partner={partner}
+      giftType={giftType}
       onRemove={removeFromCart}
       onContinue={() => go(4)}
       onBack={() => go(2)}

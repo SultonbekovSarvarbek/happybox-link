@@ -4,7 +4,7 @@ import { fmt } from '../data/services'
 import AppStoreBtn from './AppStoreBtn'
 import { analytics } from '../lib/analytics'
 
-export default function Cart({ cart, partner, onRemove, onContinue, onBack }) {
+export default function Cart({ cart, partner, giftType, onRemove, onContinue, onBack }) {
   const total     = cart.reduce((a, s) => a + Number(s.price), 0)
   const validDays = cart[0]?.validDays ?? 90
   const notes     = Array.isArray(partner?.notes)
@@ -58,7 +58,7 @@ export default function Cart({ cart, partner, onRemove, onContinue, onBack }) {
         )}
       </div>
 
-      {notes.length > 0 && (
+      {giftType === 'services' && notes.length > 0 && (
         <div className="notes-banner" style={{ marginTop: 14 }}>
           <Info size={16} strokeWidth={1.75} className="notes-icon" />
           <ul className="notes-list">
