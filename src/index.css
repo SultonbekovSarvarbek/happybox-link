@@ -380,7 +380,7 @@ html, body, #root {
 .svc-info  { flex: 1; min-width: 0; }
 .svc-name  {
   font-size: 15px; font-weight: 500; color: var(--black);
-  margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 2px; word-wrap: break-word; overflow-wrap: anywhere;
 }
 .svc-desc  { font-size: 12px; color: var(--sub-gray); margin-bottom: 8px; font-weight: 300; }
 .svc-meta  { display: flex; align-items: center; gap: 8px; }
