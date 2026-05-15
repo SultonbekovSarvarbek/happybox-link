@@ -231,6 +231,7 @@ html, body, #root {
 .partner-desc {
   font-size: 14px; font-weight: 300; color: var(--sub-gray);
   line-height: 1.6; margin-bottom: 16px;
+  white-space: break-spaces;
 }
 .tags { display: flex; gap: 7px; flex-wrap: wrap; margin-bottom: 20px; }
 .tag {
