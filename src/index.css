@@ -260,6 +260,45 @@ html, body, #root {
 .stat-icon { font-size: 14px; }
 .stat-value { font-weight: 500; color: var(--black); }
 
+/* ─── SERVICES PREVIEW ─────────────────────────────── */
+.services-preview { margin-bottom: 22px; }
+.services-preview-title {
+  font-size: 11px; font-weight: 600; color: var(--sub-gray);
+  text-transform: uppercase; letter-spacing: .6px;
+  margin-bottom: 10px;
+}
+.services-preview-list {
+  list-style: none; padding: 0; margin: 0;
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r);
+  overflow: hidden;
+}
+.services-preview-item {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 12px 14px;
+  font-size: 13px;
+}
+.services-preview-item + .services-preview-item {
+  border-top: 1px solid var(--border-soft);
+}
+.services-preview-name {
+  color: var(--black); font-weight: 400; line-height: 1.35;
+  min-width: 0; word-break: break-word;
+}
+.services-preview-price {
+  color: var(--primary); font-weight: 500; white-space: nowrap;
+  font-size: 12px; flex-shrink: 0;
+}
+.services-preview-range {
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r);
+  padding: 14px 16px;
+  font-size: 13px; color: var(--dark-gray);
+}
+.services-preview-range strong { color: var(--black); font-weight: 500; }
+
 /* ─── PROMO BANNER ─────────────────────────────────── */
 .promo-banner {
   background: var(--surface);

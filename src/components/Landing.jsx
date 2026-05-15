@@ -3,6 +3,7 @@ import { Star, MapPin, Gift } from 'lucide-react'
 import AppStoreBtn from './AppStoreBtn'
 import { analytics } from '../lib/analytics'
 import { assetUrl } from '../api'
+import { fmt } from '../data/services'
 
 const FALLBACK = {
   name: 'Glam Studio',
@@ -12,10 +13,19 @@ const FALLBACK = {
   photo: null,
 }
 
-export default function Landing({ partner, onContinue }) {
+export default function Landing({ partner, services = [], certificates = [], onContinue }) {
   const p = partner ?? FALLBACK
   const tags = p.categories?.map(c => c.label ?? c).filter(Boolean) ?? []
   const location = p.locations?.[0] ?? null
+
+  const previewServices = services.slice(0, 3)
+  const certPrices = certificates
+    .map(c => Number(c.price))
+    .filter(n => Number.isFinite(n) && n > 0)
+    .sort((a, b) => a - b)
+  const certRange = certPrices.length >= 2
+    ? { min: certPrices[0], max: certPrices[certPrices.length - 1] }
+    : null
 
   useEffect(() => {
     analytics.trackLandingViewed(partner)
@@ -76,6 +86,27 @@ export default function Landing({ partner, onContinue }) {
             </div>
           )}
         </div>
+        {previewServices.length > 0 ? (
+          <div className="services-preview">
+            <div className="services-preview-title">Популярные услуги</div>
+            <ul className="services-preview-list">
+              {previewServices.map(s => (
+                <li key={s.id} className="services-preview-item">
+                  <span className="services-preview-name">{s.name}</span>
+                  <span className="services-preview-price">{fmt(s.price)}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : certRange && (
+          <div className="services-preview">
+            <div className="services-preview-title">Номиналы сертификатов</div>
+            <div className="services-preview-range">
+              от <strong>{fmt(certRange.min)}</strong> до <strong>{fmt(certRange.max)}</strong>
+            </div>
+          </div>
+        )}
+
         <div className="promo-banner">
           <div className="promo-icon">
             <Gift size={20} color="var(--primary)" strokeWidth={1.75} />

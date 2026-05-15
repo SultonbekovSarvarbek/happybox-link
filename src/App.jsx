@@ -228,6 +228,8 @@ export default function App() {
   const screens = [
     <Landing
       partner={partner}
+      services={services}
+      certificates={certificates}
       onContinue={() => go(1)}
     />,
 
