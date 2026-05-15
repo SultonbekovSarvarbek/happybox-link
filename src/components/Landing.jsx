@@ -23,9 +23,6 @@ export default function Landing({ partner, services = [], certificates = [], onC
     .map(c => Number(c.price))
     .filter(n => Number.isFinite(n) && n > 0)
     .sort((a, b) => a - b)
-  const certRange = certPrices.length >= 2
-    ? { min: certPrices[0], max: certPrices[certPrices.length - 1] }
-    : null
 
   useEffect(() => {
     analytics.trackLandingViewed(partner)
@@ -86,7 +83,7 @@ export default function Landing({ partner, services = [], certificates = [], onC
             </div>
           )}
         </div>
-        {previewServices.length > 0 ? (
+        {previewServices.length > 0 && (
           <div className="services-preview">
             <div className="services-preview-title">Услуги салона</div>
             <ul className="services-preview-list">
@@ -98,11 +95,15 @@ export default function Landing({ partner, services = [], certificates = [], onC
               ))}
             </ul>
           </div>
-        ) : certRange && (
+        )}
+
+        {certPrices.length > 0 && (
           <div className="services-preview">
-            <div className="services-preview-title">Номиналы сертификатов</div>
-            <div className="services-preview-range">
-              от <strong>{fmt(certRange.min)}</strong> до <strong>{fmt(certRange.max)}</strong>
+            <div className="services-preview-title">Сертификаты на сумму</div>
+            <div className="services-preview-chips">
+              {certPrices.map((price, i) => (
+                <span key={i} className="services-preview-chip">{fmt(price)}</span>
+              ))}
             </div>
           </div>
         )}

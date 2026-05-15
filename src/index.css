@@ -290,14 +290,17 @@ html, body, #root {
   color: var(--primary); font-weight: 500; white-space: nowrap;
   font-size: 12px; flex-shrink: 0;
 }
-.services-preview-range {
+.services-preview-chips {
+  display: flex; flex-wrap: wrap; gap: 7px;
+}
+.services-preview-chip {
+  padding: 7px 13px;
   background: var(--surface);
   border: 1px solid var(--border-soft);
-  border-radius: var(--r);
-  padding: 14px 16px;
-  font-size: 13px; color: var(--dark-gray);
+  border-radius: 20px;
+  font-size: 13px; color: var(--black); font-weight: 500;
+  letter-spacing: .1px;
 }
-.services-preview-range strong { color: var(--black); font-weight: 500; }
 
 /* ─── PROMO BANNER ─────────────────────────────────── */
 .promo-banner {
