@@ -88,7 +88,7 @@ export default function Landing({ partner, services = [], certificates = [], onC
         </div>
         {previewServices.length > 0 ? (
           <div className="services-preview">
-            <div className="services-preview-title">Популярные услуги</div>
+            <div className="services-preview-title">Услуги салона</div>
             <ul className="services-preview-list">
               {previewServices.map(s => (
                 <li key={s.id} className="services-preview-item">
