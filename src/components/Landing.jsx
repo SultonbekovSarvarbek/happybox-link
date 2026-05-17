@@ -15,7 +15,6 @@ const FALLBACK = {
 
 export default function Landing({ partner, services = [], certificates = [], onContinue }) {
   const p = partner ?? FALLBACK
-  const tags = p.categories?.map(c => c.label ?? c).filter(Boolean) ?? []
   const location = p.locations?.[0] ?? null
 
   const previewServices = services.slice(0, 3)
@@ -63,13 +62,6 @@ export default function Landing({ partner, services = [], certificates = [], onC
         )}
         {p.description && (
           <p className="partner-desc">{p.description}</p>
-        )}
-        {tags.length > 0 && (
-          <div className="tags">
-            {tags.map(t => (
-              <span key={t} className="tag">{t}</span>
-            ))}
-          </div>
         )}
         <div className="partner-stats">
           <div className="stat">
