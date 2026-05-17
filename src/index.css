@@ -205,16 +205,30 @@ html, body, #root {
 
 /* ─── PARTNER INFO ─────────────────────────────────── */
 .partner-wrap { padding: 0 20px; margin-top: -28px; position: relative; z-index: 10; }
+.partner-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
 .partner-logo {
   width: 80px; height: 80px;
   background: var(--primary); border-radius: 50%;
   display: flex; align-items: center; justify-content: center;
-  margin-bottom: 14px;
   box-shadow: 0 2px 8px #00000059;
   overflow: hidden;
+  flex-shrink: 0;
 }
 .partner-logo-img {
   width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.partner-meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  min-width: 0;
+  padding-top: 4px;
 }
 .partner-name {
   font-family: var(--font-serif);
@@ -224,7 +238,7 @@ html, body, #root {
 .partner-ig {
   display: inline-flex; align-items: center; gap: 6px;
   font-size: 13px; font-weight: 500; color: var(--primary);
-  text-decoration: none; margin-bottom: 10px;
+  text-decoration: none;
 }
 .partner-ig:hover { text-decoration: underline; }
 .partner-ig-icon { width: 16px; height: 16px; display: block; }

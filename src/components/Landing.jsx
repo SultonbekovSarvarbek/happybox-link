@@ -46,27 +46,31 @@ export default function Landing({
       </div>
 
       <div className="partner-wrap">
-        <div className="partner-logo">
-          {p.photo ? (
-            <img src={assetUrl(p.photo)} alt={p.name} className="partner-logo-img" />
-          ) : (
-            <span style={{ color: '#fff', fontWeight: 600, fontSize: 18 }}>
-              {p.name?.[0]?.toUpperCase() ?? 'H'}
-            </span>
-          )}
+        <div className="partner-head">
+          <div className="partner-logo">
+            {p.photo ? (
+              <img src={assetUrl(p.photo)} alt={p.name} className="partner-logo-img" />
+            ) : (
+              <span style={{ color: '#fff', fontWeight: 600, fontSize: 18 }}>
+                {p.name?.[0]?.toUpperCase() ?? 'H'}
+              </span>
+            )}
+          </div>
+          <div className="partner-meta">
+            <h1 className="partner-name">{p.name}</h1>
+            {p.instagram && (
+              <a
+                className="partner-ig"
+                href={`https://instagram.com/${p.instagram}`}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <img src="/instagram.svg" alt="" className="partner-ig-icon" />
+                @{p.instagram}
+              </a>
+            )}
+          </div>
         </div>
-        <h1 className="partner-name">{p.name}</h1>
-        {p.instagram && (
-          <a
-            className="partner-ig"
-            href={`https://instagram.com/${p.instagram}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <img src="/instagram.svg" alt="" className="partner-ig-icon" />
-            @{p.instagram}
-          </a>
-        )}
         {p.description && (
           <p className="partner-desc">{p.description}</p>
         )}
