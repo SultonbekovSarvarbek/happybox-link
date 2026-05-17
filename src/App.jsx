@@ -116,6 +116,16 @@ export default function App() {
 
   const cartTotal = () => cart.reduce((a, s) => a + Number(s.price), 0)
 
+  const handleGiftTypeSelect = (t) => {
+    if (cart.length > 0 && t !== giftType) {
+      setPendingType(t)
+      return
+    }
+    analytics.trackGiftTypeChosen(t)
+    setGiftType(t)
+    go(2)
+  }
+
   const startBuilder = () => {
     if (builderActive.current) return
     analytics.trackBuilderStarted()
@@ -231,19 +241,13 @@ export default function App() {
       services={services}
       certificates={certificates}
       onContinue={() => go(1)}
+      onServicesClick={() => handleGiftTypeSelect('services')}
+      onCertificatesClick={() => handleGiftTypeSelect('cert')}
     />,
 
     <ChooseType
       onBack={() => go(0)}
-      onSelect={(t) => {
-        if (cart.length > 0 && t !== giftType) {
-          setPendingType(t)
-        } else {
-          analytics.trackGiftTypeChosen(t)
-          setGiftType(t)
-          go(2)
-        }
-      }}
+      onSelect={handleGiftTypeSelect}
     />,
 
     <Services

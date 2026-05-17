@@ -13,7 +13,14 @@ const FALLBACK = {
   photo: null,
 }
 
-export default function Landing({ partner, services = [], certificates = [], onContinue }) {
+export default function Landing({
+  partner,
+  services = [],
+  certificates = [],
+  onContinue,
+  onServicesClick,
+  onCertificatesClick,
+}) {
   const p = partner ?? FALLBACK
   const location = p.locations?.[0] ?? null
 
@@ -80,7 +87,11 @@ export default function Landing({ partner, services = [], certificates = [], onC
             <div className="services-preview-title">Услуги салона</div>
             <ul className="services-preview-list">
               {previewServices.map(s => (
-                <li key={s.id} className="services-preview-item">
+                <li
+                  key={s.id}
+                  className="services-preview-item services-preview-item--interactive"
+                  onClick={onServicesClick}
+                >
                   <span className="services-preview-name">{s.name}</span>
                   <span className="services-preview-price">{fmt(s.price)}</span>
                 </li>
@@ -94,7 +105,14 @@ export default function Landing({ partner, services = [], certificates = [], onC
             <div className="services-preview-title">Сертификаты на сумму</div>
             <div className="services-preview-chips">
               {certPrices.map((price, i) => (
-                <span key={i} className="services-preview-chip">{fmt(price)}</span>
+                <button
+                  key={i}
+                  type="button"
+                  className="services-preview-chip"
+                  onClick={onCertificatesClick}
+                >
+                  {fmt(price)}
+                </button>
               ))}
             </div>
           </div>
