@@ -68,7 +68,7 @@ export default function Recipient({ recipient, sender, giftType, submitting, onR
           />
         </div>
         <div className="form-group">
-          <label className="form-label">Номер телефона</label>
+          <label className="form-label">Телефон получателя</label>
           <input
             type="tel"
             className="form-input"
