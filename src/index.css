@@ -231,7 +231,7 @@ html, body, #root {
   padding-top: 4px;
 }
 .partner-name {
-  font-family: var(--font-serif);
+  font-family: var(--font-sans);
   font-size: 28px; font-weight: 700; color: var(--black);
   margin-bottom: 6px; line-height: 1.15; letter-spacing: -.3px;
 }
