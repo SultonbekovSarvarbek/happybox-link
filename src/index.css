@@ -219,6 +219,14 @@ html, body, #root {
   flex-shrink: 0;
   border: 2px solid #43d575;
 }
+.partner-logo--link {
+  text-decoration: none;
+  transition: transform var(--t), box-shadow var(--t);
+}
+.partner-logo--link:active {
+  transform: scale(.97);
+  box-shadow: 0 4px 14px rgba(73, 152, 236, 0.28);
+}
 .partner-logo-img {
   width: 100%; height: 100%; object-fit: cover; display: block;
 }

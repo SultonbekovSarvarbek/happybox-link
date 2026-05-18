@@ -23,6 +23,7 @@ export default function Landing({
 }) {
   const p = partner ?? FALLBACK
   const location = p.locations?.[0] ?? null
+  const instagramUrl = p.instagram ? `https://instagram.com/${p.instagram}` : null
 
   const previewServices = services.slice(0, 3)
   const certPrices = certificates
@@ -47,21 +48,38 @@ export default function Landing({
 
       <div className="partner-wrap">
         <div className="partner-head">
-          <div className="partner-logo">
-            {p.photo ? (
-              <img src={assetUrl(p.photo)} alt={p.name} className="partner-logo-img" />
-            ) : (
-              <span style={{ color: '#fff', fontWeight: 600, fontSize: 18 }}>
-                {p.name?.[0]?.toUpperCase() ?? 'H'}
-              </span>
-            )}
-          </div>
+          {instagramUrl ? (
+            <a
+              className="partner-logo partner-logo--link"
+              href={instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {p.photo ? (
+                <img src={assetUrl(p.photo)} alt={p.name} className="partner-logo-img" />
+              ) : (
+                <span style={{ color: '#fff', fontWeight: 600, fontSize: 18 }}>
+                  {p.name?.[0]?.toUpperCase() ?? 'H'}
+                </span>
+              )}
+            </a>
+          ) : (
+            <div className="partner-logo">
+              {p.photo ? (
+                <img src={assetUrl(p.photo)} alt={p.name} className="partner-logo-img" />
+              ) : (
+                <span style={{ color: '#fff', fontWeight: 600, fontSize: 18 }}>
+                  {p.name?.[0]?.toUpperCase() ?? 'H'}
+                </span>
+              )}
+            </div>
+          )}
           <div className="partner-meta">
             <h1 className="partner-name">{p.name}</h1>
             {p.instagram && (
               <a
                 className="partner-ig"
-                href={`https://instagram.com/${p.instagram}`}
+                href={instagramUrl}
                 target="_blank"
                 rel="noopener noreferrer"
               >
