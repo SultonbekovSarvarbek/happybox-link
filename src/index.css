@@ -343,6 +343,69 @@ button.services-preview-chip {
   transform: scale(.98);
 }
 
+/* ─── SALON LOCATIONS ─────────────────────────────── */
+.location-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.location-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r);
+  padding: 14px;
+  text-decoration: none;
+  color: inherit;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--t), border-color var(--t), background var(--t);
+}
+.location-card:active {
+  transform: scale(.985);
+  border-color: var(--primary);
+  background: var(--primary-dim);
+}
+.location-card__head {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+.location-card__icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  background: var(--primary-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.location-card__meta {
+  min-width: 0;
+}
+.location-card__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--black);
+  margin-bottom: 4px;
+}
+.location-card__address {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--dark-gray);
+  word-break: break-word;
+}
+.location-card__action {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--primary);
+}
+
 /* ─── PROMO BANNER ─────────────────────────────────── */
 .promo-banner {
   background: var(--surface);

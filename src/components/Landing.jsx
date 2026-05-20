@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { Star, MapPin, Gift } from 'lucide-react'
+import { Star, MapPin, Gift, Route, ChevronRight } from 'lucide-react'
 import AppStoreBtn from './AppStoreBtn'
 import { analytics } from '../lib/analytics'
 import { assetUrl } from '../api'
@@ -22,8 +22,11 @@ export default function Landing({
   onCertificatesClick,
 }) {
   const p = partner ?? FALLBACK
-  const location = p.locations?.[0] ?? null
+  const branches = Array.isArray(p.branches) ? p.branches : []
+  const location = branches[0]?.address ?? p.locations?.[0] ?? null
   const instagramUrl = p.instagram ? `https://instagram.com/${p.instagram}` : null
+  const getYandexRouteUrl = ({ latitude, longitude }) =>
+    `https://yandex.uz/maps/?rtext=~${latitude},${longitude}&rtt=auto`
 
   const previewServices = services.slice(0, 3)
   const certPrices = certificates
@@ -104,6 +107,39 @@ export default function Landing({
             </div>
           )}
         </div>
+        {branches.length > 0 && (
+          <div className="services-preview">
+            <div className="services-preview-title">Филиалы салона</div>
+            <div className="location-list">
+              {branches.map((locationItem, index) => (
+                <a
+                  key={`${locationItem.latitude}-${locationItem.longitude}-${index}`}
+                  className="location-card"
+                  href={getYandexRouteUrl(locationItem)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <div className="location-card__head">
+                    <div className="location-card__icon">
+                      <MapPin size={15} color="var(--primary)" strokeWidth={1.9} />
+                    </div>
+                    <div className="location-card__meta">
+                      <div className="location-card__title">
+                        {locationItem.title?.trim() || `Филиал ${index + 1}`}
+                      </div>
+                      <div className="location-card__address">{locationItem.address}</div>
+                    </div>
+                  </div>
+                  <div className="location-card__action">
+                    <Route size={15} strokeWidth={1.9} />
+                    <span>Маршрут в Яндекс Картах</span>
+                    <ChevronRight size={14} strokeWidth={2} />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        )}
         {previewServices.length > 0 && (
           <div className="services-preview">
             <div className="services-preview-title">Услуги салона</div>
