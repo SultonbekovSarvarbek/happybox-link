@@ -971,7 +971,7 @@ button.services-preview-chip {
 }
 .pl-card {
   width: 100%;
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: flex-start; gap: 14px;
   padding: 14px;
   background: #fff;
   border: 1px solid var(--border-soft);
