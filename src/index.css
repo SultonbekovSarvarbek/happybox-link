@@ -839,9 +839,8 @@ button.services-preview-chip {
 }
 .gc-from   { font-size: 11px; opacity: .7; margin-top: 3px; font-weight: 400; }
 .gc-expiry-date {
-  font-family: var(--font-serif);
-  font-size: 18px; font-weight: 600; text-align: right;
-  color: #2a1709;
+  font-size: 16px; font-weight: 600; text-align: right;
+  color: #2a1709; letter-spacing: .2px;
 }
 
 .success-actions { padding: 4px 20px 52px; display: flex; flex-direction: column; gap: 14px; }

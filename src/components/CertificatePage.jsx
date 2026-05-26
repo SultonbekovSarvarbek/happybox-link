@@ -186,8 +186,7 @@ export default function CertificatePage({ shortCode }) {
         <div className="gc-orb gc-orb-2" />
         <div className="gc-inner">
           <div className="gc-header">
-            <span className="gc-brand">HAPPYBOX</span>
-            <span className="gc-partner-name">{order.partner.name}</span>
+            <span className="gc-brand">{order.partner.name}</span>
           </div>
           <div className="gc-amount-section">
             <div className="gc-for">
