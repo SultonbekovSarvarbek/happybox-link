@@ -161,7 +161,8 @@ html, body, #root {
 /* ─── COVER ────────────────────────────────────────── */
 .cover {
   width: 100%; height: 240px; position: relative; overflow: hidden;
-  background: url('/bg5.jpg') center/cover no-repeat;
+  background: url('/bg5.webp') center/cover no-repeat;
+  background-color: #c7b6a1;
 }
 .cover-photo {
   position: absolute; inset: 0; width: 100%; height: 100%;
