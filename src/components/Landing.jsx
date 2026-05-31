@@ -40,7 +40,7 @@ export default function Landing({
 
   return (
     <div className="screen">
-      <div className="cover">
+      <div className={`cover${p.audience === 'male' ? ' cover--male' : ''}`}>
         <div className="cover-noise" />
         <div className="cover-orb cover-orb-1" />
         <div className="cover-orb cover-orb-2" />
