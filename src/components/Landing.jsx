@@ -150,7 +150,12 @@ export default function Landing({
                   className="services-preview-item services-preview-item--interactive"
                   onClick={onServicesClick}
                 >
-                  <span className="services-preview-name">{s.name}</span>
+                  <span className="services-preview-info">
+                    <span className="services-preview-name">{s.name}</span>
+                    {(s.desc ?? s.description) && (
+                      <span className="services-preview-desc">{s.desc ?? s.description}</span>
+                    )}
+                  </span>
                   <span className="services-preview-price">{fmt(s.price)}</span>
                 </li>
               ))}

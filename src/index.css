@@ -319,9 +319,16 @@ html {
   overflow: hidden;
 }
 .services-preview-item {
-  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
   padding: 12px 14px;
   font-size: 13px;
+}
+.services-preview-info {
+  display: flex; flex-direction: column; gap: 3px; min-width: 0;
+}
+.services-preview-desc {
+  font-size: 12px; color: var(--sub-gray); line-height: 1.35;
+  word-break: break-word;
 }
 .services-preview-item--interactive {
   cursor: pointer;
