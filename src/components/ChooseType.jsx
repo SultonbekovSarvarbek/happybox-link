@@ -37,12 +37,14 @@ export default function ChooseType({ onBack, onSelect }) {
           desc="Выберите готовый сертификат от партнёра"
           onClick={() => onSelect('cert')}
         />
+        {/* временно скрыто
         <TypeCard
           icon={<Scissors size={22} color="var(--primary)" strokeWidth={1.75} />}
           title="Собрать сертификат из услуг"
           desc="Выберите конкретные услуги, которые хотите подарить"
           onClick={() => onSelect('services')}
         />
+        */}
       </div>
     </div>
   )
