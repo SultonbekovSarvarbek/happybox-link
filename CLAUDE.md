@@ -29,9 +29,9 @@ If neither matches, `App` shows `ErrorScreen` ("Партнёр не найден
 
 ### Sender flow is a `step` integer, not routes
 
-`App.jsx` holds `step` (0–6) and renders one element from a `screens` array. Navigation is `go(n)` which sets `step` and scrolls to top. Back/continue handlers are wired component-by-component; there is no router, no history entries per step, and refresh resets to step 0.
+`App.jsx` holds `step` (0–5) and renders one element from a `screens` array. Navigation is `go(n)` which sets `step` and scrolls to top. Back/continue handlers are wired component-by-component; there is no router, no history entries per step, and refresh resets to step 0.
 
-Steps: `Landing` → `ChooseType` → `Services` → `Cart` → `Recipient` → `Activation` → `Success`.
+Steps: `Landing` → `Services` → `Cart` → `Recipient` → `Activation` → `Success`. There is no gift-type chooser screen: the landing's "Подарить сертификат" button calls `handleGiftTypeSelect('cert')` and lands directly on the certificates list.
 
 ### `giftType` controls list source and cart semantics
 
@@ -39,7 +39,7 @@ Steps: `Landing` → `ChooseType` → `Services` → `Cart` → `Recipient` → 
 
 - which list `Services` renders (`certificates` vs `services`, fetched in parallel on mount via `Promise.allSettled`),
 - cart behavior in `toggleCart`: `'cert'` allows only one item (shows a toast if user tries to add a second); `'services'` is multi-select,
-- which step `Recipient`'s back button returns to (cert flow has a Cart step; services flow goes straight back to selection — see `onBack={() => go(giftType === 'cert' ? 3 : 2)}`),
+- which step `Recipient`'s back button returns to (cert flow has a Cart step; services flow goes straight back to selection — see `onBack={() => go(giftType === 'cert' ? 2 : 1)}`),
 - analytics event shape (see below).
 
 Switching `giftType` mid-flow with a non-empty cart triggers `ClearCartModal` via `pendingType`; confirming clears the cart and restarts at step 2.

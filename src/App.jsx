@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { SearchX } from 'lucide-react'
 import Landing    from './components/Landing'
-import ChooseType from './components/ChooseType'
 import Services   from './components/Services'
 import Cart       from './components/Cart'
 import Recipient  from './components/Recipient'
@@ -123,7 +122,7 @@ export default function App() {
     }
     analytics.trackGiftTypeChosen(t)
     setGiftType(t)
-    go(2)
+    go(1)
   }
 
   const startBuilder = () => {
@@ -166,7 +165,7 @@ export default function App() {
   }, [])
 
   useEffect(() => {
-    if (step === 2 && giftType === 'services') startBuilder()
+    if (step === 1 && giftType === 'services') startBuilder()
   }, [step, giftType])
 
   useEffect(() => {
@@ -220,7 +219,7 @@ export default function App() {
 
   const handlePay = () => {
     setProcessing(true)
-    setTimeout(() => { setProcessing(false); go(6) }, 2000)
+    setTimeout(() => { setProcessing(false); go(5) }, 2000)
   }
 
   const handleHome = () => {
@@ -240,14 +239,9 @@ export default function App() {
       partner={partner}
       services={services}
       certificates={certificates}
-      onContinue={() => go(1)}
+      onContinue={() => handleGiftTypeSelect('cert')}
       onServicesClick={() => handleGiftTypeSelect('services')}
       onCertificatesClick={() => handleGiftTypeSelect('cert')}
-    />,
-
-    <ChooseType
-      onBack={() => go(0)}
-      onSelect={handleGiftTypeSelect}
     />,
 
     <Services
@@ -258,11 +252,11 @@ export default function App() {
       onToggle={toggleCart}
       onContinue={() => {
         if (giftType === 'services') endBuilderCompleted()
-        go(3)
+        go(2)
       }}
       onBack={() => {
         if (giftType === 'services') endBuilderAbandoned()
-        go(1)
+        go(0)
       }}
     />,
 
@@ -271,8 +265,8 @@ export default function App() {
       partner={partner}
       giftType={giftType}
       onRemove={removeFromCart}
-      onContinue={() => go(4)}
-      onBack={() => go(2)}
+      onContinue={() => go(3)}
+      onBack={() => go(1)}
     />,
 
     <Recipient
@@ -318,7 +312,7 @@ export default function App() {
           alert('Не удалось создать заказ. Попробуйте снова.')
         }
       }}
-      onBack={() => go(giftType === 'cert' ? 3 : 2)}
+      onBack={() => go(giftType === 'cert' ? 2 : 1)}
     />,
 
     <Activation
@@ -327,7 +321,7 @@ export default function App() {
       recipient={recipient}
       sender={sender}
       order={order}
-      onBack={() => go(4)}
+      onBack={() => go(3)}
     />,
 
     <Success
@@ -366,7 +360,7 @@ export default function App() {
             setCart([])
             setGiftType(pendingType)
             setPendingType(null)
-            go(2)
+            go(1)
           }}
           onCancel={() => setPendingType(null)}
         />
