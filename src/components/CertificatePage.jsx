@@ -121,7 +121,7 @@ export default function CertificatePage({ shortCode }) {
     const shareText = `Тебе подарили сертификат в ${order.partner.name}!\n\n${igLine}🔗 Ссылка: ${certUrl}`
     if (navigator.share) {
       navigator.share({
-        title: 'HappyBox — Подарочный сертификат',
+        title: 'Happy Gift — Подарочный сертификат',
         text: shareText,
       })
     } else {

@@ -77,8 +77,8 @@ export default function Activation({ cart, partner, recipient, sender, order, on
         <div className="gc-orb gc-orb-2" />
         <div className="gc-inner">
           <div className="gc-header">
-            <span className="gc-brand">HAPPYBOX</span>
-            <span className="gc-partner-name">{partner?.name ?? 'HappyBox'}</span>
+            <span className="gc-brand">HAPPY GIFT</span>
+            <span className="gc-partner-name">{partner?.name ?? 'Happy Gift'}</span>
           </div>
           <div className="gc-amount-section">
             <div className="gc-for">Подарочный сертификат</div>

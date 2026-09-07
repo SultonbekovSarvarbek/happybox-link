@@ -59,10 +59,10 @@ export default function Success({ partner, cart, recipient, sender, order, onHom
 
   const handleShare = () => {
     const igLine = partner?.instagram ? `📸 Instagram: @${partner.instagram}\n` : ''
-    const shareText = `Тебе подарили сертификат в ${partner?.name ?? 'HappyBox'}!\n\n${igLine}🔗 Ссылка: ${certUrl}`
+    const shareText = `Тебе подарили сертификат в ${partner?.name ?? 'Happy Gift'}!\n\n${igLine}🔗 Ссылка: ${certUrl}`
     if (navigator.share) {
       navigator.share({
-        title: 'HappyBox — Подарочный сертификат',
+        title: 'Happy Gift — Подарочный сертификат',
         text : shareText,
       })
     } else {
@@ -92,8 +92,8 @@ export default function Success({ partner, cart, recipient, sender, order, onHom
 
         <div className="gc-inner">
           <div className="gc-header">
-            <span className="gc-brand">HAPPYBOX</span>
-            <span className="gc-partner-name">{partner?.name ?? 'HappyBox'}</span>
+            <span className="gc-brand">HAPPY GIFT</span>
+            <span className="gc-partner-name">{partner?.name ?? 'Happy Gift'}</span>
           </div>
 
           <div className="gc-amount-section">

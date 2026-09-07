@@ -18,7 +18,7 @@ export default function AppStoreBtn({ variant }) {
         <AppleIcon className="appstore-apple" />
         <div className="appstore-text">
           <span className="appstore-sub">Скачать</span>
-          <span className="appstore-title">HappyBox в App Store</span>
+          <span className="appstore-title">Happy Gift в App Store</span>
         </div>
         <svg className="appstore-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M9 18l6-6-6-6"/>

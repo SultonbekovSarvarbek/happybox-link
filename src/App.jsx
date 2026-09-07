@@ -60,7 +60,7 @@ function ErrorScreen({ message }) {
         <p className="error-desc">Проверьте ссылку или QR-код и попробуйте снова</p>
       </div>
       <div className="error-footer">
-        <p className="error-hint">Вы можете найти других партнёров в приложении HappyBox</p>
+        <p className="error-hint">Вы можете найти других партнёров в приложении Happy Gift</p>
         <AppStoreBtn variant="banner" />
       </div>
     </div>

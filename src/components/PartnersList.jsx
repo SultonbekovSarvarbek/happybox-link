@@ -51,7 +51,7 @@ export default function PartnersList() {
         <div className="pl-header-icon">
           <Gift size={22} color="var(--primary)" strokeWidth={1.75} />
         </div>
-        <h1 className="pl-title">Партнёры HappyBox</h1>
+        <h1 className="pl-title">Партнёры Happy Gift</h1>
         <p className="pl-sub">Выберите партнёра, чтобы подарить сертификат</p>
       </div>
 
