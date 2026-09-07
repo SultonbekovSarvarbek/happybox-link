@@ -794,6 +794,23 @@ button.services-preview-chip {
   margin: 13px 0 14px;
 }
 
+/* online payment (выбор Click / Payme / Uzum / Alif) */
+.online-payment-head { display: flex; flex-direction: column; gap: 3px; margin-bottom: 14px; }
+.online-payment-sub  { font-size: 13px; color: var(--sub-gray); font-weight: 300; }
+.online-payment-methods {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 16px;
+}
+.online-pay-card {
+  padding: 12px 12px 12px 10px; gap: 8px;
+  font: inherit; text-align: left; width: 100%;
+}
+.online-pay-card .pay-logo-img { width: 52px; height: 32px; border-radius: 0; }
+.online-pay-card .pay-name     { flex: 1; font-size: 14px; }
+.online-pay-card .pay-radio    { width: 18px; height: 18px; }
+.online-pay-card.selected .pay-radio::after { width: 6px; height: 6px; }
+.online-pay-card:disabled { opacity: .6; cursor: default; }
+
 /* ─── SUCCESS ──────────────────────────────────────── */
 .confetti-canvas {
   position: fixed; top: 0; left: 0;

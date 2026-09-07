@@ -26,6 +26,35 @@ function giftTypeFromOrder(order) {
 
 const FALLBACK_CARD_NUMBER = '8600000000000000'
 
+// Партнёры, у которых вместо перевода на карту показываем выбор онлайн-оплаты.
+// Матчим по slug, а также по id / partnerId на случай, если slug не приходит в заказе.
+const ONLINE_PAYMENT_PARTNERS = new Set([
+  'vash-salon',
+  '5bd92b10-b024-4df4-8e56-3781295399ff',
+  'ed0fa4a3-bbba-42c1-b316-a5ba3fae8b52',
+])
+
+// Логотипы: если задан VITE_BRANDFETCH_CLIENT_ID — берём с cdn.brandfetch.io,
+// при ошибке загрузки падаем на локальный файл из public/.
+const BRANDFETCH_CLIENT_ID = import.meta.env.VITE_BRANDFETCH_CLIENT_ID
+const ONLINE_METHODS = [
+  { id: 'click', label: 'Click', brand: 'click.uz', logo: '/click.png' },
+  { id: 'payme', label: 'Payme', brand: 'payme.uz', logo: '/payme.png' },
+  { id: 'uzum',  label: 'Uzum',  brand: 'uzum.uz',  logo: '/uzum.png'  },
+  { id: 'alif',  label: 'Alif',  brand: 'alif.uz',  logo: '/alif.svg'  },
+]
+
+function methodLogoSrc(m) {
+  return BRANDFETCH_CLIENT_ID
+    ? `https://cdn.brandfetch.io/${m.brand}?c=${BRANDFETCH_CLIENT_ID}`
+    : m.logo
+}
+
+function isOnlinePaymentPartner(partner) {
+  return [partner?.slug, partner?.id, partner?.partnerId]
+    .some(v => v && ONLINE_PAYMENT_PARTNERS.has(String(v)))
+}
+
 function formatCardNumber(cardNumber) {
   return cardNumber.replace(/\D/g, '').replace(/(.{4})(?=.)/g, '$1 ')
 }
@@ -56,6 +85,8 @@ export default function CertificatePage({ shortCode }) {
   const [paymentSubmitted, setPaymentSubmitted] = useState(() =>
     localStorage.getItem(`hb-payment-submitted:${shortCode}`) === '1'
   )
+  const [payMethod,        setPayMethod]        = useState('click')
+  const [payProcessing,    setPayProcessing]    = useState(false)
 
   useEffect(() => {
     fetchOrder(shortCode)
@@ -139,10 +170,22 @@ export default function CertificatePage({ shortCode }) {
     })
   }
 
-  const handlePaymentSubmitted = () => {
+  const handlePaymentSubmitted = (method = 'card_transfer') => {
     localStorage.setItem(`hb-payment-submitted:${shortCode}`, '1')
     setPaymentSubmitted(true)
-    analytics.trackPaymentSubmittedByRecipient({ certificateId: shortCode })
+    analytics.trackPaymentSubmittedByRecipient({ certificateId: shortCode, paymentMethod: method })
+  }
+
+  const onlinePayment = isOnlinePaymentPartner(order.partner)
+  const activeMethod  = ONLINE_METHODS.find(m => m.id === payMethod) ?? ONLINE_METHODS[0]
+
+  const handleOnlinePay = () => {
+    if (payProcessing || paymentSubmitted) return
+    setPayProcessing(true)
+    setTimeout(() => {
+      setPayProcessing(false)
+      handlePaymentSubmitted(payMethod)
+    }, 1800)
   }
 
   return (
@@ -280,7 +323,43 @@ export default function CertificatePage({ shortCode }) {
       )}
 
 
-      {!order.isPaid && (
+      {!order.isPaid && onlinePayment && (
+        <div className="manual-payment-box online-payment-box">
+          <div className="online-payment-head">
+            <span className="manual-payment-title">Оплатите</span>
+            <span className="online-payment-sub">Выберите удобный способ</span>
+          </div>
+          <div className="online-payment-methods">
+            {ONLINE_METHODS.map(m => (
+              <button
+                key={m.id}
+                type="button"
+                className={`pay-card online-pay-card${payMethod === m.id ? ' selected' : ''}`}
+                onClick={() => setPayMethod(m.id)}
+                disabled={paymentSubmitted}
+              >
+                <img
+                  src={methodLogoSrc(m)}
+                  alt={m.label}
+                  className="pay-logo-img"
+                  onError={e => { if (e.currentTarget.src !== location.origin + m.logo) e.currentTarget.src = m.logo }}
+                />
+                <span className="pay-name">{m.label}</span>
+                <span className="pay-radio" />
+              </button>
+            ))}
+          </div>
+          <button
+            className="btn btn-primary"
+            disabled={paymentSubmitted || payProcessing}
+            onClick={handleOnlinePay}
+          >
+            {paymentSubmitted ? 'Платёж отправлен на проверку' : `Оплатить ${fmt(order.totalAmount)}`}
+          </button>
+        </div>
+      )}
+
+      {!order.isPaid && !onlinePayment && (
         <div className="manual-payment-box">
           <div className="manual-payment-head">
             <span className="manual-payment-title">Оплата переводом</span>
@@ -300,7 +379,7 @@ export default function CertificatePage({ shortCode }) {
           <button
             className="btn btn-primary"
             disabled={paymentSubmitted}
-            onClick={handlePaymentSubmitted}
+            onClick={() => handlePaymentSubmitted()}
           >
             {paymentSubmitted ? 'Платёж отправлен на проверку' : 'Я оплатил'}
           </button>
@@ -322,6 +401,16 @@ export default function CertificatePage({ shortCode }) {
           На главную
         </a>
       </div>
+
+      {payProcessing && (
+        <div className="pay-overlay">
+          <div className="pay-modal">
+            <div className="spinner" />
+            <p className="pay-modal-title">Переходим в {activeMethod.label}</p>
+            <p className="pay-modal-sub">Подождите немного…</p>
+          </div>
+        </div>
+      )}
 
       {cardCopied && (
         <div className="copy-toast" role="status" aria-live="polite">

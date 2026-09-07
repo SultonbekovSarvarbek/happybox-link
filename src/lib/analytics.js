@@ -196,9 +196,10 @@ export const analytics = {
     })
   },
 
-  trackPaymentSubmittedByRecipient({ certificateId } = {}) {
+  trackPaymentSubmittedByRecipient({ certificateId, paymentMethod } = {}) {
     track('Payment Submitted by Recipient', {
       certificate_id: certificateId,
+      payment_method: paymentMethod,
     })
   },
 }
