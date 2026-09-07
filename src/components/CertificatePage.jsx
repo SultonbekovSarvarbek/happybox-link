@@ -387,10 +387,16 @@ export default function CertificatePage({ shortCode }) {
       )}
 
       <div className="success-actions">
-        <button className="btn btn-primary" onClick={handleShare}>
-          {linkCopied ? <Check size={17} strokeWidth={2} /> : <Share2 size={17} strokeWidth={1.75} />}
-          {linkCopied ? 'Ссылка скопирована' : 'Поделиться сертификатом'}
-        </button>
+        {order.isPaid ? (
+          <button className="btn btn-primary" onClick={handleShare}>
+            {linkCopied ? <Check size={17} strokeWidth={2} /> : <Share2 size={17} strokeWidth={1.75} />}
+            {linkCopied ? 'Ссылка скопирована' : 'Поделиться сертификатом'}
+          </button>
+        ) : (
+          <p className="cert-sms-note">
+            После оплаты получатель получит СМС-уведомление с сертификатом
+          </p>
+        )}
         <AppStoreBtn />
         <div className="success-divider" />
         <a
