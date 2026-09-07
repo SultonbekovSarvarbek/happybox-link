@@ -828,8 +828,8 @@ button.services-preview-chip {
   animation: cardIn .5s .12s cubic-bezier(0.34, 1.36, 0.64, 1) both;
   background:
     radial-gradient(ellipse 90% 70% at 110% -5%, rgba(255, 230, 200, .55) 0%, transparent 55%),
-    radial-gradient(ellipse 60% 80% at -10% 110%, rgba(214, 130, 80, .35) 0%, transparent 55%),
-    linear-gradient(140deg, #fbecd8 0%, #f4cfa6 45%, #e9a877 100%);
+    radial-gradient(ellipse 60% 80% at -10% 110%, rgba(214, 130, 80, .22) 0%, transparent 55%),
+    linear-gradient(140deg, #fbecd8 0%, #f5d5b0 45%, #edb88f 100%);
 }
 @keyframes cardIn {
   from { transform: translateY(20px) scale(.96); opacity: 0; }
@@ -847,7 +847,7 @@ button.services-preview-chip {
 .gc-inner { padding: 26px 24px 24px; position: relative; z-index: 2; }
 .gc-orb   { position: absolute; border-radius: 50%; filter: blur(2px); }
 .gc-orb-1 { width: 200px; height: 200px; top: -70px; right: -60px; background: rgba(255, 240, 220, .55); }
-.gc-orb-2 { width: 130px; height: 130px; bottom: -55px; left: -25px; background: rgba(200, 110, 60, .25); }
+.gc-orb-2 { width: 130px; height: 130px; bottom: -55px; left: -25px; background: rgba(200, 110, 60, .16); }
 
 .gc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 22px; }
 .gc-brand  {
