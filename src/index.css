@@ -815,6 +815,14 @@ button.services-preview-chip {
 .online-pay-card .pay-radio    { width: 18px; height: 18px; }
 .online-pay-card.selected .pay-radio::after { width: 6px; height: 6px; }
 .online-pay-card:disabled { opacity: .6; cursor: default; }
+.online-pay-card--wide { grid-column: 1 / -1; }
+.online-pay-icon {
+  width: 52px; height: 32px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--primary);
+}
+.online-card-transfer { margin-top: -2px; }
+.online-card-transfer .manual-payment-note { margin: 12px 0 14px; }
 
 /* ─── SUCCESS ──────────────────────────────────────── */
 .confetti-canvas {

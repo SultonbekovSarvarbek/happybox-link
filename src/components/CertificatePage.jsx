@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Share2, Check, CheckCircle2, Clock, Copy, Info } from 'lucide-react'
+import { Share2, Check, CheckCircle2, Clock, Copy, CreditCard, Info } from 'lucide-react'
 import { fmt } from '../data/services'
 import { fetchOrder } from '../api'
 import AppStoreBtn from './AppStoreBtn'
@@ -178,6 +178,7 @@ export default function CertificatePage({ shortCode }) {
 
   const onlinePayment = isOnlinePaymentPartner(order.partner)
   const activeMethod  = ONLINE_METHODS.find(m => m.id === payMethod) ?? ONLINE_METHODS[0]
+  const isCardTransfer = payMethod === 'card'
 
   const handleOnlinePay = () => {
     if (payProcessing || paymentSubmitted) return
@@ -348,13 +349,43 @@ export default function CertificatePage({ shortCode }) {
                 <span className="pay-radio" />
               </button>
             ))}
+            <button
+              type="button"
+              className={`pay-card online-pay-card online-pay-card--wide${isCardTransfer ? ' selected' : ''}`}
+              onClick={() => setPayMethod('card')}
+              disabled={paymentSubmitted}
+            >
+              <span className="online-pay-icon"><CreditCard size={20} strokeWidth={1.75} /></span>
+              <span className="pay-name">Перевод на карту</span>
+              <span className="pay-radio" />
+            </button>
           </div>
+
+          {isCardTransfer && (
+            <div className="online-card-transfer">
+              <label className="cert-card-label">Номер карты для оплаты</label>
+              <div className="cert-card-input-wrap">
+                <span className="cert-card-number">{formattedCardNumber}</span>
+                <button className={`cert-copy-btn${cardCopied ? ' copied' : ''}`} onClick={handleCopyCard}>
+                  {cardCopied
+                    ? <Check size={17} strokeWidth={2} />
+                    : <Copy size={17} strokeWidth={1.75} />}
+                </button>
+              </div>
+              <p className="manual-payment-note">
+                Переведите точную сумму. После оплаты нажмите кнопку ниже.
+              </p>
+            </div>
+          )}
+
           <button
             className="btn btn-primary"
             disabled={paymentSubmitted || payProcessing}
-            onClick={handleOnlinePay}
+            onClick={isCardTransfer ? () => handlePaymentSubmitted() : handleOnlinePay}
           >
-            {paymentSubmitted ? 'Платёж отправлен на проверку' : `Оплатить ${fmt(order.totalAmount)}`}
+            {paymentSubmitted
+              ? 'Платёж отправлен на проверку'
+              : isCardTransfer ? 'Я оплатил' : `Оплатить ${fmt(order.totalAmount)}`}
           </button>
         </div>
       )}
