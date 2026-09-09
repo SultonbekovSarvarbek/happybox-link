@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Share2, Check, CheckCircle2, Clock, Copy, CreditCard, Info } from 'lucide-react'
+import { Share2, Check, CheckCircle2, Clock, Copy, CreditCard, ChevronRight, Info, X } from 'lucide-react'
 import { fmt } from '../data/services'
 import { fetchOrder } from '../api'
 import AppStoreBtn from './AppStoreBtn'
@@ -26,9 +26,9 @@ function giftTypeFromOrder(order) {
 
 const FALLBACK_CARD_NUMBER = '8600000000000000'
 
-// Партнёры, у которых вместо перевода на карту показываем выбор онлайн-оплаты.
-// Матчим по slug, а также по id / partnerId на случай, если slug не приходит в заказе.
-const ONLINE_PAYMENT_PARTNERS = new Set([
+// Демо-партнёры: у них включены все способы оплаты с номером карты партнёра,
+// пока бэкенд не отдаёт partner.paymentMethods. Матчим по slug, id и partnerId.
+const DEMO_ALL_METHODS_PARTNERS = new Set([
   'vash-salon',
   '5bd92b10-b024-4df4-8e56-3781295399ff',
   'ed0fa4a3-bbba-42c1-b316-a5ba3fae8b52',
@@ -37,22 +37,47 @@ const ONLINE_PAYMENT_PARTNERS = new Set([
 // Логотипы: если задан VITE_BRANDFETCH_CLIENT_ID — берём с cdn.brandfetch.io,
 // при ошибке загрузки падаем на локальный файл из public/.
 const BRANDFETCH_CLIENT_ID = import.meta.env.VITE_BRANDFETCH_CLIENT_ID
-const ONLINE_METHODS = [
-  { id: 'click', label: 'Click', brand: 'click.uz', logo: '/click.png' },
-  { id: 'payme', label: 'Payme', brand: 'payme.uz', logo: '/payme.png' },
-  { id: 'uzum',  label: 'Uzum',  brand: 'uzum.uz',  logo: '/uzum.png'  },
-  { id: 'alif',  label: 'Alif',  brand: 'alif.uz',  logo: '/alif.svg'  },
-]
+
+const METHOD_CATALOG = {
+  click:  { label: 'Click',            brand: 'click.uz',  logo: '/click.png'  },
+  payme:  { label: 'Payme',            brand: 'payme.uz',  logo: '/payme.png'  },
+  uzum:   { label: 'Uzum',             brand: 'uzum.uz',   logo: '/uzum.png'   },
+  alif:   { label: 'Alif',             brand: 'alif.uz',   logo: '/alif.svg'   },
+  paynet: { label: 'Paynet',           brand: 'paynet.uz', logo: '/paynet.svg' },
+  card:   { label: 'Перевод на карту' },
+}
+const METHOD_ORDER = Object.keys(METHOD_CATALOG)
 
 function methodLogoSrc(m) {
+  if (!m.logo) return null
   return BRANDFETCH_CLIENT_ID
     ? `https://cdn.brandfetch.io/${m.brand}?c=${BRANDFETCH_CLIENT_ID}`
     : m.logo
 }
 
-function isOnlinePaymentPartner(partner) {
+function isDemoPartner(partner) {
   return [partner?.slug, partner?.id, partner?.partnerId]
-    .some(v => v && ONLINE_PAYMENT_PARTNERS.has(String(v)))
+    .some(v => v && DEMO_ALL_METHODS_PARTNERS.has(String(v)))
+}
+
+// Способы оплаты партнёра. Ожидаемый формат с бэкенда:
+//   partner.paymentMethods = { paynet: { enabled, cardNumber, qrImage }, click: { enabled, cardNumber }, ... }
+// (массив [{ id, enabled, cardNumber, qrImage }] тоже принимается).
+// У Click/Payme/Uzum/Alif/card — только номер карты, у Paynet — номер бизнес-карты + фото QR.
+function getPaymentMethods(partner, fallbackCardNumber) {
+  const raw = partner?.paymentMethods
+  if (raw && typeof raw === 'object') {
+    const list = Array.isArray(raw) ? raw : Object.entries(raw).map(([id, v]) => ({ id, ...(v ?? {}) }))
+    const out = list
+      .filter(m => m && METHOD_CATALOG[m.id] && m.enabled !== false && (m.cardNumber || m.qrImage))
+      .map(m => ({ id: m.id, cardNumber: m.cardNumber ?? null, qrImage: m.qrImage ?? null }))
+      .sort((a, b) => METHOD_ORDER.indexOf(a.id) - METHOD_ORDER.indexOf(b.id))
+    if (out.length) return out
+  }
+  if (isDemoPartner(partner)) {
+    return METHOD_ORDER.map(id => ({ id, cardNumber: fallbackCardNumber, qrImage: null }))
+  }
+  return [{ id: 'card', cardNumber: fallbackCardNumber, qrImage: null }]
 }
 
 function formatCardNumber(cardNumber) {
@@ -85,8 +110,7 @@ export default function CertificatePage({ shortCode }) {
   const [paymentSubmitted, setPaymentSubmitted] = useState(() =>
     localStorage.getItem(`hb-payment-submitted:${shortCode}`) === '1'
   )
-  const [payMethod,        setPayMethod]        = useState('click')
-  const [payProcessing,    setPayProcessing]    = useState(false)
+  const [openMethodId,     setOpenMethodId]     = useState(null)
 
   useEffect(() => {
     fetchOrder(shortCode)
@@ -163,8 +187,8 @@ export default function CertificatePage({ shortCode }) {
     }
   }
 
-  const handleCopyCard = () => {
-    navigator.clipboard.writeText(cardNumber.replace(/\D/g, '')).then(() => {
+  const handleCopyCard = (number = cardNumber) => {
+    navigator.clipboard.writeText(String(number).replace(/\D/g, '')).then(() => {
       setCardCopied(true)
       setTimeout(() => setCardCopied(false), 2000)
     })
@@ -176,18 +200,53 @@ export default function CertificatePage({ shortCode }) {
     analytics.trackPaymentSubmittedByRecipient({ certificateId: shortCode, paymentMethod: method })
   }
 
-  const onlinePayment = isOnlinePaymentPartner(order.partner)
-  const activeMethod  = ONLINE_METHODS.find(m => m.id === payMethod) ?? ONLINE_METHODS[0]
-  const isCardTransfer = payMethod === 'card'
+  const paymentMethods = getPaymentMethods(order.partner, cardNumber)
+  const singleMethod   = paymentMethods.length === 1 ? paymentMethods[0] : null
+  const openMethod     = paymentMethods.find(m => m.id === openMethodId) ?? null
 
-  const handleOnlinePay = () => {
-    if (payProcessing || paymentSubmitted) return
-    setPayProcessing(true)
-    setTimeout(() => {
-      setPayProcessing(false)
-      handlePaymentSubmitted(payMethod)
-    }, 1800)
+  const confirmPaid = (methodId) => {
+    handlePaymentSubmitted(methodId === 'card' ? 'card_transfer' : methodId)
+    setOpenMethodId(null)
   }
+
+  const renderMethodDetails = (m, { note = true } = {}) => (
+    <>
+      {m.cardNumber && (
+        <>
+          <label className="cert-card-label">
+            {m.id === 'paynet' ? 'Номер бизнес-карты Paynet' : 'Номер карты для оплаты'}
+          </label>
+          <div className="cert-card-input-wrap">
+            <span className="cert-card-number">{formatCardNumber(String(m.cardNumber))}</span>
+            <button
+              type="button"
+              className={`cert-copy-btn${cardCopied ? ' copied' : ''}`}
+              onClick={() => handleCopyCard(m.cardNumber)}
+              aria-label="Скопировать номер карты"
+            >
+              {cardCopied ? <Check size={17} strokeWidth={2} /> : <Copy size={17} strokeWidth={1.75} />}
+            </button>
+          </div>
+        </>
+      )}
+      {m.qrImage && (
+        <div className="method-qr-wrap">
+          <img className="method-qr" src={m.qrImage} alt={`QR для оплаты ${METHOD_CATALOG[m.id].label}`} />
+          <a className="btn btn-outline method-qr-save" href={m.qrImage} download={`qr-${m.id}.png`}>
+            Сохранить QR
+          </a>
+          <p className="manual-payment-note">
+            Сохраните QR и отсканируйте его из галереи в приложении банка.
+          </p>
+        </div>
+      )}
+      {note && (
+        <p className="manual-payment-note">
+          Переведите точную сумму {fmt(order.totalAmount)}. После оплаты нажмите кнопку ниже.
+        </p>
+      )}
+    </>
+  )
 
   return (
     <div className="screen">
@@ -324,96 +383,60 @@ export default function CertificatePage({ shortCode }) {
       )}
 
 
-      {!order.isPaid && onlinePayment && (
-        <div className="manual-payment-box online-payment-box">
-          <div className="online-payment-head">
-            <span className="manual-payment-title">Оплатите</span>
-            <span className="online-payment-sub">Выберите удобный способ</span>
+      {!order.isPaid && singleMethod && (
+        <div className="manual-payment-box">
+          <div className="manual-payment-head">
+            <span className="manual-payment-title">
+              {singleMethod.id === 'card' ? 'Оплата переводом' : `Оплата через ${METHOD_CATALOG[singleMethod.id].label}`}
+            </span>
           </div>
-          <div className="online-payment-methods">
-            {ONLINE_METHODS.map(m => (
-              <button
-                key={m.id}
-                type="button"
-                className={`pay-card online-pay-card${payMethod === m.id ? ' selected' : ''}`}
-                onClick={() => setPayMethod(m.id)}
-                disabled={paymentSubmitted}
-              >
-                <img
-                  src={methodLogoSrc(m)}
-                  alt={m.label}
-                  className="pay-logo-img"
-                  onError={e => { if (e.currentTarget.src !== location.origin + m.logo) e.currentTarget.src = m.logo }}
-                />
-                <span className="pay-name">{m.label}</span>
-                <span className="pay-radio" />
-              </button>
-            ))}
-            <button
-              type="button"
-              className={`pay-card online-pay-card online-pay-card--wide${isCardTransfer ? ' selected' : ''}`}
-              onClick={() => setPayMethod('card')}
-              disabled={paymentSubmitted}
-            >
-              <span className="online-pay-icon"><CreditCard size={20} strokeWidth={1.75} /></span>
-              <span className="pay-name">Перевод на карту</span>
-              <span className="pay-radio" />
-            </button>
-          </div>
-
-          {isCardTransfer && (
-            <div className="online-card-transfer">
-              <label className="cert-card-label">Номер карты для оплаты</label>
-              <div className="cert-card-input-wrap">
-                <span className="cert-card-number">{formattedCardNumber}</span>
-                <button className={`cert-copy-btn${cardCopied ? ' copied' : ''}`} onClick={handleCopyCard}>
-                  {cardCopied
-                    ? <Check size={17} strokeWidth={2} />
-                    : <Copy size={17} strokeWidth={1.75} />}
-                </button>
-              </div>
-              <p className="manual-payment-note">
-                Переведите точную сумму. После оплаты нажмите кнопку ниже.
-              </p>
-            </div>
-          )}
-
+          {renderMethodDetails(singleMethod)}
           <button
             className="btn btn-primary"
-            disabled={paymentSubmitted || payProcessing}
-            onClick={isCardTransfer ? () => handlePaymentSubmitted() : handleOnlinePay}
+            disabled={paymentSubmitted}
+            onClick={() => confirmPaid(singleMethod.id)}
           >
-            {paymentSubmitted
-              ? 'Платёж отправлен на проверку'
-              : isCardTransfer ? 'Я оплатил' : `Оплатить ${fmt(order.totalAmount)}`}
+            {paymentSubmitted ? 'Платёж отправлен на проверку' : 'Я оплатил'}
           </button>
         </div>
       )}
 
-      {!order.isPaid && !onlinePayment && (
-        <div className="manual-payment-box">
-          <div className="manual-payment-head">
-            <span className="manual-payment-title">Оплата переводом</span>
+      {!order.isPaid && !singleMethod && (
+        <div className="manual-payment-box online-payment-box">
+          <div className="online-payment-head">
+            <span className="manual-payment-title">Оплатите</span>
+            <span className="online-payment-sub">
+              {paymentSubmitted ? 'Платёж отправлен на проверку' : 'Выберите удобный способ'}
+            </span>
           </div>
-          <label className="cert-card-label">Номер карты для оплаты</label>
-          <div className="cert-card-input-wrap">
-            <span className="cert-card-number">{formattedCardNumber}</span>
-            <button className={`cert-copy-btn${cardCopied ? ' copied' : ''}`} onClick={handleCopyCard}>
-              {cardCopied
-                ? <Check size={17} strokeWidth={2} />
-                : <Copy size={17} strokeWidth={1.75} />}
-            </button>
+          <div className="online-payment-methods">
+            {paymentMethods.map(m => {
+              const meta = METHOD_CATALOG[m.id]
+              const logo = methodLogoSrc(meta)
+              return (
+                <button
+                  key={m.id}
+                  type="button"
+                  className="pay-card online-pay-card"
+                  onClick={() => setOpenMethodId(m.id)}
+                  disabled={paymentSubmitted}
+                >
+                  {logo ? (
+                    <img
+                      src={logo}
+                      alt={meta.label}
+                      className="pay-logo-img"
+                      onError={e => { if (!e.currentTarget.src.endsWith(meta.logo)) e.currentTarget.src = meta.logo }}
+                    />
+                  ) : (
+                    <span className="online-pay-icon"><CreditCard size={20} strokeWidth={1.75} /></span>
+                  )}
+                  <span className="pay-name">{meta.label}</span>
+                  <ChevronRight size={18} strokeWidth={1.75} className="online-pay-chevron" />
+                </button>
+              )
+            })}
           </div>
-          <p className="manual-payment-note">
-            Переведите точную сумму. После оплаты нажмите кнопку ниже.
-          </p>
-          <button
-            className="btn btn-primary"
-            disabled={paymentSubmitted}
-            onClick={() => handlePaymentSubmitted()}
-          >
-            {paymentSubmitted ? 'Платёж отправлен на проверку' : 'Я оплатил'}
-          </button>
         </div>
       )}
 
@@ -439,12 +462,27 @@ export default function CertificatePage({ shortCode }) {
         </a>
       </div>
 
-      {payProcessing && (
-        <div className="pay-overlay">
-          <div className="pay-modal">
-            <div className="spinner" />
-            <p className="pay-modal-title">Переходим в {activeMethod.label}</p>
-            <p className="pay-modal-sub">Подождите немного…</p>
+      {openMethod && (
+        <div className="pay-overlay" onClick={() => setOpenMethodId(null)}>
+          <div className="pay-modal method-modal" onClick={e => e.stopPropagation()} role="dialog" aria-modal="true">
+            <button type="button" className="method-modal-close" onClick={() => setOpenMethodId(null)} aria-label="Закрыть">
+              <X size={18} strokeWidth={2} />
+            </button>
+            <div className="method-modal-head">
+              {methodLogoSrc(METHOD_CATALOG[openMethod.id]) ? (
+                <img className="method-modal-logo" src={methodLogoSrc(METHOD_CATALOG[openMethod.id])} alt="" />
+              ) : (
+                <span className="online-pay-icon"><CreditCard size={22} strokeWidth={1.75} /></span>
+              )}
+              <div>
+                <div className="method-modal-title">{METHOD_CATALOG[openMethod.id].label}</div>
+                <div className="method-modal-sub">К оплате {fmt(order.totalAmount)}</div>
+              </div>
+            </div>
+            {renderMethodDetails(openMethod)}
+            <button className="btn btn-primary" onClick={() => confirmPaid(openMethod.id)}>
+              Я оплатил
+            </button>
           </div>
         </div>
       )}

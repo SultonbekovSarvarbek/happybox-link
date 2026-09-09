@@ -815,14 +815,38 @@ button.services-preview-chip {
 .online-pay-card .pay-radio    { width: 18px; height: 18px; }
 .online-pay-card.selected .pay-radio::after { width: 6px; height: 6px; }
 .online-pay-card:disabled { opacity: .6; cursor: default; }
-.online-pay-card--wide { grid-column: 1 / -1; }
+.online-pay-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
 .online-pay-icon {
   width: 52px; height: 32px; flex-shrink: 0;
   display: flex; align-items: center; justify-content: center;
   color: var(--primary);
 }
-.online-card-transfer { margin-top: -2px; }
-.online-card-transfer .manual-payment-note { margin: 12px 0 14px; }
+.online-pay-chevron { color: var(--border); flex-shrink: 0; }
+
+/* method modal (номер карты / QR выбранного способа) */
+.pay-modal.method-modal {
+  width: min(92vw, 380px); text-align: left;
+  padding: 22px 20px 20px; position: relative;
+  max-height: 90dvh; overflow-y: auto;
+}
+.method-modal .cert-card-number { font-size: 16px; white-space: nowrap; }
+.method-modal-close {
+  position: absolute; top: 12px; right: 12px;
+  width: 32px; height: 32px; border-radius: 50%; border: none;
+  background: var(--cream-dim); color: var(--sub-gray);
+  display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.method-modal-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-right: 36px; }
+.method-modal-logo { width: 56px; height: 36px; object-fit: contain; flex-shrink: 0; }
+.method-modal-title { font-size: 16px; font-weight: 600; color: var(--black); }
+.method-modal-sub   { font-size: 13px; color: var(--sub-gray); margin-top: 2px; }
+.method-modal .manual-payment-note { margin: 12px 0 14px; }
+.method-qr-wrap { margin-top: 14px; text-align: center; }
+.method-qr {
+  display: block; width: 180px; height: 180px; margin: 0 auto 10px;
+  border-radius: 12px; border: 1px solid var(--border-soft); background: #fff; object-fit: contain;
+}
+.method-qr-save { display: inline-flex; width: auto; padding: 10px 18px; font-size: 14px; text-decoration: none; }
 
 /* ─── SUCCESS ──────────────────────────────────────── */
 .confetti-canvas {
