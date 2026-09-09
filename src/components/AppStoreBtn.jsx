@@ -1,4 +1,35 @@
+import { useEffect, useState } from 'react'
+import { Clock } from 'lucide-react'
+
+// Приложение ещё не опубликовано: вместо перехода в App Store показываем «Скоро».
+// Когда выйдет — вернуть ссылку: https://apps.apple.com/uz/app/id6758584836
+const COMING_SOON = true
 const APP_STORE_URL = 'https://apps.apple.com/uz/app/happybox-%D1%81%D0%B5%D1%80%D1%82%D0%B8%D1%84%D0%B8%D0%BA%D0%B0%D1%82%D1%8B/id6758584836'
+
+function ComingSoonToast({ shown }) {
+  if (!shown) return null
+  return (
+    <div className="copy-toast" role="status" aria-live="polite">
+      <Clock size={16} strokeWidth={2.5} />
+      Скоро в App Store
+    </div>
+  )
+}
+
+function useComingSoon() {
+  const [shown, setShown] = useState(false)
+  useEffect(() => {
+    if (!shown) return
+    const t = setTimeout(() => setShown(false), 2000)
+    return () => clearTimeout(t)
+  }, [shown])
+  const onClick = (e) => {
+    if (!COMING_SOON) return
+    e.preventDefault()
+    setShown(true)
+  }
+  return { shown, onClick }
+}
 
 const AppleIcon = ({ className }) => (
   <svg className={className} viewBox="0 0 24 24" fill="currentColor">
@@ -7,13 +38,17 @@ const AppleIcon = ({ className }) => (
 )
 
 export default function AppStoreBtn({ variant }) {
+  const { shown, onClick } = useComingSoon()
+
   if (variant === 'banner') {
     return (
+      <>
       <a
         href={APP_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
         className="appstore-banner"
+        onClick={onClick}
       >
         <AppleIcon className="appstore-apple" />
         <div className="appstore-text">
@@ -24,18 +59,24 @@ export default function AppStoreBtn({ variant }) {
           <path d="M9 18l6-6-6-6"/>
         </svg>
       </a>
+      <ComingSoonToast shown={shown} />
+      </>
     )
   }
 
   return (
-    <a
-      href={APP_STORE_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="nav-app-btn"
-    >
-      <AppleIcon />
-      Мы в App Store
-    </a>
+    <>
+      <a
+        href={APP_STORE_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="nav-app-btn"
+        onClick={onClick}
+      >
+        <AppleIcon />
+        Мы в App Store
+      </a>
+      <ComingSoonToast shown={shown} />
+    </>
   )
 }
