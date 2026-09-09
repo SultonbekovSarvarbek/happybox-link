@@ -187,7 +187,7 @@ export default function Landing({
           </div>
           <div>
             <div className="promo-title">Подарок, который не забудут</div>
-            <div className="promo-desc">Сертификат на услуги или пополнение счёта для близкого</div>
+            <div className="promo-desc">Сертификат на услуги для близкого</div>
           </div>
         </div>
 
