@@ -389,6 +389,16 @@ export default function CertificatePage({ shortCode }) {
             <span className="manual-payment-title">
               {singleMethod.id === 'card' ? 'Оплата переводом' : `Оплата через ${METHOD_CATALOG[singleMethod.id].label}`}
             </span>
+            {methodLogoSrc(METHOD_CATALOG[singleMethod.id]) ? (
+              <img
+                className="manual-payment-logo"
+                src={methodLogoSrc(METHOD_CATALOG[singleMethod.id])}
+                alt={METHOD_CATALOG[singleMethod.id].label}
+                onError={e => { const l = METHOD_CATALOG[singleMethod.id].logo; if (!e.currentTarget.src.endsWith(l)) e.currentTarget.src = l }}
+              />
+            ) : (
+              <span className="online-pay-icon manual-payment-icon"><CreditCard size={20} strokeWidth={1.75} /></span>
+            )}
           </div>
           {renderMethodDetails(singleMethod)}
           <button
