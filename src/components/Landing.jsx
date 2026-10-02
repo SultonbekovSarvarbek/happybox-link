@@ -40,7 +40,10 @@ export default function Landing({
 
   return (
     <div className="screen">
-      <div className={`cover${p.audience === 'male' ? ' cover--male' : ''}`}>
+      <div
+        className={`cover${p.audience === 'male' ? ' cover--male' : ''}${p.coverImage ? ' cover--custom' : ''}`}
+        style={p.coverImage ? { backgroundImage: `url("${assetUrl(p.coverImage)}")`, backgroundSize: 'cover', backgroundPosition: 'center' } : undefined}
+      >
         <div className="cover-noise" />
         <div className="cover-orb cover-orb-1" />
         <div className="cover-orb cover-orb-2" />
