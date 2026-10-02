@@ -200,6 +200,8 @@ export default function CertificatePage({ shortCode }) {
     analytics.trackPaymentSubmittedByRecipient({ certificateId: shortCode, paymentMethod: method })
   }
 
+  const payAtSalon     = order.partner.payAtSalon === true
+  const salonAddress   = Array.isArray(order.partner.branches) ? order.partner.branches[0]?.address : null
   const paymentMethods = getPaymentMethods(order.partner, cardNumber)
   const singleMethod   = paymentMethods.length === 1 ? paymentMethods[0] : null
   const openMethod     = paymentMethods.find(m => m.id === openMethodId) ?? null
@@ -280,7 +282,7 @@ export default function CertificatePage({ shortCode }) {
           ? isFullyRedeemed
             ? <><CheckCircle2 size={15} strokeWidth={2} /> Использован</>
             : <><CheckCircle2 size={15} strokeWidth={2} /> Активен</>
-          : <><Clock size={15} strokeWidth={2} /> {paymentSubmitted ? 'Платёж на проверке' : 'Ожидает оплаты'}</>
+          : <><Clock size={15} strokeWidth={2} /> {payAtSalon ? 'Ожидает оплаты в салоне' : paymentSubmitted ? 'Платёж на проверке' : 'Ожидает оплаты'}</>
         }
       </div>
 
@@ -383,7 +385,20 @@ export default function CertificatePage({ shortCode }) {
       )}
 
 
-      {!order.isPaid && singleMethod && (
+      {!order.isPaid && payAtSalon && (
+        <div className="manual-payment-box">
+          <div className="manual-payment-head">
+            <span className="manual-payment-title">Оплата в салоне</span>
+          </div>
+          <p className="manual-payment-note">
+            Чтобы активировать сертификат, приезжайте в {order.partner.name} и оплатите на месте.
+            Назовите код <b>{order.shortCode}</b>.
+          </p>
+          {salonAddress && <p className="manual-payment-note">{salonAddress}</p>}
+        </div>
+      )}
+
+      {!order.isPaid && !payAtSalon && singleMethod && (
         <div className="manual-payment-box">
           <div className="manual-payment-head">
             <span className="manual-payment-title">
@@ -411,7 +426,7 @@ export default function CertificatePage({ shortCode }) {
         </div>
       )}
 
-      {!order.isPaid && !singleMethod && (
+      {!order.isPaid && !payAtSalon && !singleMethod && (
         <div className="manual-payment-box online-payment-box">
           <div className="online-payment-head">
             <span className="manual-payment-title">Оплатите</span>
